@@ -10,3 +10,5 @@ Jira: https://michirut.atlassian.net/jira/software/projects/IG3/boards/1
 APIer:
 
 API fra MET: https://in2000-apiproxy.ifi.uio.no
+
+Miro: https://miro.com/app/board/uXjVOJdR2-c=/
