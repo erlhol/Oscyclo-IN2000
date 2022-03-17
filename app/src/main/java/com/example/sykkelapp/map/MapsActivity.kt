@@ -1,5 +1,6 @@
 package com.example.sykkelapp.map
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.example.sykkelapp.databinding.ActivityMapsBinding
 import com.example.sykkelapp.model.MapsActivityViewModel
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import org.json.JSONObject
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
@@ -51,12 +53,20 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         val ojd = LatLng(59.94410, 10.7185)
         mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,10f))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
         var layer : GeoJsonLayer
         viewModel.geo.observe(this) {
             geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
+            val layer_style = layer.defaultLineStringStyle
+            layer_style.isClickable = true
+            layer_style.color = Color.GREEN
             layer.addLayerToMap()
+            // Only for debugging currently:
+            layer.setOnFeatureClickListener {
+                println(it.id)
+            }
         }
+
 
     }
 }
