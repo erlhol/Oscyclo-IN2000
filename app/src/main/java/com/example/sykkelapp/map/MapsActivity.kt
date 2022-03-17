@@ -3,6 +3,7 @@ package com.example.sykkelapp.map
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import com.example.sykkelapp.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -12,12 +13,15 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.sykkelapp.databinding.ActivityMapsBinding
+import com.example.sykkelapp.model.MapsActivityViewModel
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import org.json.JSONObject
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityMapsBinding
+    private val viewModel : MapsActivityViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,9 +52,11 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,10f))
-
-        val layer = GeoJsonLayer(mMap, R.raw.sykkelruter,this)
-        layer.addLayerToMap()
+        var layer : GeoJsonLayer
+        viewModel.geo.observe(this) {
+            geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
+            layer.addLayerToMap()
+        }
 
     }
 }

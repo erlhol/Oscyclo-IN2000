@@ -13,6 +13,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 
 class Datasource { // evt la datasource ta inn path som parameter
+    // burde hvert api vaere hver sin datasource?
 
     private val client = HttpClient(CIO) {
         install(JsonFeature) {
@@ -30,10 +31,11 @@ class Datasource { // evt la datasource ta inn path som parameter
         return response.geometry
     }
 
-    suspend fun loadGeo() {
+    suspend fun loadGeo() : String {
         val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326")
         val data = response.readText()
         Log.d("loaded geo","Loaded: "+response)
+        return data
     }
 
     suspend fun loadAir() {
