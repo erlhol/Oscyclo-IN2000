@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainActivityViewModel : ViewModel() {
-
+    // TODO: Fix this class
     private val _geometry = MutableLiveData<Geometry>()
     val geometry : LiveData<Geometry>
         get() = _geometry

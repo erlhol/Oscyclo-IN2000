@@ -1,8 +1,6 @@
 package com.example.sykkelapp
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import androidx.activity.viewModels
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +9,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.sykkelapp.databinding.ActivityMainBinding
-import com.example.sykkelapp.map.MapsActivity
 import com.example.sykkelapp.model.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -37,15 +34,5 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        val myButton = findViewById<Button>(R.id.button)
-        myButton.setOnClickListener {
-            val intent = Intent(this, MapsActivity::class.java)
-            startActivity(intent)
-        }
-
-        viewModel.geometry.observe(this) {
-                geometry -> println(geometry)
-        }
     }
 }
