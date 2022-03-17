@@ -11,6 +11,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.example.sykkelapp.databinding.ActivityMapsBinding
+import com.google.maps.android.data.geojson.GeoJsonLayer
 
 class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -41,9 +42,13 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        // Add a marker in Oslo and move the camera
+        val ojd = LatLng(59.944107, 10.718550)
+        mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
+
+        val layer = GeoJsonLayer(mMap, R.raw.sykkelruter,this)
+        layer.addLayerToMap()
+
     }
 }

@@ -10,6 +10,7 @@ import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
+import io.ktor.client.statement.*
 
 class Datasource { // evt la datasource ta inn path som parameter
 
@@ -30,8 +31,8 @@ class Datasource { // evt la datasource ta inn path som parameter
     }
 
     suspend fun loadGeo() {
-        val path = "https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json"
-        val response : GeoServer = client.get(path)
+        val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326")
+        val data = response.readText()
         Log.d("loaded geo","Loaded: "+response)
     }
 

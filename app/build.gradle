@@ -69,7 +69,6 @@ dependencies {
     implementation "io.ktor:ktor-client-core:$ktor_version"
     implementation "io.ktor:ktor-client-android:$ktor_version"
 
-
     // Ktor client dependency
     implementation "io.ktor:ktor-client-core:$ktor_version"
 
@@ -78,5 +77,11 @@ dependencies {
 
     // Gson
     implementation "io.ktor:ktor-client-gson:$ktor_version"
+
+    // Maps utils
+    implementation 'com.google.maps.android:android-maps-utils:2.2.3'
+
+    // Maps for kotlin
+    implementation 'com.google.maps.android:maps-utils-ktx:3.3.0'
 
 }
