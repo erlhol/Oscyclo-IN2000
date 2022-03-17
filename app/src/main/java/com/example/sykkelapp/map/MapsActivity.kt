@@ -2,6 +2,7 @@ package com.example.sykkelapp.map
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.sykkelapp.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -43,9 +44,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
 
         // Add a marker in Oslo and move the camera
-        val ojd = LatLng(59.944107, 10.718550)
+        val ojd = LatLng(59.94410, 10.7185)
         mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,10f))
 
         val layer = GeoJsonLayer(mMap, R.raw.sykkelruter,this)
         layer.addLayerToMap()
