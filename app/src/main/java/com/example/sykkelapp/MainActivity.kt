@@ -11,6 +11,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.sykkelapp.databinding.ActivityMainBinding
+import com.example.sykkelapp.map.MapsActivity
+import com.example.sykkelapp.model.MainActivityViewModel
 
 class MainActivity : AppCompatActivity() {
 
@@ -38,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         val myButton = findViewById<Button>(R.id.button)
         myButton.setOnClickListener {
-            val intent = Intent(this,MapsActivity::class.java)
+            val intent = Intent(this, MapsActivity::class.java)
             startActivity(intent)
         }
 

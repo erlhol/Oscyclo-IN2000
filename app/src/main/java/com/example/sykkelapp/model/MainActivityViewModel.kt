@@ -1,4 +1,4 @@
-package com.example.sykkelapp
+package com.example.sykkelapp.model
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

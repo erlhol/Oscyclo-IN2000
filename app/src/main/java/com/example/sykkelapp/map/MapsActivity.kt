@@ -1,7 +1,8 @@
-package com.example.sykkelapp
+package com.example.sykkelapp.map
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.sykkelapp.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
