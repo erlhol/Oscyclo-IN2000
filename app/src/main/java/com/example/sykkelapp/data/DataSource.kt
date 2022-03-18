@@ -21,13 +21,12 @@ class Datasource { // evt la datasource ta inn path som parameter
         }
     }
 
-    suspend fun loadWheather() : Geometry {
+    suspend fun loadWheather(lat : String, lon : String) : Geometry {
         // Just a sample URL. Has to be changed later
-        val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/compact?lat=60.10&lon=9.58"
+        val coordinate = "lat=$lat&lon=$lon"
+        val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/compact?$coordinate"
         val response : LocationForecast = client.get(path)
         Log.d("load wheater","Loaded: "+response)
-        loadGeo()
-        loadAir()
         return response.geometry
     }
 

@@ -18,7 +18,7 @@ class MainActivityViewModel : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _geometry.postValue(Datasource().loadWheather())
+            _geometry.postValue(Datasource().loadWheather("59.9578", "11.0508"))
         }
     }
 }
