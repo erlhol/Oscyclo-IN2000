@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
@@ -43,8 +43,8 @@ class HomeFragment : Fragment() {
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
 
-        mapView.getMapAsync {
-            mMap = it
+        mapView.getMapAsync { map ->
+            mMap = map
             // Add a marker in Oslo and move the camera
             val ojd = LatLng(59.94410, 10.7185)
             mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
@@ -53,22 +53,20 @@ class HomeFragment : Fragment() {
             var layer : GeoJsonLayer
             homeViewModel.geo.observe(viewLifecycleOwner) {
                     geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
-                val layer_style = layer.defaultLineStringStyle
-                layer_style.isClickable = true
-                layer_style.color = Color.GREEN
-                layer.addLayerToMap()
-                // Only for debugging currently:
-                layer.setOnFeatureClickListener {
-                    println(it.id)
-                }
+                    val layer_style = layer.defaultLineStringStyle
+                    layer_style.isClickable = true
+                    layer_style.color = Color.GREEN
+                    layer.addLayerToMap()
+                    layer.setOnFeatureClickListener {
+                        Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
+                    }
             }
-
         }
+
         return root
     }
 
     // Vi maa selv velge hvordan haandtere lifecycle.
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
