@@ -36,8 +36,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
-        viewModel.geometry.observe(this) {
-            println(it)
+        viewModel.data.observe(this) {
+            println(it.next_1_hours.summary.symbol_code)
         }
     }
 }

@@ -1,10 +1,12 @@
 package com.example.sykkelapp.data
 
 import android.util.Log
+import android.util.Property
 import com.example.sykkelapp.data.airqualityforecast.Airqualityforecast
-import com.example.sykkelapp.data.geoserver.GeoServer
+import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.Geometry
 import com.example.sykkelapp.data.locationForecast.LocationForecast
+import com.example.sykkelapp.data.locationForecast.Timesery
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
@@ -21,13 +23,13 @@ class Datasource { // evt la datasource ta inn path som parameter
         }
     }
 
-    suspend fun loadWheather(lat : String, lon : String) : Geometry {
+    suspend fun loadWheather(lat : String, lon : String, verbose: String) : Data {
         // Just a sample URL. Has to be changed later
         val coordinate = "lat=$lat&lon=$lon"
-        val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/compact?$coordinate"
+        val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/$verbose$coordinate"
         val response : LocationForecast = client.get(path)
         Log.d("load wheater","Loaded: "+response)
-        return response.geometry
+        return response.properties.timeseries[0].data // currently only getting the first timeseries
     }
 
     suspend fun loadGeo() : String {
