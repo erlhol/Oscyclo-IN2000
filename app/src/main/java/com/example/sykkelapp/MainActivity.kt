@@ -24,7 +24,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val navView: BottomNavigationView = binding.navView
-        val imageView : ImageView = binding.imageView // TODO: fix placement
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
         val navController = navHostFragment.navController
@@ -37,13 +36,7 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-        // TODO: move the image to a better place
-        viewModel.data.observe(this) {
-            println(it.next_1_hours.summary.symbol_code)
-            val id = resources.getIdentifier(it.next_1_hours.summary.symbol_code,"drawable",packageName)
-            println("$id id")
-            imageView.setImageResource(id)
-        }
+
 
     }
 }

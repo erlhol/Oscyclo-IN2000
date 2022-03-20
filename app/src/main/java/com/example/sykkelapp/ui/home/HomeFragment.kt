@@ -38,6 +38,9 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val imageView = binding.icon
+        val tempView = binding.temperature
+        val windView = binding.windSpeed
 
         mapView = root.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
@@ -63,6 +66,15 @@ class HomeFragment : Fragment() {
             }
         }
 
+        homeViewModel.data.observe(viewLifecycleOwner) {
+            println(it.next_1_hours.summary.symbol_code)
+            val id = resources.getIdentifier(it.next_1_hours.summary.symbol_code,"drawable",context?.packageName)
+            imageView.setImageResource(id)
+            tempView.text = it.instant.details.air_temperature.toString() + "°"
+            windView.text = it.instant.details.wind_speed.toString() + "m/s"
+        }
+        // bruke denne:
+        //https://no.wikipedia.org/wiki/UV-indeks - fargene kan vi bruke - og tekstlige beskrivelsen
         return root
     }
 
