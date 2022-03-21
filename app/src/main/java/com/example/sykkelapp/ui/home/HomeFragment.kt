@@ -78,7 +78,6 @@ class HomeFragment : Fragment() {
         return root
     }
 
-    // Vi maa selv velge hvordan haandtere lifecycle.
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
