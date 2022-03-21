@@ -9,7 +9,7 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.sykkelapp.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="@string/title_route"
         tools:layout="@layout/fragment_dashboard" />
 
     <fragment
@@ -21,6 +21,6 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.sykkelapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_calender"
         tools:layout="@layout/fragment_notifications" />
 </navigation>
