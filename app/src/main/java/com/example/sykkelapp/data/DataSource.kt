@@ -2,9 +2,7 @@ package com.example.sykkelapp.data
 
 import android.util.Log
 import com.example.sykkelapp.data.airquality.AirQuality
-import com.example.sykkelapp.data.geoserver.Feature
 import com.example.sykkelapp.data.locationForecast.Data
-import com.example.sykkelapp.data.locationForecast.Geometry
 import com.example.sykkelapp.data.locationForecast.LocationForecast
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
