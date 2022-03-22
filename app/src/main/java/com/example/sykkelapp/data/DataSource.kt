@@ -1,15 +1,11 @@
 package com.example.sykkelapp.data
 
 import android.util.Log
-import android.util.Property
-import com.example.sykkelapp.data.airqualityforecast.Airqualityforecast
+import com.example.sykkelapp.data.airquality.AirQuality
 import com.example.sykkelapp.data.locationForecast.Data
-import com.example.sykkelapp.data.locationForecast.Geometry
 import com.example.sykkelapp.data.locationForecast.LocationForecast
-import com.example.sykkelapp.data.locationForecast.Timesery
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -40,8 +36,8 @@ class Datasource { // evt la datasource ta inn path som parameter
     }
 
     suspend fun loadAir() {
-        //val path =
-        val response : Airqualityforecast = client.get(path)
+        val path = "https://api.nilu.no/aq/utd?areas=oslo&components=pm10"
+        val response : AirQuality = client.get(path)
         Log.d("loaded air","Loaded: "+response)
     }
 }
