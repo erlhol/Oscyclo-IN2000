@@ -40,7 +40,7 @@ class Datasource { // evt la datasource ta inn path som parameter
     }
 
     suspend fun loadAir() {
-        val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/airqualityforecast/0.1/?lat=60&lon=10&areaclass=grunnkrets"
+        //val path =
         val response : Airqualityforecast = client.get(path)
         Log.d("loaded air","Loaded: "+response)
     }
