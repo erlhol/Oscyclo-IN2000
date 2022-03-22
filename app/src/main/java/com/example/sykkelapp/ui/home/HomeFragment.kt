@@ -1,12 +1,14 @@
 package com.example.sykkelapp.ui.home
 
 import android.graphics.Color
+import android.graphics.ColorFilter
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.graphics.toColor
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
@@ -15,11 +17,9 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptor
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
-import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import org.json.JSONObject
 
 class HomeFragment : Fragment() {
@@ -42,9 +42,11 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val imageView = binding.icon
+        val imageView = binding.weatherIcon
         val tempView = binding.temperature
         val windView = binding.windSpeed
+        val uvView = binding.uvIcon
+        val uvTextView = binding.uv
 
         mapView = root.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
@@ -72,7 +74,6 @@ class HomeFragment : Fragment() {
 
             homeViewModel.air.observe(viewLifecycleOwner) { list ->
                 list.forEach {
-
                     val airqualityIcon: BitmapDescriptor by lazy {
                         val color = Color.parseColor("#"+it.color)
                         BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_eco_24, color)
@@ -96,15 +97,28 @@ class HomeFragment : Fragment() {
             imageView.setImageResource(id)
             tempView.text = it.instant.details.air_temperature.toString() + "°"
             windView.text = it.instant.details.wind_speed.toString() + "m/s"
-            // Add UV -index here
+            DrawableCompat.setTint(uvView.drawable,uvColor(it.instant.details.ultraviolet_index_clear_sky))
+            uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
         }
-        // bruke denne:
-        //https://no.wikipedia.org/wiki/UV-indeks - fargene kan vi bruke - og tekstlige beskrivelsen
         return root
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun uvColor(uvIndex : Double) : Int {
+        return if (uvIndex < 3) {
+            Color.GREEN
+        } else if (uvIndex >= 3 && uvIndex < 6) {
+            Color.YELLOW
+        } else if (uvIndex >= 6 && uvIndex < 8) {
+            Color.rgb(255, 128, 0)
+        } else if (uvIndex >= 8 && uvIndex < 11) {
+            Color.RED
+        } else {
+            Color.MAGENTA
+        }
     }
 }

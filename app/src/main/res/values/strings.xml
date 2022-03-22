@@ -5,6 +5,7 @@
     <string name="title_calender">Daily routes</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="weathericon">Weathericon</string>
+    <string name="uv_icon">uv_icon</string>
 
     <string-array name="sortBy">
         <item>Length</item>
