@@ -64,15 +64,8 @@ class HomeFragment : Fragment() {
                     layer_style.isClickable = true
                     layer_style.color = Color.BLUE
                     layer.setOnFeatureClickListener {
+                        println()
                         Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
-                    }
-                    var color = Color.BLUE
-                    layer.features.forEach {
-                        val lineStringStyle = GeoJsonLineStringStyle()
-                        color += 400
-                        lineStringStyle.color = color
-                        println(lineStringStyle.color)
-                        it.lineStringStyle = lineStringStyle
                     }
                     layer.addLayerToMap()
                     
