@@ -2,6 +2,7 @@ package com.example.sykkelapp.data
 
 import android.util.Log
 import com.example.sykkelapp.data.airquality.AirQuality
+import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
 import io.ktor.client.*
@@ -35,9 +36,10 @@ class Datasource { // evt la datasource ta inn path som parameter
         return data
     }
 
-    suspend fun loadAir() {
+    suspend fun loadAir() : List<AirQualityItem> {
         val path = "https://api.nilu.no/aq/utd?areas=oslo&components=pm10"
         val response : AirQuality = client.get(path)
         Log.d("loaded air","Loaded: "+response)
+        return response
     }
 }
