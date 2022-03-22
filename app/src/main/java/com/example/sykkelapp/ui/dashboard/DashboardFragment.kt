@@ -1,6 +1,8 @@
 package com.example.sykkelapp.ui.dashboard
 
+import android.location.Location
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +29,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ViewModelProvider(this).get(DashboardViewModel::class.java)
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        /*
         val spinner: Spinner = binding.spinner
         binding.spinner.onItemSelectedListener = this
         context?.let {
@@ -38,6 +40,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 spinner.adapter = adapter
             }
         }
+         */
 
         return root
     }

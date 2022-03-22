@@ -12,7 +12,8 @@ import com.example.sykkelapp.R
 import com.example.sykkelapp.data.geoserver.Geometry
 import com.example.sykkelapp.ui.Path
 
-class DashboardAdapter(private val exampleList: List<Path>) : RecyclerView.Adapter<DashboardAdapter.ViewHolder>(){
+
+abstract class DashboardAdapter(private val exampleList: List<Path>) : RecyclerView.Adapter<DashboardAdapter.ViewHolder>(){
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView : ImageView = view.findViewById(R.id.picture)
@@ -38,8 +39,6 @@ class DashboardAdapter(private val exampleList: List<Path>) : RecyclerView.Adapt
         }
 
         // Return the size of your dataset (invoked by the layout manager)
-        override fun getItemCount(){
 
-        }
 
 }
