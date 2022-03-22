@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.graphics.toColor
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
@@ -13,6 +14,8 @@ import com.example.sykkelapp.databinding.FragmentHomeBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
+import com.google.android.gms.maps.model.BitmapDescriptor
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
@@ -58,7 +61,7 @@ class HomeFragment : Fragment() {
                     geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
                     val layer_style = layer.defaultLineStringStyle
                     layer_style.isClickable = true
-                    layer_style.color = Color.GREEN
+                    layer_style.color = Color.BLUE
                     layer.addLayerToMap()
                     layer.setOnFeatureClickListener {
                         Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
@@ -67,10 +70,18 @@ class HomeFragment : Fragment() {
 
             homeViewModel.air.observe(viewLifecycleOwner) { list ->
                 list.forEach {
+
+                    val airqualityIcon: BitmapDescriptor by lazy {
+                        val color = Color.parseColor("#"+it.color)
+                        BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_eco_24, color)
+                    }
+                    
                     val point = LatLng(it.latitude,it.longitude)
                     mMap.addMarker(MarkerOptions()
                         .position(point)
-                        .title(it.station + it.value + it.unit)
+                        .title(it.station)
+                        .snippet("Svevestøvnivå: "+it.value + it.unit)
+                        .icon(airqualityIcon)
                     )
                 }
             }
@@ -83,6 +94,7 @@ class HomeFragment : Fragment() {
             imageView.setImageResource(id)
             tempView.text = it.instant.details.air_temperature.toString() + "°"
             windView.text = it.instant.details.wind_speed.toString() + "m/s"
+            // Add UV -index here
         }
         // bruke denne:
         //https://no.wikipedia.org/wiki/UV-indeks - fargene kan vi bruke - og tekstlige beskrivelsen
