@@ -64,7 +64,6 @@ class HomeFragment : Fragment() {
                     layer_style.isClickable = true
                     layer_style.color = Color.BLUE
                     layer.setOnFeatureClickListener {
-                        println()
                         Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
                     }
                     layer.addLayerToMap()
