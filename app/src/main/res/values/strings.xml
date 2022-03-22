@@ -5,4 +5,10 @@
     <string name="title_calender">Daily routes</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="weathericon">Weathericon</string>
+
+    <string-array name="sortBy">
+        <item>Length</item>
+        <item>Air quality</item>
+        <item>Difficulty</item>
+    </string-array>
 </resources>
