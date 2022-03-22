@@ -84,4 +84,7 @@ dependencies {
     // Maps for kotlin
     implementation 'com.google.maps.android:maps-utils-ktx:3.3.0'
 
+    //Location
+    implementation 'com.google.android.gms:play-services-location:19.0.1'
+
 }
