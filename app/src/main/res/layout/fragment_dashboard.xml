@@ -16,11 +16,13 @@
         android:layout_marginTop="20dp"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="330dp"
         android:layout_height="550dp"
         android:layout_marginTop="30dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/element"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

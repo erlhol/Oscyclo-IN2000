@@ -1,20 +1,17 @@
 package com.example.sykkelapp.ui.dashboard
 
-import android.location.Location
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.sykkelapp.MainActivity
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentDashboardBinding
+import com.example.sykkelapp.ui.Path
 
 class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding : FragmentDashboardBinding
@@ -29,7 +26,7 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
             ViewModelProvider(this).get(DashboardViewModel::class.java)
         binding = FragmentDashboardBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        /*
+
         val spinner: Spinner = binding.spinner
         binding.spinner.onItemSelectedListener = this
         context?.let {
@@ -40,7 +37,12 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 spinner.adapter = adapter
             }
         }
-         */
+        // Just one example, has to be changed to MVVM
+        val recyclerView = binding.recyclerView
+        var list = mutableListOf<Path>()
+        val p = Path(500.0,3,9)
+        list.add(p)
+        recyclerView.adapter = DashboardAdapter(list)
 
         return root
     }
@@ -50,10 +52,10 @@ class DashboardFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        TODO("Not yet implemented")
+        println("hei")
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {
-        TODO("Not yet implemented")
+
     }
 }
