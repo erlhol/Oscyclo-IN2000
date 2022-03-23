@@ -46,7 +46,8 @@ class HomeFragment : Fragment() {
         val tempView = binding.temperature
         val windView = binding.windSpeed
         val uvView = binding.uvIcon
-        val uvTextView = binding.uv
+        val uvTextView = binding.uvText
+        val windRotation = binding.windDirection
 
         mapView = root.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
@@ -92,13 +93,14 @@ class HomeFragment : Fragment() {
         }
 
         homeViewModel.data.observe(viewLifecycleOwner) {
-            println(it.next_1_hours.summary.symbol_code)
             val id = resources.getIdentifier(it.next_1_hours.summary.symbol_code,"drawable",context?.packageName)
             imageView.setImageResource(id)
             tempView.text = it.instant.details.air_temperature.toString() + "°"
             windView.text = it.instant.details.wind_speed.toString() + "m/s"
             DrawableCompat.setTint(uvView.drawable,uvColor(it.instant.details.ultraviolet_index_clear_sky))
             uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
+            println(it.instant.details.wind_from_direction)
+            windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
         }
         return root
     }

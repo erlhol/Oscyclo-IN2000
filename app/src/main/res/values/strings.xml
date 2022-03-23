@@ -6,6 +6,7 @@
     <string name="title_activity_maps">MapsActivity</string>
     <string name="weathericon">Weathericon</string>
     <string name="uv_icon">uv_icon</string>
+    <string name="wind_direction">wind_direction</string>
 
     <string-array name="sortBy">
         <item>Length</item>
