@@ -1,8 +1,6 @@
 package com.example.sykkelapp.ui.home
 
 import android.graphics.Color
-import android.graphics.ColorFilter
-import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -20,6 +18,7 @@ import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
+import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import org.json.JSONObject
 
 class HomeFragment : Fragment() {
@@ -65,12 +64,28 @@ class HomeFragment : Fragment() {
                     geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
                     val layer_style = layer.defaultLineStringStyle
                     layer_style.isClickable = true
-                    layer_style.color = Color.BLUE
                     layer.setOnFeatureClickListener {
-                        Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, it.getProperty("rute"), Toast.LENGTH_SHORT).show()
+                    }
+                // currently only low number of unique routes. Not expandable
+                val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
+                    Color.YELLOW,Color.GRAY,Color.LTGRAY,
+                    Color.rgb(255, 128, 0),Color.rgb(128, 0, 0))
+
+                layer.features.forEach {
+                        val color : Int
+                        val route = it.getProperty("rute")
+                        val lineStringStyle = GeoJsonLineStringStyle()
+                        color = if (route != null) {
+                            val routeNum = route.toInt()
+                            colors[routeNum] // possible indexoutofbounds
+                        } else {
+                            Color.MAGENTA
+                        }
+                        lineStringStyle.color = color
+                        it.lineStringStyle = lineStringStyle
                     }
                     layer.addLayerToMap()
-                    
             }
 
             homeViewModel.air.observe(viewLifecycleOwner) { list ->
