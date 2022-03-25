@@ -1,4 +1,4 @@
-package com.example.sykkelapp.ui.home
+package com.example.sykkelapp.ui.map
 
 import android.graphics.Color
 import android.os.Bundle
@@ -10,7 +10,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
-import com.example.sykkelapp.databinding.FragmentHomeBinding
+import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -22,11 +22,11 @@ import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import com.google.maps.android.data.geojson.GeoJsonPointStyle
 import org.json.JSONObject
 
-class HomeFragment : Fragment() {
+class MapFragment : Fragment() {
 
     private lateinit var mMap: GoogleMap
     private lateinit var mapView : MapView
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentMapBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -38,9 +38,9 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this).get(MapViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         mapView = root.findViewById(R.id.mapView)
@@ -61,7 +61,7 @@ class HomeFragment : Fragment() {
         _binding = null
     }
 
-    private fun initWeatherForecast(viewModel: HomeViewModel) {
+    private fun initWeatherForecast(viewModel: MapViewModel) {
         val imageView = binding.weatherIcon
         val tempView = binding.temperature
         val windView = binding.windSpeed
@@ -80,7 +80,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initAirQuality(mMap: GoogleMap,viewModel: HomeViewModel) {
+    private fun initAirQuality(mMap: GoogleMap,viewModel: MapViewModel) {
         viewModel.air.observe(viewLifecycleOwner) { list ->
             list.forEach {
                 val airqualityIcon: BitmapDescriptor by lazy {
@@ -99,7 +99,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initMap(mMap : GoogleMap, viewModel: HomeViewModel) {
+    private fun initMap(mMap : GoogleMap, viewModel: MapViewModel) {
         // Add a marker in Oslo and move the camera
         val ojd = LatLng(59.94410, 10.7185)
         mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
@@ -118,7 +118,7 @@ class HomeFragment : Fragment() {
         }
     }
 
-    private fun initParking(mMap: GoogleMap,viewModel: HomeViewModel) {
+    private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
         var newLayer : GeoJsonLayer
         viewModel.parking.observe(viewLifecycleOwner) {
                 parking -> newLayer = GeoJsonLayer(mMap, JSONObject(parking))

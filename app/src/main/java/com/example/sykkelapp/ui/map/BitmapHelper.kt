@@ -1,4 +1,4 @@
-package com.example.sykkelapp.ui.home
+package com.example.sykkelapp.ui.map
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Canvas

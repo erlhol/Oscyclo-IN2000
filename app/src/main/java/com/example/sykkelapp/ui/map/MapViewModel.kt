@@ -1,4 +1,4 @@
-package com.example.sykkelapp.ui.home
+package com.example.sykkelapp.ui.map
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,7 +10,7 @@ import com.example.sykkelapp.data.locationForecast.Data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class MapViewModel : ViewModel() {
 
     private val _geo = MutableLiveData<String>()
     private val _parking = MutableLiveData<String>()

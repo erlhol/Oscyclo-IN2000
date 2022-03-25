@@ -1,4 +1,4 @@
-package com.example.sykkelapp.ui.dashboard
+package com.example.sykkelapp.ui.paths
 
 import android.view.LayoutInflater
 import android.view.View
@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.R
 import com.example.sykkelapp.ui.Path
 
-class DashboardAdapter(private val exampleList: List<Path>) : RecyclerView.Adapter<DashboardAdapter.ViewHolder>() {
+class PathAdapter(private val exampleList: List<Path>) : RecyclerView.Adapter<PathAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using

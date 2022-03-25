@@ -8,15 +8,15 @@
 
     <fragment
         android:id="@+id/navigation_dashboard"
-        android:name="com.example.sykkelapp.ui.dashboard.DashboardFragment"
+        android:name="com.example.sykkelapp.ui.paths.PathFragment"
         android:label="@string/title_route"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_path" />
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.sykkelapp.ui.home.HomeFragment"
+        android:name="com.example.sykkelapp.ui.map.MapFragment"
         android:label="@string/title_map"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_map" />
 
     <fragment
         android:id="@+id/navigation_notifications"
