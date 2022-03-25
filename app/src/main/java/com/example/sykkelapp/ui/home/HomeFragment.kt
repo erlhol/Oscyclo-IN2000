@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
+import com.google.maps.android.data.geojson.GeoJsonPointStyle
 import org.json.JSONObject
 
 class HomeFragment : Fragment() {
@@ -50,6 +51,7 @@ class HomeFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
+            //initParking(map,homeViewModel)
         }
         return root
     }
@@ -114,6 +116,26 @@ class HomeFragment : Fragment() {
             uniqueColor(layer)
             layer.addLayerToMap()
         }
+    }
+
+    private fun initParking(mMap: GoogleMap,viewModel: HomeViewModel) {
+        var newLayer : GeoJsonLayer
+        viewModel.parking.observe(viewLifecycleOwner) {
+                parking -> newLayer = GeoJsonLayer(mMap, JSONObject(parking))
+            newLayer.setOnFeatureClickListener {
+                Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
+            }
+            val parkingIcon: BitmapDescriptor by lazy {
+                BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
+            }
+            newLayer.features.forEach {
+                val pointStyle = GeoJsonPointStyle()
+                pointStyle.icon = parkingIcon
+                it.pointStyle = pointStyle
+            }
+            newLayer.addLayerToMap()
+        }
+
     }
 
     private fun uniqueColor(layer: GeoJsonLayer) {
