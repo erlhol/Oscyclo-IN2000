@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 class HomeViewModel : ViewModel() {
 
     private val _geo = MutableLiveData<String>()
+    private val _parking = MutableLiveData<String>()
     private val _data = MutableLiveData<Data>()
     private val _air = MutableLiveData<List<AirQualityItem>>()
 
@@ -22,12 +23,16 @@ class HomeViewModel : ViewModel() {
         get() = _data
     val air : LiveData<List<AirQualityItem>>
         get() = _air
+    val parking : LiveData<String>
+        get() = _parking
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _geo.postValue(Datasource().loadGeo())
-            _data.postValue(Datasource().loadWheather("59.9578", "11.0508","complete?"))
-            _air.postValue(Datasource().loadAir())
+            val source = Datasource()
+            _geo.postValue(source.loadGeo())
+            _air.postValue(source.loadAir())
+            _parking.postValue(source.loadParking())
+            _data.postValue(source.loadWheather("59.94410", "10.7185","complete?"))
         }
     }
 }

@@ -41,73 +41,32 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        val imageView = binding.weatherIcon
-        val tempView = binding.temperature
-        val windView = binding.windSpeed
-        val uvView = binding.uvIcon
-        val uvTextView = binding.uvText
-        val windRotation = binding.windDirection
 
         mapView = root.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
 
         mapView.getMapAsync { map ->
-            mMap = map
-            // Add a marker in Oslo and move the camera
-            val ojd = LatLng(59.94410, 10.7185)
-            mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
-            var layer : GeoJsonLayer
-            homeViewModel.geo.observe(viewLifecycleOwner) {
-                    geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
-                    val layer_style = layer.defaultLineStringStyle
-                    layer_style.isClickable = true
-                    layer.setOnFeatureClickListener {
-                        Toast.makeText(context, it.getProperty("rute"), Toast.LENGTH_SHORT).show()
-                    }
-                // currently only low number of unique routes. Not expandable
-                val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
-                    Color.YELLOW,Color.GRAY,Color.LTGRAY,
-                    Color.rgb(255, 128, 0),Color.rgb(128, 0, 0))
-
-                layer.features.forEach {
-                        val color : Int
-                        val route = it.getProperty("rute")
-                        val lineStringStyle = GeoJsonLineStringStyle()
-                        color = if (route != null) {
-                            val routeNum = route.toInt()
-                            colors[routeNum] // possible indexoutofbounds
-                        } else {
-                            Color.MAGENTA
-                        }
-                        lineStringStyle.color = color
-                        it.lineStringStyle = lineStringStyle
-                    }
-                    layer.addLayerToMap()
-            }
-
-            homeViewModel.air.observe(viewLifecycleOwner) { list ->
-                list.forEach {
-                    val airqualityIcon: BitmapDescriptor by lazy {
-                        val color = Color.parseColor("#"+it.color)
-                        BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_eco_24, color)
-                    }
-                    
-                    val point = LatLng(it.latitude,it.longitude)
-                    mMap.addMarker(MarkerOptions()
-                        .position(point)
-                        .title(it.station)
-                        .snippet("Svevestøvnivå: "+it.value + it.unit)
-                        .icon(airqualityIcon)
-                    )
-                }
-            }
-
+            initWeatherForecast(homeViewModel)
+            initMap(map,homeViewModel)
+            initAirQuality(map,homeViewModel)
         }
+        return root
+    }
 
-        homeViewModel.data.observe(viewLifecycleOwner) {
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun initWeatherForecast(viewModel: HomeViewModel) {
+        val imageView = binding.weatherIcon
+        val tempView = binding.temperature
+        val windView = binding.windSpeed
+        val uvView = binding.uvIcon
+        val uvTextView = binding.uvText
+        val windRotation = binding.windDirection
+        viewModel.data.observe(viewLifecycleOwner) {
             val id = resources.getIdentifier(it.next_1_hours.summary.symbol_code,"drawable",context?.packageName)
             imageView.setImageResource(id)
             tempView.text = it.instant.details.air_temperature.toString() + "°"
@@ -117,12 +76,70 @@ class HomeFragment : Fragment() {
             println(it.instant.details.wind_from_direction)
             windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
         }
-        return root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun initAirQuality(mMap: GoogleMap,viewModel: HomeViewModel) {
+        viewModel.air.observe(viewLifecycleOwner) { list ->
+            list.forEach {
+                val airqualityIcon: BitmapDescriptor by lazy {
+                    val color = Color.parseColor("#"+it.color)
+                    BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_eco_24, color)
+                }
+
+                val point = LatLng(it.latitude,it.longitude)
+                mMap.addMarker(MarkerOptions()
+                    .position(point)
+                    .title(it.station)
+                    .snippet("Svevestøvnivå: "+it.value + it.unit)
+                    .icon(airqualityIcon)
+                )
+            }
+        }
+    }
+
+    private fun initMap(mMap : GoogleMap, viewModel: HomeViewModel) {
+        // Add a marker in Oslo and move the camera
+        val ojd = LatLng(59.94410, 10.7185)
+        mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
+        var layer : GeoJsonLayer
+        viewModel.geo.observe(viewLifecycleOwner) {
+                geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
+            val layer_style = layer.defaultLineStringStyle
+            layer_style.isClickable = true
+            layer.setOnFeatureClickListener {
+                Toast.makeText(context, it.getProperty("rute"), Toast.LENGTH_SHORT).show()
+            }
+            uniqueColor(layer)
+            layer.addLayerToMap()
+        }
+    }
+
+    private fun uniqueColor(layer: GeoJsonLayer) {
+        val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
+            Color.YELLOW,Color.GRAY,Color.LTGRAY,
+            Color.rgb(255, 128, 0),Color.rgb(128, 0, 0))
+
+        layer.features.forEach {
+            val color : Int
+            val route = it.getProperty("rute")
+            val lineStringStyle = GeoJsonLineStringStyle()
+            color = if (route != null) {
+                val routeNum = route.toInt()
+                if (routeNum < colors.size) {
+                    colors[routeNum]
+                }
+                else {
+                    Color.RED
+                }
+            } else {
+                Color.MAGENTA
+            }
+            lineStringStyle.color = color
+            it.lineStringStyle = lineStringStyle
+        }
+        layer.addLayerToMap()
     }
 
     private fun uvColor(uvIndex : Double) : Int {

@@ -36,6 +36,13 @@ class Datasource { // evt la datasource ta inn path som parameter
         return data
     }
 
+    suspend fun loadParking() : String {
+        val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Asykkelparkering&outputFormat=application/json&srsName=EPSG:4326")
+        val data = response.readText()
+        Log.d("loaded parking","Loaded: "+response)
+        return data
+    }
+
     suspend fun loadAir() : List<AirQualityItem> {
         val path = "https://api.nilu.no/aq/utd?areas=oslo&components=pm10"
         val response : AirQuality = client.get(path)
