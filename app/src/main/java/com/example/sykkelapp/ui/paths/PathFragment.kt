@@ -56,23 +56,4 @@ class PathFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("Home","On destroy")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("Home","On pause")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("Home","On resume")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("Dashboard", "on destroy")
-    }
 }
