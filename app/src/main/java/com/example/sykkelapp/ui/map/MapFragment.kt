@@ -2,6 +2,7 @@ package com.example.sykkelapp.ui.map
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -71,7 +72,6 @@ class MapFragment : Fragment() {
             imageView.setImageResource(id)
             tempView.text = it.instant.details.air_temperature.toString() + "°"
             windView.text = it.instant.details.wind_speed.toString() + "m/s"
-            println(it.instant.details.wind_from_direction)
             windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
         }
     }
@@ -92,6 +92,9 @@ class MapFragment : Fragment() {
                     .icon(airqualityIcon)
                 )
             }
+        }
+        viewModel.airquality.observe(viewLifecycleOwner) {
+            Log.d("Map fragment",it.toString())
         }
     }
 
