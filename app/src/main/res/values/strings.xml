@@ -2,7 +2,7 @@
     <string name="app_name">SykkelApp</string>
     <string name="title_map">Map</string>
     <string name="title_route">Routes</string>
-    <string name="title_calender">Daily routes</string>
+    <string name="title_profile">My Profile</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="weathericon">Weathericon</string>
     <string name="uv_icon">uv_icon</string>

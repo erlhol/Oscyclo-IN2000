@@ -65,16 +65,12 @@ class MapFragment : Fragment() {
         val imageView = binding.weatherIcon
         val tempView = binding.temperature
         val windView = binding.windSpeed
-        val uvView = binding.uvIcon
-        val uvTextView = binding.uvText
         val windRotation = binding.windDirection
         viewModel.data.observe(viewLifecycleOwner) {
             val id = resources.getIdentifier(it.next_1_hours.summary.symbol_code,"drawable",context?.packageName)
             imageView.setImageResource(id)
             tempView.text = it.instant.details.air_temperature.toString() + "°"
             windView.text = it.instant.details.wind_speed.toString() + "m/s"
-            DrawableCompat.setTint(uvView.drawable,uvColor(it.instant.details.ultraviolet_index_clear_sky))
-            uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
             println(it.instant.details.wind_from_direction)
             windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
         }
@@ -117,7 +113,7 @@ class MapFragment : Fragment() {
             layer.addLayerToMap()
         }
     }
-
+    /*
     private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
         var newLayer : GeoJsonLayer
         viewModel.parking.observe(viewLifecycleOwner) {
@@ -126,7 +122,7 @@ class MapFragment : Fragment() {
                 Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
             }
             val parkingIcon: BitmapDescriptor by lazy {
-                BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
+              BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
             }
             newLayer.features.forEach {
                 val pointStyle = GeoJsonPointStyle()
@@ -136,7 +132,10 @@ class MapFragment : Fragment() {
             newLayer.addLayerToMap()
         }
 
+
     }
+
+     */
 
     private fun uniqueColor(layer: GeoJsonLayer) {
         val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
@@ -164,6 +163,7 @@ class MapFragment : Fragment() {
         layer.addLayerToMap()
     }
 
+    /*
     private fun uvColor(uvIndex : Double) : Int {
         return if (uvIndex < 3) {
             Color.GREEN
@@ -176,5 +176,8 @@ class MapFragment : Fragment() {
         } else {
             Color.MAGENTA
         }
+
     }
+
+     */
 }

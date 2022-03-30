@@ -13,7 +13,7 @@
         app:uiZoomControls="true"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="250dp"
+        android:layout_width="150dp"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/roundstyle"
@@ -41,27 +41,6 @@
             android:textColor="@color/black"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/weather_icon"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/uv_icon"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_marginStart="25dp"
-            android:contentDescription="@string/uv_icon"
-            app:srcCompat="@drawable/ic_baseline_wb_sunny_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/temperature"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/uv_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="15sp"
-            android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/uv_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

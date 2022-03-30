@@ -21,6 +21,6 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.sykkelapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_calender"
+        android:label="@string/title_profile"
         tools:layout="@layout/fragment_notifications" />
 </navigation>

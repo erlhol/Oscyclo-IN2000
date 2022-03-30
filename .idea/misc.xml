@@ -3,11 +3,18 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_baseline_arrow_right_alt_24.xml" value="0.1395" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_baseline_calendar_today_24.xml" value="0.1395" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_baseline_person_outline_24.xml" value="0.1395" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_dashboard_black_24dp.xml" value="0.1395" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_home_black_24dp.xml" value="0.1395" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_notifications_black_24dp.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/roundstyle.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/activity_main.xml" value="0.20052083333333334" />
-        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/element.xml" value="0.17552083333333332" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/element.xml" value="0.22" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/fragment_dashboard.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/fragment_home.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/fragment_map.xml" value="0.17552083333333332" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/fragment_notifications.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/HP/Documents/GitHub/IN2000---gruppe-3/app/src/main/res/drawable/ic_baseline_map_24.xml" value="0.1355" />
