@@ -51,6 +51,7 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
+            initBySykkel(map, homeViewModel)
             //initParking(map,homeViewModel)
         }
         return root
