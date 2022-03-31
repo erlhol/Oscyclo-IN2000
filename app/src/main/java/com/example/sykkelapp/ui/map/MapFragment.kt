@@ -171,23 +171,18 @@ class MapFragment : Fragment() {
     private fun uvColor(uvIndex : Double, view: TextView) : Int {
         if (uvIndex < 3) {
             view.text = "Low"
-            view.textSize = 20F
             return Color.rgb(79, 121, 66)
         } else if (uvIndex >= 3 && uvIndex < 6) {
-            view.text = "Medium"
-            view.textSize = 17F
+            view.text = "Moderate"
             return Color.rgb(253, 218, 13)
         } else if (uvIndex >= 6 && uvIndex < 8) {
             view.text = "High"
-            view.textSize = 20F
             return Color.rgb(255, 128, 0)
         } else if (uvIndex >= 8 && uvIndex < 11) {
             view.text = "Very high"
-            view.textSize = 15F
             return Color.rgb(196, 30, 58)
         } else {
             view.text = "Extreme"
-            view.textSize = 16F
             return Color.rgb(199, 21, 133)
         }
 
