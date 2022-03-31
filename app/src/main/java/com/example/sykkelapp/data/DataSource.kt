@@ -3,6 +3,8 @@ package com.example.sykkelapp.data
 import android.util.Log
 import com.example.sykkelapp.data.airquality.AirQuality
 import com.example.sykkelapp.data.airquality.AirQualityItem
+import com.example.sykkelapp.data.airqualityforecast.AirQualityForecast
+import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
 import io.ktor.client.*
@@ -48,5 +50,13 @@ class Datasource { // evt la datasource ta inn path som parameter
         val response : AirQuality = client.get(path)
         Log.d("loaded air","Loaded: "+response)
         return response
+    }
+
+    suspend fun loadAirQualityForecast(lat: String, lon: String) : Pm10Concentration {
+        val coordinate = "lat=$lat&lon=$lon"
+        val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/airqualityforecast/0.1/?$coordinate"
+        val response : AirQualityForecast = client.get(path)
+        Log.d("loaded airquality","Loaded: "+response)
+        return response.data.time[0].variables.pm10_concentration
     }
 }
