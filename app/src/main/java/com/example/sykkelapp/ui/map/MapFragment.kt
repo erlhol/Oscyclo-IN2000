@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
@@ -66,16 +65,12 @@ class MapFragment : Fragment() {
         val imageView = binding.weatherIcon
         val tempView = binding.temperature
         val windView = binding.windSpeed
-        val uvView = binding.uvIcon
-        val uvTextView = binding.uvText
         val windRotation = binding.windDirection
         viewModel.data.observe(viewLifecycleOwner) {
             val id = resources.getIdentifier(it.next_1_hours.summary.symbol_code,"drawable",context?.packageName)
             imageView.setImageResource(id)
             tempView.text = it.instant.details.air_temperature.toString() + "°"
-            windView.text = it.instant.details.wind_speed.toString()
-            DrawableCompat.setTint(uvView.drawable,uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView))
-            //uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
+            windView.text = it.instant.details.wind_speed.toString() + "m/s"
             println(it.instant.details.wind_from_direction)
             windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
         }
@@ -136,10 +131,11 @@ class MapFragment : Fragment() {
             }
             newLayer.addLayerToMap()
         }
+
+
     }
 
      */
-
 
     private fun uniqueColor(layer: GeoJsonLayer) {
         val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
@@ -167,29 +163,21 @@ class MapFragment : Fragment() {
         layer.addLayerToMap()
     }
 
-
-    private fun uvColor(uvIndex : Double, view: TextView) : Int {
-        if (uvIndex < 3) {
-            view.text = "Low"
-            view.textSize = 20F
-            return Color.rgb(79, 121, 66)
+    /*
+    private fun uvColor(uvIndex : Double) : Int {
+        return if (uvIndex < 3) {
+            Color.GREEN
         } else if (uvIndex >= 3 && uvIndex < 6) {
-            view.text = "Medium"
-            view.textSize = 17F
-            return Color.rgb(253, 218, 13)
+            Color.YELLOW
         } else if (uvIndex >= 6 && uvIndex < 8) {
-            view.text = "High"
-            view.textSize = 20F
-            return Color.rgb(255, 128, 0)
+            Color.rgb(255, 128, 0)
         } else if (uvIndex >= 8 && uvIndex < 11) {
-            view.text = "Very high"
-            view.textSize = 15F
-            return Color.rgb(196, 30, 58)
+            Color.RED
         } else {
-            view.text = "Extreme"
-            view.textSize = 16F
-            return Color.rgb(199, 21, 133)
+            Color.MAGENTA
         }
 
     }
+
+     */
 }
