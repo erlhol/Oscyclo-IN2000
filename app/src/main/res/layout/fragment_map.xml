@@ -13,6 +13,7 @@
         app:uiZoomControls="true"/>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="wrap_content"
         android:layout_height="60dp"
         android:layout_marginTop="20dp"
@@ -31,14 +32,14 @@
             android:contentDescription="@string/weathericon"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/temperature"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="25sp"
             android:textColor="@color/black"
+            android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/weather_icon"
             app:layout_constraintTop_toTopOf="parent" />
@@ -48,9 +49,9 @@
             android:id="@+id/wind_speed"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
             android:textColor="@color/black"
             android:textSize="25sp"
-            android:layout_marginStart="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/temperature"
 
@@ -60,10 +61,10 @@
             android:id="@+id/wind_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
             android:text="m/s"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/wind_speed" />
 
@@ -72,10 +73,10 @@
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:contentDescription="@string/wind_direction"
-            app:srcCompat="@drawable/ic_baseline_arrow_right_alt_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/wind_unit"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_arrow_right_alt_24" />
 
 
         <ImageView
@@ -84,27 +85,36 @@
             android:layout_height="30dp"
             android:layout_marginStart="15dp"
             android:contentDescription="@string/uv_icon"
-            app:srcCompat="@drawable/ic_baseline_wb_sunny_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/wind_direction"
             app:layout_constraintTop_toTopOf="parent"
-            />
+            app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
 
 
         <TextView
             android:id="@+id/uv_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:paddingEnd="15dp"
+            android:text=""
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:text=""
-            android:paddingEnd="15dp"
-            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/uv_icon"
-            />
-
+            app:layout_constraintStart_toEndOf="@id/uv_icon" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/Bparking"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="10dp"
+        app:icon="@drawable/ic_baseline_local_parking_24"
+        app:iconGravity="top"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

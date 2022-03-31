@@ -29,6 +29,8 @@ class MapFragment : Fragment() {
     private lateinit var mapView : MapView
     private var _binding: FragmentMapBinding? = null
 
+    private var parkOn = false
+    private lateinit var parkingLayer: GeoJsonLayer
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -47,13 +49,23 @@ class MapFragment : Fragment() {
         mapView = root.findViewById(R.id.mapView)
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
-
+        lateinit var maps: GoogleMap
         mapView.getMapAsync { map ->
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            //initParking(map,homeViewModel)
+            maps = map
         }
+
+        binding.Bparking.setOnClickListener{
+            if (!parkOn){
+                initParking(maps,homeViewModel)
+            }else{
+                parkingLayer.removeLayerFromMap()
+            }
+            parkOn = !parkOn
+        }
+
         return root
     }
 
@@ -75,7 +87,6 @@ class MapFragment : Fragment() {
             tempView.text = it.instant.details.air_temperature.toString() + "°"
             windView.text = it.instant.details.wind_speed.toString()
             DrawableCompat.setTint(uvView.drawable,uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView))
-            //uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
             println(it.instant.details.wind_from_direction)
             windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
         }
@@ -118,7 +129,7 @@ class MapFragment : Fragment() {
             layer.addLayerToMap()
         }
     }
-    /*
+
     private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
         var newLayer : GeoJsonLayer
         viewModel.parking.observe(viewLifecycleOwner) {
@@ -127,18 +138,19 @@ class MapFragment : Fragment() {
                 Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
             }
             val parkingIcon: BitmapDescriptor by lazy {
-              BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
+                BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
             }
             newLayer.features.forEach {
                 val pointStyle = GeoJsonPointStyle()
                 pointStyle.icon = parkingIcon
                 it.pointStyle = pointStyle
             }
+            parkingLayer = newLayer
             newLayer.addLayerToMap()
+
         }
     }
 
-     */
 
 
     private fun uniqueColor(layer: GeoJsonLayer) {
