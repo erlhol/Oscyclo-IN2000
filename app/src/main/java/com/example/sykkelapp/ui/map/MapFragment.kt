@@ -113,6 +113,22 @@ class MapFragment : Fragment() {
             layer.addLayerToMap()
         }
     }
+    private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel){
+        viewModel.station.observe(viewLifecycleOwner){
+            val bysykkelStation : BitmapDescriptor by lazy {
+                val color = Color.parseColor("#0047AB")
+                BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_pedal_bike_24, color)
+            }
+            val point = LatLng(it.lat, it.lon)
+            mMap.addMarker(MarkerOptions()
+                .position(point)
+                .title(it.name)
+                .snippet("Capacity: " + it.capacity)
+                .icon(bysykkelStation)
+                //.address(it.address)
+            )
+        }
+    }
     /*
     private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
         var newLayer : GeoJsonLayer

@@ -5,6 +5,8 @@ import com.example.sykkelapp.data.airquality.AirQuality
 import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.AirQualityForecast
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
+import com.example.sykkelapp.data.bysykkel.BySykkel
+import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
 import io.ktor.client.*
@@ -58,5 +60,12 @@ class Datasource { // evt la datasource ta inn path som parameter
         val response : AirQualityForecast = client.get(path)
         Log.d("loaded airquality","Loaded: "+response)
         return response.data.time[0].variables.pm10_concentration
+    }
+
+    suspend fun loadBySykkel() : Station {
+        val path = "https://gbfs.urbansharing.com/oslobysykkel.no/station_information.json"
+        val response : Station = client.get(path)
+        Log.d("loaded station", "Loaded: " + response)
+        return response
     }
 }

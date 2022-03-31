@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.sykkelapp.data.Datasource
 import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
+import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.locationForecast.Data
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ class MapViewModel : ViewModel() {
     private val _data = MutableLiveData<Data>()
     private val _air = MutableLiveData<List<AirQualityItem>>()
     private val _airquality = MutableLiveData<Pm10Concentration>()
+    private val _station = MutableLiveData<Station>()
 
     val geo : LiveData<String>
         get() = _geo
@@ -29,6 +31,8 @@ class MapViewModel : ViewModel() {
         get() = _parking
     val airquality : LiveData<Pm10Concentration>
         get() = _airquality
+    val station : LiveData<Station>
+        get() = _station
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -38,6 +42,7 @@ class MapViewModel : ViewModel() {
             _parking.postValue(source.loadParking())
             _data.postValue(source.loadWheather("59.94410", "10.7185","complete?"))
             _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
+            _station.postValue(source.loadBySykkel())
         }
     }
 }
