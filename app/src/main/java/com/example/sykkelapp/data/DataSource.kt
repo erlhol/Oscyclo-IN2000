@@ -32,7 +32,7 @@ class Datasource { // evt la datasource ta inn path som parameter
     }
 
     suspend fun loadGeo() : String {
-        val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326")
+        val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326&CQL_FILTER=rute+IS+NOT+Null")
         val data = response.readText()
         Log.d("loaded geo","Loaded: "+response)
         return data
