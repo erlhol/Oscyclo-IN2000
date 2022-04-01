@@ -19,7 +19,7 @@ class MapViewModel : ViewModel() {
     private val _data = MutableLiveData<Data>()
     private val _air = MutableLiveData<List<AirQualityItem>>()
     private val _airquality = MutableLiveData<Pm10Concentration>()
-    private val _station = MutableLiveData<Station>()
+    private val _station = MutableLiveData<List<Station>>()
 
     val geo : LiveData<String>
         get() = _geo
@@ -31,8 +31,8 @@ class MapViewModel : ViewModel() {
         get() = _parking
     val airquality : LiveData<Pm10Concentration>
         get() = _airquality
-    val station : LiveData<Station>
-        get() = _station
+    val station : LiveData<List<Station>>
+      get() = _station
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

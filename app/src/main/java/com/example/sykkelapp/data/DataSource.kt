@@ -11,6 +11,7 @@ import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
+import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -62,10 +63,10 @@ class Datasource { // evt la datasource ta inn path som parameter
         return response.data.time[0].variables.pm10_concentration
     }
 
-    suspend fun loadBySykkel() : Station {
+    suspend fun loadBySykkel() : List<Station> {
         val path = "https://gbfs.urbansharing.com/oslobysykkel.no/station_information.json"
-        val response : Station = client.get(path)
+        val response : BySykkel = client.get(path)
         Log.d("loaded station", "Loaded: " + response)
-        return response
+        return response.data.stations
     }
 }

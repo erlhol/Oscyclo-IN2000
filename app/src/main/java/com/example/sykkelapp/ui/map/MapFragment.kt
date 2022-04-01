@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
@@ -19,7 +18,6 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
-import com.google.maps.android.data.geojson.GeoJsonPointStyle
 import org.json.JSONObject
 
 class MapFragment : Fragment() {
@@ -114,20 +112,26 @@ class MapFragment : Fragment() {
             layer.addLayerToMap()
         }
     }
-    private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel){
-        viewModel.station.observe(viewLifecycleOwner){
-            val bysykkelStation : BitmapDescriptor by lazy {
-                val color = Color.parseColor("#0047AB")
-                BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_pedal_bike_24, color)
+    private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel) {
+        viewModel.station.observe(viewLifecycleOwner) {
+            it.forEach {
+                val bysykkelStation: BitmapDescriptor by lazy {
+                    val color = Color.parseColor("#0047AB")
+                    BitmapHelper.vectorToBitmap(
+                        context,
+                        R.drawable.ic_baseline_pedal_bike_24,
+                        color
+                    )
+                }
+                val point = LatLng(it.lat, it.lon)
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(point)
+                        .title(it.name)
+                        .snippet("Capacity: " + it.capacity)
+                        .icon(bysykkelStation)
+                )
             }
-            val point = LatLng(it.lat, it.lon)
-            mMap.addMarker(MarkerOptions()
-                .position(point)
-                .title(it.name)
-                .snippet("Capacity: " + it.capacity)
-                .icon(bysykkelStation)
-                //.address(it.address)
-            )
         }
     }
     /*
