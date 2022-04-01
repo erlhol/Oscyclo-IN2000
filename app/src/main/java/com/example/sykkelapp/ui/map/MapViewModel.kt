@@ -7,6 +7,7 @@ import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.locationForecast.Data
+import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.ui.map.location.LocationLiveData
 import com.example.sykkelapp.ui.map.location.LocationModel
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,7 @@ import kotlinx.coroutines.launch
 class MapViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _geo = MutableLiveData<String>()
-    private val _parking = MutableLiveData<String>()
+    private val _parking = MutableLiveData<List<Feature>>()
     private val _data = MutableLiveData<Data>()
     private val _air = MutableLiveData<List<AirQualityItem>>()
     private val _airquality = MutableLiveData<Pm10Concentration>()
@@ -29,7 +30,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         get() = _data
     val air : LiveData<List<AirQualityItem>>
         get() = _air
-    val parking : LiveData<String>
+    val parking : LiveData<List<Feature>>
         get() = _parking
     val airquality : LiveData<Pm10Concentration>
         get() = _airquality

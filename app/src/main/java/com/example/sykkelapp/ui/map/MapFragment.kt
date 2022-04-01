@@ -27,8 +27,6 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.maps.android.clustering.ClusterItem
-import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import org.json.JSONObject
@@ -72,7 +70,7 @@ class MapFragment : Fragment() {
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
             initBySykkel(map, homeViewModel)
-            //initParking(map,homeViewModel)
+            initParking(map,homeViewModel)
         }
         return root
     }
@@ -235,29 +233,34 @@ class MapFragment : Fragment() {
             }
         }
     }
-    /*
+
     private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
-        var newLayer : GeoJsonLayer
         viewModel.parking.observe(viewLifecycleOwner) {
-                parking -> newLayer = GeoJsonLayer(mMap, JSONObject(parking))
-            newLayer.setOnFeatureClickListener {
-                Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
+            it.forEach {
+                val parkeringsPlass: BitmapDescriptor by lazy {
+                    val color = Color.parseColor("#0047AB")
+                    BitmapHelper.vectorToBitmap(
+                        context,
+                        R.drawable.ic_baseline_local_parking_24,
+                        color
+                    )
+                }
+                if (it.geometry.coordinates.size == 2) {
+                    val point = LatLng(it.geometry.coordinates[1], it.geometry.coordinates[0])
+                    mMap.addMarker(
+                        MarkerOptions()
+                            .position(point)
+                            .title(it.id) // TODO: change
+                            .snippet("Antall parkeringsplasser: "+it.properties.antall_parkeringsplasser)
+                            .icon(parkeringsPlass)
+                    )
+                }
+
             }
-            val parkingIcon: BitmapDescriptor by lazy {
-                BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
-            }
-            newLayer.features.forEach {
-                val pointStyle = GeoJsonPointStyle()
-                pointStyle.icon = parkingIcon
-                it.pointStyle = pointStyle
-            }
-            newLayer.addLayerToMap()
         }
 
 
     }
-
-     */
 
     private fun uniqueColor(layer: GeoJsonLayer) {
         val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,

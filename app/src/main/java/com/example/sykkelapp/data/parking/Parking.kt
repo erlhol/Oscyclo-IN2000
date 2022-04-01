@@ -1,6 +1,6 @@
 package com.example.sykkelapp.data.parking
 
-data class parking(
+data class Parking(
     val crs: Crs,
     val features: List<Feature>,
     val numberMatched: Int,
