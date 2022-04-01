@@ -18,6 +18,8 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterItem
+import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import com.google.maps.android.data.geojson.GeoJsonPointStyle
@@ -52,8 +54,8 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            //initParking(map,homeViewModel)
-        }
+            initParking(map,homeViewModel)
+            }
         return root
     }
 
@@ -118,7 +120,48 @@ class MapFragment : Fragment() {
             layer.addLayerToMap()
         }
     }
-    /*
+
+/*
+
+
+    private fun setUpClusterer() {
+        // Position the map.
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(51.503186, -0.126446), 10f))
+
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        clusterManager = ClusterManager(context, map)
+
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        map.setOnCameraIdleListener(clusterManager)
+        map.setOnMarkerClickListener(clusterManager)
+
+        // Add cluster items (markers) to the cluster manager.
+        addItems()
+    }
+
+    private fun addItems() {
+
+        // Set some lat/lng coordinates to start with.
+        var lat = 51.5145160
+        var lng = -0.1270060
+
+        // Add ten cluster items in close proximity, for purposes of this example.
+        for (i in 0..9) {
+            val offset = i / 60.0
+            lat += offset
+            lng += offset
+            val offsetItem =
+                MyItem(lat, lng, "Title $i", "Snippet $i")
+            clusterManager.addItem(offsetItem)
+        }
+    }
+
+*/
+
+    private lateinit var clusterManager: ClusterManager<Parking>
+
     private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
         var newLayer : GeoJsonLayer
         viewModel.parking.observe(viewLifecycleOwner) {
@@ -127,7 +170,7 @@ class MapFragment : Fragment() {
                 Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
             }
             val parkingIcon: BitmapDescriptor by lazy {
-              BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
+                BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
             }
             newLayer.features.forEach {
                 val pointStyle = GeoJsonPointStyle()
@@ -137,9 +180,6 @@ class MapFragment : Fragment() {
             newLayer.addLayerToMap()
         }
     }
-
-     */
-
 
     private fun uniqueColor(layer: GeoJsonLayer) {
         val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
@@ -188,3 +228,4 @@ class MapFragment : Fragment() {
 
     }
 }
+
