@@ -31,7 +31,7 @@
         </activity>
 
         <service
-            android:name="MyNavigationService"
+            android:name=".MainActivity"
             android:foregroundServiceType="location">
         </service>
     </application>
