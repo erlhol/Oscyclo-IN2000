@@ -1,5 +1,10 @@
 package com.example.sykkelapp.ui.map
 
+import android.Manifest
+import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -7,11 +12,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentMapBinding
+import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -28,6 +36,8 @@ class MapFragment : Fragment() {
     private lateinit var mMap: GoogleMap
     private lateinit var mapView : MapView
     private var _binding: FragmentMapBinding? = null
+    private lateinit var homeViewModel : MapViewModel
+    private var isGPSEnabled = false
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -38,8 +48,15 @@ class MapFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(MapViewModel::class.java)
+        homeViewModel =
+            ViewModelProvider(this)[MapViewModel::class.java]
+
+        GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
+
+            override fun gpsStatus(isGPSEnable: Boolean) {
+                isGPSEnabled = isGPSEnable
+            }
+        })
 
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -54,13 +71,87 @@ class MapFragment : Fragment() {
             initAirQuality(map,homeViewModel)
             //initParking(map,homeViewModel)
         }
+
         return root
     }
+
+    override fun onStart() {
+        super.onStart()
+        invokeLocationAction()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == GPS_REQUEST) {
+                isGPSEnabled = true
+                invokeLocationAction()
+            }
+        }
+    }
+
+    private fun startLocationUpdate() {
+        homeViewModel.locationData.observe(this, Observer {
+            binding.latLong.text = "${it.longitude},${it.latitude}"
+            Log.d("Main activity",it.longitude.toString() + it.latitude.toString())
+        })
+    }
+
+    private fun invokeLocationAction() {
+        when {
+            !isGPSEnabled -> binding.latLong.text = getString(R.string.enable_gps)
+
+            isPermissionsGranted() -> startLocationUpdate()
+
+            shouldShowRequestPermissionRationale() -> binding.latLong.text = getString(R.string.permission_request)
+
+            else -> ActivityCompat.requestPermissions(
+                requireActivity(),
+                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                LOCATION_REQUEST
+            )
+        }
+    }
+
+
+    private fun isPermissionsGranted() =
+        ActivityCompat.checkSelfPermission(
+            requireContext(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) == PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+
+
+    private fun shouldShowRequestPermissionRationale() =
+        ActivityCompat.shouldShowRequestPermissionRationale(
+            requireActivity(),
+            Manifest.permission.ACCESS_FINE_LOCATION
+        ) && ActivityCompat.shouldShowRequestPermissionRationale(
+            requireActivity(),
+            Manifest.permission.ACCESS_COARSE_LOCATION
+        )
+
+
+    @SuppressLint("MissingPermission")
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATION_REQUEST -> {
+                invokeLocationAction()
+            }
+        }
+    }
+
+
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 
     private fun initWeatherForecast(viewModel: MapViewModel) {
         val imageView = binding.weatherIcon
@@ -149,17 +240,8 @@ class MapFragment : Fragment() {
             val color : Int
             val route = it.getProperty("rute")
             val lineStringStyle = GeoJsonLineStringStyle()
-            color = if (route != null) {
-                val routeNum = route.toInt()
-                if (routeNum < colors.size) {
-                    colors[routeNum]
-                }
-                else {
-                    Color.RED
-                }
-            } else {
-                Color.MAGENTA
-            }
+            val routeNum = route.toInt()
+            color = colors[routeNum % (colors.size-1)]
             lineStringStyle.color = color
             it.lineStringStyle = lineStringStyle
         }
@@ -184,3 +266,6 @@ class MapFragment : Fragment() {
 
      */
 }
+
+const val LOCATION_REQUEST = 100
+const val GPS_REQUEST = 101

@@ -1,23 +1,25 @@
 package com.example.sykkelapp.ui.map
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import android.app.Application
+import androidx.lifecycle.*
 import com.example.sykkelapp.data.Datasource
 import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.locationForecast.Data
+import com.example.sykkelapp.ui.map.location.LocationLiveData
+import com.example.sykkelapp.ui.map.location.LocationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MapViewModel : ViewModel() {
+class MapViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _geo = MutableLiveData<String>()
     private val _parking = MutableLiveData<String>()
     private val _data = MutableLiveData<Data>()
     private val _air = MutableLiveData<List<AirQualityItem>>()
     private val _airquality = MutableLiveData<Pm10Concentration>()
+
+    private val _locationData = LocationLiveData(application)
 
     val geo : LiveData<String>
         get() = _geo
@@ -29,6 +31,8 @@ class MapViewModel : ViewModel() {
         get() = _parking
     val airquality : LiveData<Pm10Concentration>
         get() = _airquality
+    val locationData : LiveData<LocationModel>
+        get() = _locationData
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
