@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.example.sykkelapp.data.Datasource
 import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
+import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.ui.map.location.LocationLiveData
 import com.example.sykkelapp.ui.map.location.LocationModel
@@ -18,6 +19,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
     private val _data = MutableLiveData<Data>()
     private val _air = MutableLiveData<List<AirQualityItem>>()
     private val _airquality = MutableLiveData<Pm10Concentration>()
+    private val _station = MutableLiveData<List<Station>>()
 
     private val _locationData = LocationLiveData(application)
 
@@ -31,6 +33,8 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         get() = _parking
     val airquality : LiveData<Pm10Concentration>
         get() = _airquality
+    val station : LiveData<List<Station>>
+      get() = _station
     val locationData : LiveData<LocationModel>
         get() = _locationData
 
@@ -42,6 +46,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
             _parking.postValue(source.loadParking())
             _data.postValue(source.loadWheather("59.94410", "10.7185","complete?"))
             _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
+            _station.postValue(source.loadBySykkel())
         }
     }
 }
