@@ -51,13 +51,6 @@ class MapFragment : Fragment() {
         homeViewModel =
             ViewModelProvider(this)[MapViewModel::class.java]
 
-        GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
-
-            override fun gpsStatus(isGPSEnable: Boolean) {
-                isGPSEnabled = isGPSEnable
-            }
-        })
-
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -72,6 +65,14 @@ class MapFragment : Fragment() {
             initBySykkel(map, homeViewModel)
             initParking(map,homeViewModel)
         }
+
+        GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
+
+            override fun gpsStatus(isGPSEnable: Boolean) {
+                isGPSEnabled = isGPSEnable
+            }
+        })
+
         return root
     }
 
