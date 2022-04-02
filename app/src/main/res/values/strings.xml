@@ -8,6 +8,10 @@
     <string name="uv_icon">uv_icon</string>
     <string name="wind_direction">wind_direction</string>
 
+    <string name="latLong">Longitude: %.3f, Latitude: %.3f</string>
+    <string name="enable_gps">Please enable your gps</string>
+    <string name="permission_request">App requires location permission</string>
+
     <string-array name="sortBy">
         <item>Length</item>
         <item>Air quality</item>
