@@ -94,6 +94,7 @@ class MapFragment : Fragment() {
                 mMap.uiSettings.isMyLocationButtonEnabled = false
             }
             Log.d("Main activity", it.longitude.toString() + " "+ it.latitude.toString())
+            homeViewModel.updateLocation()
         }
     }
 
@@ -154,8 +155,8 @@ class MapFragment : Fragment() {
             windView.text = it.instant.details.wind_speed.toString()
             DrawableCompat.setTint(uvView.drawable,uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView))
             //uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
-            println(it.instant.details.wind_from_direction)
-            windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
+            //windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
+            // TODO maa fikses!!
         }
     }
 
