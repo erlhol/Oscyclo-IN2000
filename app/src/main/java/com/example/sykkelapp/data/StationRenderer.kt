@@ -2,7 +2,6 @@ package com.example.sykkelapp.data
 
 import android.content.Context
 import android.graphics.Color
-import androidx.core.content.ContextCompat
 import com.example.sykkelapp.R
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.ui.map.BitmapHelper
@@ -10,10 +9,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-//import com.google.codelabs.buildyourfirstmap.BitmapHelper
-//import com.google.codelabs.buildyourfirstmap.R
 import com.google.maps.android.clustering.ClusterManager
-import com.google.maps.android.clustering.view.ClusterRenderer
 import com.google.maps.android.clustering.view.DefaultClusterRenderer
 
     /**

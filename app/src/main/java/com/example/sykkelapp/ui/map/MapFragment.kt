@@ -16,7 +16,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
 import com.example.sykkelapp.data.StationRenderer
@@ -67,9 +66,10 @@ class MapFragment : Fragment() {
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
             initBySykkel(map, homeViewModel)
-            initParking(map,homeViewModel)
+            //initParking(map,homeViewModel)
+            addClusteredMarkers(mMap, homeViewModel)
         }
-        addClusteredMarkers(mMap, homeViewModel)
+
         //initParking(map,homeViewModel)
 
 
@@ -315,12 +315,10 @@ class MapFragment : Fragment() {
 
         // Add the places to the ClusterManager.
         viewModel.station.observe(viewLifecycleOwner) {
-            if (!it.isNullOrEmpty()) {
-                clusterManager.addItems(it)
-                clusterManager.cluster()
-                mMap.setOnCameraIdleListener {
-                    clusterManager.onCameraIdle()
-                }
+            clusterManager.addItems(it)
+            clusterManager.cluster()
+            mMap.setOnCameraIdleListener {
+                clusterManager.onCameraIdle()
             }
         }
     }
