@@ -82,16 +82,6 @@ class MapFragment : Fragment() {
         invokeLocationAction()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == GPS_REQUEST) {
-                isGPSEnabled = true
-                invokeLocationAction()
-            }
-        }
-    }
-
     @SuppressLint("MissingPermission")
     private fun startLocationUpdate() {
         homeViewModel.locationData.observe(this) {
@@ -143,17 +133,6 @@ class MapFragment : Fragment() {
             requireActivity(),
             Manifest.permission.ACCESS_COARSE_LOCATION
         )
-
-
-    @SuppressLint("MissingPermission")
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            LOCATION_REQUEST -> {
-                invokeLocationAction()
-            }
-        }
-    }
 
 
     override fun onDestroyView() {
