@@ -16,7 +16,7 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
-import com.example.sykkelapp.data.StationRenderer
+import com.example.sykkelapp.data.bysykkel.StationRenderer
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.example.sykkelapp.ui.map.location.GpsUtils
@@ -63,12 +63,9 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            //initParking(map,homeViewModel)
+            //initParking(map,homeViewModel) TODO: add cluster
             addClusteredMarkers(mMap, homeViewModel)
         }
-
-        //initParking(map,homeViewModel)
-
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
 
@@ -230,7 +227,6 @@ class MapFragment : Fragment() {
             newLayer.addLayerToMap()
         }
     }
-
      */
 
 

@@ -1,4 +1,4 @@
-package com.example.sykkelapp.data
+package com.example.sykkelapp.data.bysykkel
 
 import android.content.Context
 import android.graphics.Color
