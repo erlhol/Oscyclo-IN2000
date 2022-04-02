@@ -9,6 +9,8 @@ import com.example.sykkelapp.data.bysykkel.BySykkel
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
+import com.example.sykkelapp.data.parking.Feature
+import com.example.sykkelapp.data.parking.Parking
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
 import io.ktor.client.features.*
@@ -35,17 +37,17 @@ class Datasource { // evt la datasource ta inn path som parameter
     }
 
     suspend fun loadGeo() : String {
-        val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326")
+        val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326&CQL_FILTER=rute+IS+NOT+Null")
         val data = response.readText()
         Log.d("loaded geo","Loaded: "+response)
         return data
     }
 
-    suspend fun loadParking() : String {
-        val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Asykkelparkering&outputFormat=application/json&srsName=EPSG:4326")
-        val data = response.readText()
+    suspend fun loadParking() : List<Feature> {
+        val path = "https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Asykkelparkering&outputFormat=application/json&srsName=EPSG:4326"
+        val response : Parking = client.get(path)
         Log.d("loaded parking","Loaded: "+response)
-        return data
+        return response.features
     }
 
     suspend fun loadAir() : List<AirQualityItem> {

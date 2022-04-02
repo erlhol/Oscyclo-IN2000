@@ -11,10 +11,6 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
-import com.example.sykkelapp.data.StationRenderer
-import com.example.sykkelapp.data.bysykkel.BySykkel
-import com.example.sykkelapp.data.bysykkel.Data
-import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -22,13 +18,13 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import org.json.JSONObject
 
 class MapFragment : Fragment() {
 
+    private lateinit var mMap: GoogleMap
     private lateinit var mapView : MapView
     private var _binding: FragmentMapBinding? = null
 
@@ -56,9 +52,6 @@ class MapFragment : Fragment() {
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
             initBySykkel(map, homeViewModel)
-
-            addClusteredMarkers(map,homeViewModel)
-            //mMap.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
             //initParking(map,homeViewModel)
         }
         return root
@@ -214,35 +207,6 @@ class MapFragment : Fragment() {
             view.text = "Extreme"
             return Color.rgb(199, 21, 133)
         }
-
-    }
-    private fun addClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
-        // Create the ClusterManager class and set the custom renderer.
-        val clusterManager = ClusterManager<Station>(context, mMap)
-        clusterManager.renderer =
-            StationRenderer(
-                context,
-                mMap,
-                clusterManager
-            )
-
-        // Set custom info window adapter
-        //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
-
-        // Add the places to the ClusterManager.
-        viewModel.station.observe(viewLifecycleOwner) {
-            if(!it.isNullOrEmpty()){
-                clusterManager.addItems(it)
-                clusterManager.cluster()
-                mMap.setOnCameraIdleListener {
-                    clusterManager.onCameraIdle()
-                }
-            }
-        }
-
-
-        // Set ClusterManager as the OnCameraIdleListener so that it
-        // can re-cluster when zooming in and out.
 
     }
 }
