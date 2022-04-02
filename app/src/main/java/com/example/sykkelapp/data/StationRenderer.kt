@@ -44,6 +44,7 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer
         ) {
             markerOptions.title(item.name)
                 .position(item.position)
+                .snippet("Capacity: "+item.capacity)
                 .icon(bicycleIcon)
         }
 

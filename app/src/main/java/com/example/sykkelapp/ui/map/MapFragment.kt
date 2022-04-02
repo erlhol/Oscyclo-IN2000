@@ -2,8 +2,6 @@ package com.example.sykkelapp.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -65,7 +63,6 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            initBySykkel(map, homeViewModel)
             //initParking(map,homeViewModel)
             addClusteredMarkers(mMap, homeViewModel)
         }
@@ -168,9 +165,8 @@ class MapFragment : Fragment() {
                 uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView)
             )
             //uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
-            println(it.instant.details.wind_from_direction)
-            windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat())
-                .start()
+            //windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat())
+            //    .start()
         }
     }
 
@@ -213,28 +209,6 @@ class MapFragment : Fragment() {
             }
             uniqueColor(layer)
             layer.addLayerToMap()
-        }
-    }
-    private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel) {
-        viewModel.station.observe(viewLifecycleOwner) {
-            it.forEach {
-                val bysykkelStation: BitmapDescriptor by lazy {
-                    val color = Color.parseColor("#0047AB")
-                    BitmapHelper.vectorToBitmap(
-                        context,
-                        R.drawable.ic_baseline_pedal_bike_24,
-                        color
-                    )
-                }
-                val point = LatLng(it.lat, it.lon)
-                mMap.addMarker(
-                    MarkerOptions()
-                        .position(point)
-                        .title(it.name)
-                        .snippet("Capacity: " + it.capacity)
-                        .icon(bysykkelStation)
-                )
-            }
         }
     }
     /*
