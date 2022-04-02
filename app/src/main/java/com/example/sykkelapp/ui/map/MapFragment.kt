@@ -59,6 +59,7 @@ class MapFragment : Fragment() {
         mapView.onResume()
 
         mapView.getMapAsync { map ->
+            mMap = map
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
@@ -91,20 +92,28 @@ class MapFragment : Fragment() {
         }
     }
 
+    @SuppressLint("MissingPermission")
     private fun startLocationUpdate() {
-        homeViewModel.locationData.observe(this, Observer {
-            binding.latLong.text = "${it.longitude},${it.latitude}"
-            Log.d("Main activity",it.longitude.toString() + it.latitude.toString())
-        })
+        homeViewModel.locationData.observe(this) {
+            if (isGPSEnabled) {
+                mMap.isMyLocationEnabled = true
+                mMap.uiSettings.isMyLocationButtonEnabled = true
+            }
+            else {
+                mMap.isMyLocationEnabled = false
+                mMap.uiSettings.isMyLocationButtonEnabled = false
+            }
+            Log.d("Main activity", it.longitude.toString() + " "+ it.latitude.toString())
+        }
     }
 
     private fun invokeLocationAction() {
         when {
-            !isGPSEnabled -> binding.latLong.text = getString(R.string.enable_gps)
+            !isGPSEnabled ->  Log.d("Map fragment",getString(R.string.enable_gps))
 
             isPermissionsGranted() -> startLocationUpdate()
 
-            shouldShowRequestPermissionRationale() -> binding.latLong.text = getString(R.string.permission_request)
+            shouldShowRequestPermissionRationale() -> Log.d("Map fragment",getString(R.string.permission_request))
 
             else -> ActivityCompat.requestPermissions(
                 requireActivity(),
@@ -145,7 +154,6 @@ class MapFragment : Fragment() {
             }
         }
     }
-
 
 
     override fun onDestroyView() {
@@ -214,15 +222,15 @@ class MapFragment : Fragment() {
     }
     private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel) {
         viewModel.station.observe(viewLifecycleOwner) {
+            val bysykkelStation: BitmapDescriptor by lazy {
+                val color = Color.parseColor("#0047AB")
+                BitmapHelper.vectorToBitmap(
+                    context,
+                    R.drawable.ic_baseline_pedal_bike_24,
+                    color
+                )
+            }
             it.forEach {
-                val bysykkelStation: BitmapDescriptor by lazy {
-                    val color = Color.parseColor("#0047AB")
-                    BitmapHelper.vectorToBitmap(
-                        context,
-                        R.drawable.ic_baseline_pedal_bike_24,
-                        color
-                    )
-                }
                 val point = LatLng(it.lat, it.lon)
                 mMap.addMarker(
                     MarkerOptions()
@@ -237,15 +245,15 @@ class MapFragment : Fragment() {
 
     private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
         viewModel.parking.observe(viewLifecycleOwner) {
+            val parkeringsPlass: BitmapDescriptor by lazy {
+                val color = Color.parseColor("#FF0000")
+                BitmapHelper.vectorToBitmap(
+                    context,
+                    R.drawable.ic_baseline_local_parking_24,
+                    color
+                )
+            }
             it.forEach {
-                val parkeringsPlass: BitmapDescriptor by lazy {
-                    val color = Color.parseColor("#0047AB")
-                    BitmapHelper.vectorToBitmap(
-                        context,
-                        R.drawable.ic_baseline_local_parking_24,
-                        color
-                    )
-                }
                 if (it.geometry.coordinates.size == 2) {
                     val point = LatLng(it.geometry.coordinates[1], it.geometry.coordinates[0])
                     mMap.addMarker(
