@@ -19,6 +19,8 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
+import com.example.sykkelapp.data.StationRenderer
+import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -27,6 +29,7 @@ import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import org.json.JSONObject
@@ -66,6 +69,9 @@ class MapFragment : Fragment() {
             initBySykkel(map, homeViewModel)
             initParking(map,homeViewModel)
         }
+        addClusteredMarkers(mMap, homeViewModel)
+        //initParking(map,homeViewModel)
+
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
 
@@ -149,31 +155,40 @@ class MapFragment : Fragment() {
         val uvTextView = binding.uvText
         val windRotation = binding.windDirection
         viewModel.data.observe(viewLifecycleOwner) {
-            val id = resources.getIdentifier(it.next_1_hours.summary.symbol_code,"drawable",context?.packageName)
+            val id = resources.getIdentifier(
+                it.next_1_hours.summary.symbol_code,
+                "drawable",
+                context?.packageName
+            )
             imageView.setImageResource(id)
             tempView.text = it.instant.details.air_temperature.toString() + "°"
             windView.text = it.instant.details.wind_speed.toString()
-            DrawableCompat.setTint(uvView.drawable,uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView))
+            DrawableCompat.setTint(
+                uvView.drawable,
+                uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView)
+            )
             //uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
-            //windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat()).start()
-            // TODO maa fikses!!
+            println(it.instant.details.wind_from_direction)
+            windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat())
+                .start()
         }
     }
 
-    private fun initAirQuality(mMap: GoogleMap,viewModel: MapViewModel) {
+    private fun initAirQuality(mMap: GoogleMap, viewModel: MapViewModel) {
         viewModel.air.observe(viewLifecycleOwner) { list ->
             list.forEach {
                 val airqualityIcon: BitmapDescriptor by lazy {
-                    val color = Color.parseColor("#"+it.color)
+                    val color = Color.parseColor("#" + it.color)
                     BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_eco_24, color)
                 }
 
-                val point = LatLng(it.latitude,it.longitude)
-                mMap.addMarker(MarkerOptions()
-                    .position(point)
-                    .title(it.station)
-                    .snippet("Svevestøvnivå: "+it.value + it.unit)
-                    .icon(airqualityIcon)
+                val point = LatLng(it.latitude, it.longitude)
+                mMap.addMarker(
+                    MarkerOptions()
+                        .position(point)
+                        .title(it.station)
+                        .snippet("Svevestøvnivå: " + it.value + it.unit)
+                        .icon(airqualityIcon)
                 )
             }
         }
@@ -182,15 +197,15 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun initMap(mMap : GoogleMap, viewModel: MapViewModel) {
+    private fun initMap(mMap: GoogleMap, viewModel: MapViewModel) {
         // Add a marker in Oslo and move the camera
         val ojd = LatLng(59.94410, 10.7185)
         mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
-        var layer : GeoJsonLayer
-        viewModel.geo.observe(viewLifecycleOwner) {
-                geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd, 15f))
+        var layer: GeoJsonLayer
+        viewModel.geo.observe(viewLifecycleOwner) { geo ->
+            layer = GeoJsonLayer(mMap, JSONObject(geo))
             val layer_style = layer.defaultLineStringStyle
             layer_style.isClickable = true
             layer.setOnFeatureClickListener {
@@ -202,15 +217,15 @@ class MapFragment : Fragment() {
     }
     private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel) {
         viewModel.station.observe(viewLifecycleOwner) {
-            val bysykkelStation: BitmapDescriptor by lazy {
-                val color = Color.parseColor("#0047AB")
-                BitmapHelper.vectorToBitmap(
-                    context,
-                    R.drawable.ic_baseline_pedal_bike_24,
-                    color
-                )
-            }
             it.forEach {
+                val bysykkelStation: BitmapDescriptor by lazy {
+                    val color = Color.parseColor("#0047AB")
+                    BitmapHelper.vectorToBitmap(
+                        context,
+                        R.drawable.ic_baseline_pedal_bike_24,
+                        color
+                    )
+                }
                 val point = LatLng(it.lat, it.lon)
                 mMap.addMarker(
                     MarkerOptions()
@@ -222,42 +237,38 @@ class MapFragment : Fragment() {
             }
         }
     }
-
+    /*
     private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
+        var newLayer : GeoJsonLayer
         viewModel.parking.observe(viewLifecycleOwner) {
-            val parkeringsPlass: BitmapDescriptor by lazy {
-                val color = Color.parseColor("#FF0000")
-                BitmapHelper.vectorToBitmap(
-                    context,
-                    R.drawable.ic_baseline_local_parking_24,
-                    color
-                )
+                parking -> newLayer = GeoJsonLayer(mMap, JSONObject(parking))
+            newLayer.setOnFeatureClickListener {
+                Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
             }
-            it.forEach {
-                if (it.geometry.coordinates.size == 2) {
-                    val point = LatLng(it.geometry.coordinates[1], it.geometry.coordinates[0])
-                    mMap.addMarker(
-                        MarkerOptions()
-                            .position(point)
-                            .title(it.id) // TODO: change
-                            .snippet("Antall parkeringsplasser: "+it.properties.antall_parkeringsplasser)
-                            .icon(parkeringsPlass)
-                    )
-                }
-
+            val parkingIcon: BitmapDescriptor by lazy {
+              BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
             }
+            newLayer.features.forEach {
+                val pointStyle = GeoJsonPointStyle()
+                pointStyle.icon = parkingIcon
+                it.pointStyle = pointStyle
+            }
+            newLayer.addLayerToMap()
         }
-
-
     }
 
+     */
+
+
     private fun uniqueColor(layer: GeoJsonLayer) {
-        val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
-            Color.YELLOW,Color.GRAY,Color.LTGRAY,
-            Color.rgb(255, 128, 0),Color.rgb(128, 0, 0))
+        val colors = listOf<Int>(
+            Color.BLUE, Color.BLACK, Color.RED, Color.GREEN,
+            Color.YELLOW, Color.GRAY, Color.LTGRAY,
+            Color.rgb(255, 128, 0), Color.rgb(128, 0, 0)
+        )
 
         layer.features.forEach {
-            val color : Int
+            val color: Int
             val route = it.getProperty("rute")
             val lineStringStyle = GeoJsonLineStringStyle()
             val routeNum = route.toInt()
@@ -269,7 +280,7 @@ class MapFragment : Fragment() {
     }
 
 
-    private fun uvColor(uvIndex : Double, view: TextView) : Int {
+    private fun uvColor(uvIndex: Double, view: TextView): Int {
         if (uvIndex < 3) {
             view.text = "Low"
             return Color.rgb(79, 121, 66)
@@ -287,6 +298,31 @@ class MapFragment : Fragment() {
             return Color.rgb(199, 21, 133)
         }
 
+    }
+
+    private fun addClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
+        // Create the ClusterManager class and set the custom renderer.
+        val clusterManager = ClusterManager<Station>(context, mMap)
+        clusterManager.renderer =
+            StationRenderer(
+                context,
+                mMap,
+                clusterManager
+            )
+
+        // Set custom info window adapter
+        //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
+
+        // Add the places to the ClusterManager.
+        viewModel.station.observe(viewLifecycleOwner) {
+            if (!it.isNullOrEmpty()) {
+                clusterManager.addItems(it)
+                clusterManager.cluster()
+                mMap.setOnCameraIdleListener {
+                    clusterManager.onCameraIdle()
+                }
+            }
+        }
     }
 }
 
