@@ -21,6 +21,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
     private val _air = MutableLiveData<List<AirQualityItem>>()
     private val _airquality = MutableLiveData<Pm10Concentration>()
     private val _station = MutableLiveData<List<Station>>()
+    private val source = Datasource()
 
     private val _locationData = LocationLiveData(application)
 
@@ -41,7 +42,6 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val source = Datasource()
             _geo.postValue(source.loadGeo())
             _air.postValue(source.loadAir())
             _parking.postValue(source.loadParking())
@@ -49,5 +49,15 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
             _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
             _station.postValue(source.loadBySykkel())
         }
+    }
+
+    fun updateLocation() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val lat = locationData.value?.latitude
+            val lon = locationData.value?.longitude
+            _data.postValue(source.loadWheather("%.4f".format(lat), "%.4f".format(lon),"complete?"))
+            _airquality.postValue(source.loadAirQualityForecast("%.4f".format(lat), "%.4f".format(lon)))
+        }
+
     }
 }
