@@ -2,8 +2,6 @@ package com.example.sykkelapp.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
-import android.app.Activity
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -16,7 +14,6 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
 import com.example.sykkelapp.data.bysykkel.StationRenderer
@@ -78,7 +75,7 @@ class MapFragment : Fragment() {
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
             initParking(map,homeViewModel)
-            addClusteredMarkers(mMap, homeViewModel)
+            addBysykkelClusteredMarkers(mMap, homeViewModel)
         }
 
         binding.bysykkelButton.setOnClickListener {
@@ -316,16 +313,15 @@ class MapFragment : Fragment() {
                         MarkerOptions()
                             .position(point)
                             .title(it.id) // TODO: change
-                            .snippet("Antall parkeringsplasser: "+it.properties.antall_parkeringsplasser)
+                            .snippet("Antall parkeringsplasser: " + it.properties.antall_parkeringsplasser)
                             .icon(parkeringsPlass)
                             .visible(false)
-                    )!!
+                    )!! // TODO
                     listeParkering.add(parkeringMarkering)
                 }
             }
         }
-
-
+    }
 
     private fun uniqueColor(layer: GeoJsonLayer) {
         val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
@@ -365,7 +361,7 @@ class MapFragment : Fragment() {
 
     }
 
-    private fun addClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
+    private fun addBysykkelClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
         // Create the ClusterManager class and set the custom renderer.
         val clusterManager = ClusterManager<Station>(context, mMap)
         clusterManager.renderer =
@@ -385,6 +381,7 @@ class MapFragment : Fragment() {
             mMap.setOnCameraIdleListener {
                 clusterManager.onCameraIdle()
             }
+
         }
     }
 }
