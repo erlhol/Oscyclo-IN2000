@@ -26,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.data.geojson.GeoJsonLayer
 import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
@@ -38,6 +39,16 @@ class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
     private lateinit var homeViewModel : MapViewModel
     private var isGPSEnabled = false
+
+    private var bysykkelPaa = false
+    private var listeBysykkel = mutableListOf<Marker>()
+
+    private var parkeringPaa = false
+    private var listeParkering = mutableListOf<Marker>()
+
+    private var luftkvalitetPaa = false
+    private var listeLuftkvalitet = mutableListOf<Marker>()
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -64,6 +75,58 @@ class MapFragment : Fragment() {
             initAirQuality(map,homeViewModel)
             initBySykkel(map, homeViewModel)
             initParking(map,homeViewModel)
+
+        }
+
+        binding.bysykkelButton.setOnClickListener {
+            if (!bysykkelPaa) {
+                listeBysykkel.forEach {
+                    it.isVisible = true
+                }
+                binding.bysykkelButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                bysykkelPaa = true
+            }
+            else if (bysykkelPaa) {
+                listeBysykkel.forEach{
+                    it.isVisible = false
+                }
+                binding.bysykkelButton.clearColorFilter()
+                bysykkelPaa = false
+            }
+        }
+
+        binding.parkingButton.setOnClickListener {
+            if (!parkeringPaa) {
+                listeParkering.forEach {
+                    it.isVisible = true
+                }
+                binding.parkingButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                parkeringPaa = true
+            }
+            else if (parkeringPaa) {
+                listeParkering.forEach{
+                    it.isVisible = false
+                }
+                binding.parkingButton.clearColorFilter()
+                parkeringPaa = false
+            }
+        }
+
+        binding.luftkvalitetButton.setOnClickListener {
+            if (!luftkvalitetPaa) {
+                listeLuftkvalitet.forEach {
+                    it.isVisible = true
+                }
+                binding.luftkvalitetButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                luftkvalitetPaa = true
+            }
+            else if (luftkvalitetPaa) {
+                listeLuftkvalitet.forEach{
+                    it.isVisible = false
+                }
+                binding.luftkvalitetButton.clearColorFilter()
+                luftkvalitetPaa = false
+            }
         }
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
@@ -75,6 +138,7 @@ class MapFragment : Fragment() {
 
         return root
     }
+
 
     override fun onStart() {
         super.onStart()
@@ -179,14 +243,15 @@ class MapFragment : Fragment() {
                     val color = Color.parseColor("#"+it.color)
                     BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_eco_24, color)
                 }
-
                 val point = LatLng(it.latitude,it.longitude)
-                mMap.addMarker(MarkerOptions()
+                val luftkvalitetMarker = mMap.addMarker(MarkerOptions()
                     .position(point)
                     .title(it.station)
                     .snippet("Svevestøvnivå: "+it.value + it.unit)
                     .icon(airqualityIcon)
-                )
+                    .visible(false)
+                )!!
+                listeLuftkvalitet.add(luftkvalitetMarker)
             }
         }
         viewModel.airquality.observe(viewLifecycleOwner) {
@@ -212,51 +277,55 @@ class MapFragment : Fragment() {
             layer.addLayerToMap()
         }
     }
+
     private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel) {
         viewModel.station.observe(viewLifecycleOwner) {
+            val bysykkelStation: BitmapDescriptor by lazy {
+                val color = Color.parseColor("#0047AB")
+                BitmapHelper.vectorToBitmap(
+                    context,
+                    R.drawable.ic_baseline_pedal_bike_24,
+                    color
+                )
+            }
             it.forEach {
-                val bysykkelStation: BitmapDescriptor by lazy {
-                    val color = Color.parseColor("#0047AB")
-                    BitmapHelper.vectorToBitmap(
-                        context,
-                        R.drawable.ic_baseline_pedal_bike_24,
-                        color
-                    )
-                }
                 val point = LatLng(it.lat, it.lon)
-                mMap.addMarker(
+                val sykkelMarkering = mMap.addMarker(
                     MarkerOptions()
                         .position(point)
                         .title(it.name)
                         .snippet("Capacity: " + it.capacity)
                         .icon(bysykkelStation)
-                )
+                        .visible(false)
+                )!!
+                listeBysykkel.add(sykkelMarkering)
             }
         }
     }
 
     private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
         viewModel.parking.observe(viewLifecycleOwner) {
+            val parkeringsPlass: BitmapDescriptor by lazy {
+                val color = Color.parseColor("#0047AB")
+                BitmapHelper.vectorToBitmap(
+                    context,
+                    R.drawable.ic_baseline_local_parking_24,
+                    color
+                )
+            }
             it.forEach {
-                val parkeringsPlass: BitmapDescriptor by lazy {
-                    val color = Color.parseColor("#0047AB")
-                    BitmapHelper.vectorToBitmap(
-                        context,
-                        R.drawable.ic_baseline_local_parking_24,
-                        color
-                    )
-                }
                 if (it.geometry.coordinates.size == 2) {
                     val point = LatLng(it.geometry.coordinates[1], it.geometry.coordinates[0])
-                    mMap.addMarker(
+                    val parkeringMarkering = mMap.addMarker(
                         MarkerOptions()
                             .position(point)
                             .title(it.id) // TODO: change
                             .snippet("Antall parkeringsplasser: "+it.properties.antall_parkeringsplasser)
                             .icon(parkeringsPlass)
-                    )
+                            .visible(false)
+                    )!!
+                    listeParkering.add(parkeringMarkering)
                 }
-
             }
         }
 
