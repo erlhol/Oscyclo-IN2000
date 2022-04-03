@@ -2,6 +2,8 @@ package com.example.sykkelapp.ui.map
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -14,6 +16,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
 import com.example.sykkelapp.data.bysykkel.StationRenderer
@@ -25,6 +28,7 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.data.geojson.GeoJsonLayer
@@ -38,6 +42,16 @@ class MapFragment : Fragment() {
     private var _binding: FragmentMapBinding? = null
     private lateinit var homeViewModel : MapViewModel
     private var isGPSEnabled = false
+
+    private var bysykkelPaa = false
+    private var listeBysykkel = mutableListOf<Marker>()
+
+    private var parkeringPaa = false
+    private var listeParkering = mutableListOf<Marker>()
+
+    private var luftkvalitetPaa = false
+    private var listeLuftkvalitet = mutableListOf<Marker>()
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -63,8 +77,59 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            //initParking(map,homeViewModel) TODO: add cluster
+            initParking(map,homeViewModel)
             addClusteredMarkers(mMap, homeViewModel)
+        }
+
+        binding.bysykkelButton.setOnClickListener {
+            if (!bysykkelPaa) {
+                listeBysykkel.forEach {
+                    it.isVisible = true
+                }
+                binding.bysykkelButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                bysykkelPaa = true
+            }
+            else if (bysykkelPaa) {
+                listeBysykkel.forEach{
+                    it.isVisible = false
+                }
+                binding.bysykkelButton.clearColorFilter()
+                bysykkelPaa = false
+            }
+        }
+
+        binding.parkingButton.setOnClickListener {
+            if (!parkeringPaa) {
+                listeParkering.forEach {
+                    it.isVisible = true
+                }
+                binding.parkingButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                parkeringPaa = true
+            }
+            else if (parkeringPaa) {
+                listeParkering.forEach{
+                    it.isVisible = false
+                }
+                binding.parkingButton.clearColorFilter()
+                parkeringPaa = false
+            }
+        }
+
+        binding.luftkvalitetButton.setOnClickListener {
+            if (!luftkvalitetPaa) {
+                listeLuftkvalitet.forEach {
+                    it.isVisible = true
+                }
+                binding.luftkvalitetButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                luftkvalitetPaa = true
+            }
+            else if (luftkvalitetPaa) {
+                listeLuftkvalitet.forEach{
+                    it.isVisible = false
+                }
+                binding.luftkvalitetButton.clearColorFilter()
+                luftkvalitetPaa = false
+            }
         }
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
@@ -174,15 +239,15 @@ class MapFragment : Fragment() {
                     val color = Color.parseColor("#" + it.color)
                     BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_eco_24, color)
                 }
-
-                val point = LatLng(it.latitude, it.longitude)
-                mMap.addMarker(
-                    MarkerOptions()
-                        .position(point)
-                        .title(it.station)
-                        .snippet("Svevestøvnivå: " + it.value + it.unit)
-                        .icon(airqualityIcon)
-                )
+                val point = LatLng(it.latitude,it.longitude)
+                val luftkvalitetMarker = mMap.addMarker(MarkerOptions()
+                    .position(point)
+                    .title(it.station)
+                    .snippet("Svevestøvnivå: "+it.value + it.unit)
+                    .icon(airqualityIcon)
+                    .visible(false)
+                )!!
+                listeLuftkvalitet.add(luftkvalitetMarker)
             }
         }
         viewModel.airquality.observe(viewLifecycleOwner) {
@@ -195,10 +260,10 @@ class MapFragment : Fragment() {
         val ojd = LatLng(59.94410, 10.7185)
         mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
         mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd, 15f))
-        var layer: GeoJsonLayer
-        viewModel.geo.observe(viewLifecycleOwner) { geo ->
-            layer = GeoJsonLayer(mMap, JSONObject(geo))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
+        var layer : GeoJsonLayer
+        viewModel.geo.observe(viewLifecycleOwner) {
+                geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
             val layer_style = layer.defaultLineStringStyle
             layer_style.isClickable = true
             layer.setOnFeatureClickListener {
@@ -208,37 +273,67 @@ class MapFragment : Fragment() {
             layer.addLayerToMap()
         }
     }
-    /*
-    private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
-        var newLayer : GeoJsonLayer
-        viewModel.parking.observe(viewLifecycleOwner) {
-                parking -> newLayer = GeoJsonLayer(mMap, JSONObject(parking))
-            newLayer.setOnFeatureClickListener {
-                Toast.makeText(context, it.id, Toast.LENGTH_SHORT).show()
+
+    private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel) {
+        viewModel.station.observe(viewLifecycleOwner) {
+            val bysykkelStation: BitmapDescriptor by lazy {
+                val color = Color.parseColor("#0047AB")
+                BitmapHelper.vectorToBitmap(
+                    context,
+                    R.drawable.ic_baseline_pedal_bike_24,
+                    color
+                )
             }
-            val parkingIcon: BitmapDescriptor by lazy {
-              BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_local_parking_24, Color.RED)
+            it.forEach {
+                val point = LatLng(it.lat, it.lon)
+                val sykkelMarkering = mMap.addMarker(
+                    MarkerOptions()
+                        .position(point)
+                        .title(it.name)
+                        .snippet("Capacity: " + it.capacity)
+                        .icon(bysykkelStation)
+                        .visible(false)
+                )!!
+                listeBysykkel.add(sykkelMarkering)
             }
-            newLayer.features.forEach {
-                val pointStyle = GeoJsonPointStyle()
-                pointStyle.icon = parkingIcon
-                it.pointStyle = pointStyle
-            }
-            newLayer.addLayerToMap()
         }
     }
-     */
+
+    private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
+        viewModel.parking.observe(viewLifecycleOwner) {
+            val parkeringsPlass: BitmapDescriptor by lazy {
+                val color = Color.parseColor("#0047AB")
+                BitmapHelper.vectorToBitmap(
+                    context,
+                    R.drawable.ic_baseline_local_parking_24,
+                    color
+                )
+            }
+            it.forEach {
+                if (it.geometry.coordinates.size == 2) {
+                    val point = LatLng(it.geometry.coordinates[1], it.geometry.coordinates[0])
+                    val parkeringMarkering = mMap.addMarker(
+                        MarkerOptions()
+                            .position(point)
+                            .title(it.id) // TODO: change
+                            .snippet("Antall parkeringsplasser: "+it.properties.antall_parkeringsplasser)
+                            .icon(parkeringsPlass)
+                            .visible(false)
+                    )!!
+                    listeParkering.add(parkeringMarkering)
+                }
+            }
+        }
+
 
 
     private fun uniqueColor(layer: GeoJsonLayer) {
-        val colors = listOf<Int>(
-            Color.BLUE, Color.BLACK, Color.RED, Color.GREEN,
-            Color.YELLOW, Color.GRAY, Color.LTGRAY,
-            Color.rgb(255, 128, 0), Color.rgb(128, 0, 0)
-        )
+        val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
+            Color.YELLOW,Color.GRAY,Color.LTGRAY,
+            Color.rgb(255, 128, 0),Color.rgb(128, 0, 0))
 
         layer.features.forEach {
-            val color: Int
+            val color : Int
             val route = it.getProperty("rute")
             val lineStringStyle = GeoJsonLineStringStyle()
             val routeNum = route.toInt()
@@ -250,7 +345,7 @@ class MapFragment : Fragment() {
     }
 
 
-    private fun uvColor(uvIndex: Double, view: TextView): Int {
+    private fun uvColor(uvIndex : Double, view: TextView) : Int {
         if (uvIndex < 3) {
             view.text = "Low"
             return Color.rgb(79, 121, 66)
