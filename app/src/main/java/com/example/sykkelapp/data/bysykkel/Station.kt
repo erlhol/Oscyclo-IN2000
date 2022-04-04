@@ -25,16 +25,3 @@ data class Station(
         return address
     }
 }
-
-/*
-override fun getPosition(): LatLng =
-    latLng
-
-override fun getTitle(): String =
-    name
-
-override fun getSnippet(): String =
-    address
-}
-
- */
