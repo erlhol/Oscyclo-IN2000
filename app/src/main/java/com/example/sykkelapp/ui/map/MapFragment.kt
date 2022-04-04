@@ -16,8 +16,10 @@ import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
-import com.example.sykkelapp.data.bysykkel.StationRenderer
 import com.example.sykkelapp.data.bysykkel.Station
+import com.example.sykkelapp.data.bysykkel.StationRenderer
+import com.example.sykkelapp.data.parking.Feature
+import com.example.sykkelapp.data.parking.FeatureRenderer
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -49,7 +51,6 @@ class MapFragment : Fragment() {
     private var luftkvalitetPaa = false
     private var listeLuftkvalitet = mutableListOf<Marker>()
 
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -74,8 +75,9 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            initParking(map,homeViewModel)
-            addBysykkelClusteredMarkers(mMap, homeViewModel)
+            //initParking(map,homeViewModel)
+            addBysykkelClusteredMarkers(map, homeViewModel)
+            //addParkingClusteredMarkers(map, homeViewModel)
         }
 
         binding.bysykkelButton.setOnClickListener {
@@ -271,58 +273,6 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun initBySykkel(mMap: GoogleMap, viewModel: MapViewModel) {
-        viewModel.station.observe(viewLifecycleOwner) {
-            val bysykkelStation: BitmapDescriptor by lazy {
-                val color = Color.parseColor("#0047AB")
-                BitmapHelper.vectorToBitmap(
-                    context,
-                    R.drawable.ic_baseline_pedal_bike_24,
-                    color
-                )
-            }
-            it.forEach {
-                val point = LatLng(it.lat, it.lon)
-                val sykkelMarkering = mMap.addMarker(
-                    MarkerOptions()
-                        .position(point)
-                        .title(it.name)
-                        .snippet("Capacity: " + it.capacity)
-                        .icon(bysykkelStation)
-                        .visible(false)
-                )!!
-                listeBysykkel.add(sykkelMarkering)
-            }
-        }
-    }
-
-    private fun initParking(mMap: GoogleMap,viewModel: MapViewModel) {
-        viewModel.parking.observe(viewLifecycleOwner) {
-            val parkeringsPlass: BitmapDescriptor by lazy {
-                val color = Color.parseColor("#0047AB")
-                BitmapHelper.vectorToBitmap(
-                    context,
-                    R.drawable.ic_baseline_local_parking_24,
-                    color
-                )
-            }
-            it.forEach {
-                if (it.geometry.coordinates.size == 2) {
-                    val point = LatLng(it.geometry.coordinates[1], it.geometry.coordinates[0])
-                    val parkeringMarkering = mMap.addMarker(
-                        MarkerOptions()
-                            .position(point)
-                            .title(it.id) // TODO: change
-                            .snippet("Antall parkeringsplasser: " + it.properties.antall_parkeringsplasser)
-                            .icon(parkeringsPlass)
-                            .visible(false)
-                    )!! // TODO
-                    listeParkering.add(parkeringMarkering)
-                }
-            }
-        }
-    }
-
     private fun uniqueColor(layer: GeoJsonLayer) {
         val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
             Color.YELLOW,Color.GRAY,Color.LTGRAY,
@@ -381,9 +331,32 @@ class MapFragment : Fragment() {
             mMap.setOnCameraIdleListener {
                 clusterManager.onCameraIdle()
             }
-
         }
     }
+
+    private fun addParkingClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
+        // Create the ClusterManager class and set the custom renderer.
+        val clusterManager = ClusterManager<Feature>(context, mMap)
+        clusterManager.renderer =
+            FeatureRenderer(
+                context,
+                mMap,
+                clusterManager
+            )
+
+        // Set custom info window adapter
+        //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
+
+        // Add the places to the ClusterManager.
+        viewModel.parking.observe(viewLifecycleOwner) {
+                clusterManager.addItems(it)
+                clusterManager.cluster()
+                mMap.setOnCameraIdleListener {
+                    clusterManager.onCameraIdle()
+                }
+            }
+
+        }
 }
 
 const val LOCATION_REQUEST = 100
