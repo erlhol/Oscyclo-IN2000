@@ -20,8 +20,6 @@ import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkel.StationRenderer
 import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.data.parking.FeatureRenderer
-import com.example.sykkelapp.data.parking.Geometry
-import com.example.sykkelapp.data.parking.Properties
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -45,10 +43,10 @@ class MapFragment : Fragment() {
     private var isGPSEnabled = false
 
     private var bysykkelPaa = false
-    private lateinit var listeBysykkel : List<Marker>
+    private lateinit var bySykkelManager : ClusterManager<Station>
 
     private var parkeringPaa = false
-    private var listeParkering = mutableListOf<Marker>()
+    private lateinit var parkeringManager: ClusterManager<Feature>
 
     private var luftkvalitetPaa = false
     private var listeLuftkvalitet = mutableListOf<Marker>()
@@ -77,60 +75,11 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            addBysykkelClusteredMarkers(map, homeViewModel)
-            addParkingClusteredMarkers(map, homeViewModel)
+            bySykkelManager = addBysykkelClusteredMarkers(map, homeViewModel)
+            parkeringManager = addParkingClusteredMarkers(map, homeViewModel)
         }
 
-        binding.bysykkelButton.setOnClickListener {
-            if (!bysykkelPaa) {
-                listeBysykkel.forEach {
-                    it.isVisible = true
-                }
-                binding.bysykkelButton.setColorFilter(Color.parseColor("#FF3700B3"))
-                bysykkelPaa = true
-            }
-            else if (bysykkelPaa) {
-                listeBysykkel.forEach{
-                    it.isVisible = false
-                }
-                binding.bysykkelButton.clearColorFilter()
-                bysykkelPaa = false
-            }
-        }
-
-        binding.parkingButton.setOnClickListener {
-            if (!parkeringPaa) {
-                listeParkering.forEach {
-                    it.isVisible = true
-                }
-                binding.parkingButton.setColorFilter(Color.parseColor("#FF3700B3"))
-                parkeringPaa = true
-            }
-            else if (parkeringPaa) {
-                listeParkering.forEach{
-                    it.isVisible = false
-                }
-                binding.parkingButton.clearColorFilter()
-                parkeringPaa = false
-            }
-        }
-
-        binding.luftkvalitetButton.setOnClickListener {
-            if (!luftkvalitetPaa) {
-                listeLuftkvalitet.forEach {
-                    it.isVisible = true
-                }
-                binding.luftkvalitetButton.setColorFilter(Color.parseColor("#FF3700B3"))
-                luftkvalitetPaa = true
-            }
-            else if (luftkvalitetPaa) {
-                listeLuftkvalitet.forEach{
-                    it.isVisible = false
-                }
-                binding.luftkvalitetButton.clearColorFilter()
-                luftkvalitetPaa = false
-            }
-        }
+        onOptionClick()
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
 
@@ -312,7 +261,7 @@ class MapFragment : Fragment() {
 
     }
 
-    private fun addBysykkelClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
+    private fun addBysykkelClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) : ClusterManager<Station> {
         // Create the ClusterManager class and set the custom renderer.
         val clusterManager = ClusterManager<Station>(context, mMap)
         clusterManager.renderer =
@@ -333,9 +282,10 @@ class MapFragment : Fragment() {
                 clusterManager.onCameraIdle()
             }
         }
+        return clusterManager
     }
 
-    private fun addParkingClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
+    private fun addParkingClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) : ClusterManager<Feature> {
         // Create the ClusterManager class and set the custom renderer.
         val clusterManager = ClusterManager<Feature>(context, mMap)
         clusterManager.renderer =
@@ -356,8 +306,62 @@ class MapFragment : Fragment() {
                 clusterManager.onCameraIdle()
             }
         }
-
+        return clusterManager
     }
+
+    private fun onOptionClick() {
+        binding.bysykkelButton.setOnClickListener {
+            if (!bysykkelPaa) {
+                bySykkelManager.markerCollection.markers.forEach {
+                    it.isVisible = true
+                }
+                binding.bysykkelButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                bysykkelPaa = true
+            }
+            else if (bysykkelPaa) {
+                bySykkelManager.markerCollection.markers.forEach {
+                    it.isVisible = false
+                }
+                binding.bysykkelButton.clearColorFilter()
+                bysykkelPaa = false
+            }
+        }
+
+        binding.parkingButton.setOnClickListener {
+            if (!parkeringPaa) {
+                parkeringManager.markerCollection.markers.forEach {
+                    it.isVisible = true
+                }
+                binding.parkingButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                parkeringPaa = true
+            }
+            else if (parkeringPaa) {
+                parkeringManager.markerCollection.markers.forEach{
+                    it.isVisible = false
+                }
+                binding.parkingButton.clearColorFilter()
+                parkeringPaa = false
+            }
+        }
+
+        binding.luftkvalitetButton.setOnClickListener {
+            if (!luftkvalitetPaa) {
+                listeLuftkvalitet.forEach {
+                    it.isVisible = true
+                }
+                binding.luftkvalitetButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                luftkvalitetPaa = true
+            }
+            else if (luftkvalitetPaa) {
+                listeLuftkvalitet.forEach{
+                    it.isVisible = false
+                }
+                binding.luftkvalitetButton.clearColorFilter()
+                luftkvalitetPaa = false
+            }
+        }
+    }
+
 }
 
 const val LOCATION_REQUEST = 100
