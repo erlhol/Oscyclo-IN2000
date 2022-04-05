@@ -309,19 +309,18 @@ class MapFragment : Fragment() {
         return clusterManager
     }
 
+    // TODO: should be called after camera changed
     private fun onOptionClick() {
         binding.bysykkelButton.setOnClickListener {
             if (!bysykkelPaa) {
-                bySykkelManager.markerCollection.markers.forEach {
-                    it.isVisible = true
-                }
+                bySykkelManager.clusterMarkerCollection.showAll()
+                bySykkelManager.markerCollection.showAll()
                 binding.bysykkelButton.setColorFilter(Color.parseColor("#FF3700B3"))
                 bysykkelPaa = true
             }
             else if (bysykkelPaa) {
-                bySykkelManager.markerCollection.markers.forEach {
-                    it.isVisible = false
-                }
+                bySykkelManager.clusterMarkerCollection.hideAll()
+                bySykkelManager.markerCollection.hideAll()
                 binding.bysykkelButton.clearColorFilter()
                 bysykkelPaa = false
             }
@@ -329,16 +328,14 @@ class MapFragment : Fragment() {
 
         binding.parkingButton.setOnClickListener {
             if (!parkeringPaa) {
-                parkeringManager.markerCollection.markers.forEach {
-                    it.isVisible = true
-                }
+                parkeringManager.clusterMarkerCollection.showAll()
+                parkeringManager.markerCollection.showAll()
                 binding.parkingButton.setColorFilter(Color.parseColor("#FF3700B3"))
                 parkeringPaa = true
             }
             else if (parkeringPaa) {
-                parkeringManager.markerCollection.markers.forEach{
-                    it.isVisible = false
-                }
+                parkeringManager.clusterMarkerCollection.hideAll()
+                parkeringManager.markerCollection.hideAll()
                 binding.parkingButton.clearColorFilter()
                 parkeringPaa = false
             }
