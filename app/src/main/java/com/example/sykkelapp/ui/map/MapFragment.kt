@@ -42,14 +42,14 @@ class MapFragment : Fragment() {
     private lateinit var homeViewModel : MapViewModel
     private var isGPSEnabled = false
 
-    private var bysykkelPaa = false
+    private var bysykkelLayerActive = false
     private lateinit var bySykkelManager : ClusterManager<Station>
 
-    private var parkeringPaa = false
+    private var parkingLayerActive = false
     private lateinit var parkeringManager: ClusterManager<Feature>
 
-    private var luftkvalitetPaa = false
-    private var listeLuftkvalitet = mutableListOf<Marker>()
+    private var airQualityLayerActive = false
+    private var airQualityList = mutableListOf<Marker>()
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -77,6 +77,8 @@ class MapFragment : Fragment() {
             initAirQuality(map,homeViewModel)
             bySykkelManager = addBysykkelClusteredMarkers(map, homeViewModel)
             parkeringManager = addParkingClusteredMarkers(map, homeViewModel)
+            hideAllLayers()
+            onCameraMoved(map)
         }
 
         onOptionClick()
@@ -196,7 +198,7 @@ class MapFragment : Fragment() {
                     .icon(airqualityIcon)
                     .visible(false)
                 )!!
-                listeLuftkvalitet.add(luftkvalitetMarker)
+                airQualityList.add(luftkvalitetMarker)
             }
         }
         viewModel.airquality.observe(viewLifecycleOwner) {
@@ -312,51 +314,93 @@ class MapFragment : Fragment() {
     // TODO: should be called after camera changed
     private fun onOptionClick() {
         binding.bysykkelButton.setOnClickListener {
-            if (!bysykkelPaa) {
-                bySykkelManager.clusterMarkerCollection.showAll()
-                bySykkelManager.markerCollection.showAll()
-                binding.bysykkelButton.setColorFilter(Color.parseColor("#FF3700B3"))
-                bysykkelPaa = true
-            }
-            else if (bysykkelPaa) {
-                bySykkelManager.clusterMarkerCollection.hideAll()
-                bySykkelManager.markerCollection.hideAll()
-                binding.bysykkelButton.clearColorFilter()
-                bysykkelPaa = false
+            bysykkelLayerActive = when (bysykkelLayerActive) {
+                false -> {
+                    bySykkelManager.clusterMarkerCollection.showAll()
+                    bySykkelManager.markerCollection.showAll()
+                    binding.bysykkelButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                    true
+                }
+                true -> {
+                    bySykkelManager.clusterMarkerCollection.hideAll()
+                    bySykkelManager.markerCollection.hideAll()
+                    binding.bysykkelButton.clearColorFilter()
+                    false
+                }
             }
         }
 
         binding.parkingButton.setOnClickListener {
-            if (!parkeringPaa) {
-                parkeringManager.clusterMarkerCollection.showAll()
-                parkeringManager.markerCollection.showAll()
-                binding.parkingButton.setColorFilter(Color.parseColor("#FF3700B3"))
-                parkeringPaa = true
-            }
-            else if (parkeringPaa) {
-                parkeringManager.clusterMarkerCollection.hideAll()
-                parkeringManager.markerCollection.hideAll()
-                binding.parkingButton.clearColorFilter()
-                parkeringPaa = false
+            parkingLayerActive = when (parkingLayerActive) {
+                false -> {
+                    parkeringManager.clusterMarkerCollection.showAll()
+                    parkeringManager.markerCollection.showAll()
+                    binding.parkingButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                    true
+                }
+                true -> {
+                    parkeringManager.clusterMarkerCollection.hideAll()
+                    parkeringManager.markerCollection.hideAll()
+                    binding.parkingButton.clearColorFilter()
+                    false
+                }
             }
         }
 
-        binding.luftkvalitetButton.setOnClickListener {
-            if (!luftkvalitetPaa) {
-                listeLuftkvalitet.forEach {
-                    it.isVisible = true
+        binding.airQualityButton.setOnClickListener {
+            when (airQualityLayerActive) {
+                false -> {
+                    airQualityList.forEach {
+                        it.isVisible = true
+                    }
+                    binding.airQualityButton.setColorFilter(Color.parseColor("#FF3700B3"))
+                    airQualityLayerActive = true
                 }
-                binding.luftkvalitetButton.setColorFilter(Color.parseColor("#FF3700B3"))
-                luftkvalitetPaa = true
-            }
-            else if (luftkvalitetPaa) {
-                listeLuftkvalitet.forEach{
-                    it.isVisible = false
+                true -> {
+                    airQualityList.forEach {
+                        it.isVisible = false
+                    }
+                    binding.airQualityButton.clearColorFilter()
+                    airQualityLayerActive = false
                 }
-                binding.luftkvalitetButton.clearColorFilter()
-                luftkvalitetPaa = false
             }
         }
+    }
+
+    private fun onCameraMoved(mMap: GoogleMap) {
+        mMap.setOnCameraMoveListener {
+            when (bysykkelLayerActive) {
+                true -> {
+                    bySykkelManager.clusterMarkerCollection.showAll()
+                    bySykkelManager.markerCollection.showAll()
+                }
+                false -> {
+                    bySykkelManager.clusterMarkerCollection.hideAll()
+                    bySykkelManager.markerCollection.hideAll()
+                }
+            }
+
+            when (parkingLayerActive) {
+                true -> {
+                    parkeringManager.clusterMarkerCollection.showAll()
+                    parkeringManager.markerCollection.showAll()
+                }
+                false -> {
+                    parkeringManager.clusterMarkerCollection.hideAll()
+                    parkeringManager.markerCollection.hideAll()
+                }
+            }
+        }
+    }
+
+    private fun hideAllLayers() {
+        airQualityList.forEach {
+            it.isVisible = false
+        }
+        bySykkelManager.clusterMarkerCollection.hideAll()
+        bySykkelManager.markerCollection.hideAll()
+        parkeringManager.clusterMarkerCollection.hideAll()
+        parkeringManager.markerCollection.hideAll()
     }
 
 }
