@@ -8,17 +8,12 @@ data class Feature (
     val id : String,
     val geometry: Geometry,
     val geometry_name : String,
-    val properties: Properties
         ):
     ClusterItem {
 
     override fun getPosition(): LatLng {
         val coords = geometry.coordinates
-        if (coords.size == 2) {
-            return LatLng(coords[1],coords[0])
-        }
-        return LatLng(0.0,0.0)
-
+        return LatLng(coords[1],coords[0])
     }
 
     override fun getTitle(): String? {

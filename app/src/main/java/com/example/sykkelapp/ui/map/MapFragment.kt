@@ -20,6 +20,8 @@ import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkel.StationRenderer
 import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.data.parking.FeatureRenderer
+import com.example.sykkelapp.data.parking.Geometry
+import com.example.sykkelapp.data.parking.Properties
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -43,7 +45,7 @@ class MapFragment : Fragment() {
     private var isGPSEnabled = false
 
     private var bysykkelPaa = false
-    private var listeBysykkel = mutableListOf<Marker>()
+    private lateinit var listeBysykkel : List<Marker>
 
     private var parkeringPaa = false
     private var listeParkering = mutableListOf<Marker>()
@@ -75,9 +77,8 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            //initParking(map,homeViewModel)
             addBysykkelClusteredMarkers(map, homeViewModel)
-            //addParkingClusteredMarkers(map, homeViewModel)
+            addParkingClusteredMarkers(map, homeViewModel)
         }
 
         binding.bysykkelButton.setOnClickListener {
@@ -158,7 +159,7 @@ class MapFragment : Fragment() {
                 mMap.uiSettings.isMyLocationButtonEnabled = false
             }
             Log.d("Main activity", it.longitude.toString() + " "+ it.latitude.toString())
-            homeViewModel.updateLocation()
+            homeViewModel.updateLocation() // TODO: update weather per location update is too much
         }
     }
 
@@ -349,14 +350,14 @@ class MapFragment : Fragment() {
 
         // Add the places to the ClusterManager.
         viewModel.parking.observe(viewLifecycleOwner) {
-                clusterManager.addItems(it)
-                clusterManager.cluster()
-                mMap.setOnCameraIdleListener {
-                    clusterManager.onCameraIdle()
-                }
+            clusterManager.addItems(it)
+            clusterManager.cluster()
+            mMap.setOnCameraIdleListener {
+                clusterManager.onCameraIdle()
             }
-
         }
+
+    }
 }
 
 const val LOCATION_REQUEST = 100
