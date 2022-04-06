@@ -7,7 +7,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.R
-import com.example.sykkelapp.ui.Path
 
 class PathAdapter(private val exampleList: List<Path>) : RecyclerView.Adapter<PathAdapter.ViewHolder>() {
 

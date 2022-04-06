@@ -1,7 +1,6 @@
 package com.example.sykkelapp.ui.paths
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentPathBinding
-import com.example.sykkelapp.ui.Path
 
 class PathFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding : FragmentPathBinding

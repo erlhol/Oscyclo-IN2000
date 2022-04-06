@@ -77,7 +77,6 @@ class MapFragment : Fragment() {
             initAirQuality(map,homeViewModel)
             bySykkelManager = addBysykkelClusteredMarkers(map, homeViewModel)
             parkeringManager = addParkingClusteredMarkers(map, homeViewModel)
-            hideAllLayers()
             onCameraMoved(map)
         }
 
@@ -209,8 +208,6 @@ class MapFragment : Fragment() {
     private fun initMap(mMap: GoogleMap, viewModel: MapViewModel) {
         // Add a marker in Oslo and move the camera
         val ojd = LatLng(59.94410, 10.7185)
-        mMap.addMarker(MarkerOptions().position(ojd).title("Marker at OJD"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ojd))
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
         var layer : GeoJsonLayer
         viewModel.geo.observe(viewLifecycleOwner) {
@@ -311,7 +308,6 @@ class MapFragment : Fragment() {
         return clusterManager
     }
 
-    // TODO: should be called after camera changed
     private fun onOptionClick() {
         binding.bysykkelButton.setOnClickListener {
             bysykkelLayerActive = when (bysykkelLayerActive) {
@@ -404,6 +400,5 @@ class MapFragment : Fragment() {
     }
 
 }
-
 const val LOCATION_REQUEST = 100
 const val GPS_REQUEST = 101
