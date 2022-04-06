@@ -7,13 +7,15 @@ import com.example.sykkelapp.data.airqualityforecast.AirQualityForecast
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.bysykkel.BySykkel
 import com.example.sykkelapp.data.bysykkel.Station
+import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
 import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.data.parking.Parking
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import io.ktor.client.*
 import io.ktor.client.engine.cio.*
-import io.ktor.client.features.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
@@ -70,5 +72,13 @@ class Datasource { // evt la datasource ta inn path som parameter
         val response : BySykkel = client.get(path)
         Log.d("loaded station", "Loaded: " + response)
         return response.data.stations
+    }
+
+    suspend fun loadBySykkelRoutes() : List<BysykkelItem> {
+        val path = "https://data.urbansharing.com/oslobysykkel.no/trips/v1/2022/03.json"
+        val response : HttpResponse = client.request(path)
+        val jsonText = response.readText()
+        val liste = object : TypeToken<List<BysykkelItem>>() {}.type
+        return Gson().fromJson(jsonText,liste)
     }
 }

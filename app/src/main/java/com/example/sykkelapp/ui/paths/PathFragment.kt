@@ -21,7 +21,7 @@ class PathFragment : Fragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val dashboardViewModel =
+        val pathViewModel =
             ViewModelProvider(this).get(PathViewModel::class.java)
         binding = FragmentPathBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -38,10 +38,10 @@ class PathFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
         // Just one example, has to be changed to MVVM
         val recyclerView = binding.recyclerView
-        var list = mutableListOf<Path>()
-        val p = Path(500.0,3,9)
-        list.add(p)
-        recyclerView.adapter = PathAdapter(list)
+
+        pathViewModel.routes.observe(viewLifecycleOwner) {
+                routes -> recyclerView.adapter = PathAdapter(routes)
+        }
 
         return root
     }
