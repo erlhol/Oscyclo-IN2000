@@ -42,12 +42,11 @@ class PathFragment : Fragment(), AdapterView.OnItemSelectedListener {
         pathViewModel.routes.observe(viewLifecycleOwner) {
                 routes -> recyclerView.adapter = PathAdapter(routes)
         }
-
         return root
     }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-        println("hei")
+
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

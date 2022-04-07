@@ -10,7 +10,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PathViewModel : ViewModel() {
-
+    private val source = Datasource()
     private val _routes = MutableLiveData<List<BysykkelItem>>()
 
     val routes : LiveData<List<BysykkelItem>>
@@ -18,7 +18,6 @@ class PathViewModel : ViewModel() {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            val source = Datasource()
             _routes.postValue(source.loadBySykkelRoutes())
         }
     }
