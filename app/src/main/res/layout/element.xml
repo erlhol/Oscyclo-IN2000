@@ -23,54 +23,34 @@
             android:id="@+id/length"
             android:layout_width="110dp"
             android:layout_height="25dp"
-            android:text="Length:"
             android:textAlignment="center"
             card_view:layout_constraintStart_toStartOf="parent"
-            card_view:layout_constraintBottom_toTopOf="@+id/lengthNr"
+            card_view:layout_constraintBottom_toTopOf="@+id/from"
             card_view:layout_constraintTop_toBottomOf="@+id/picture"/>
 
         <TextView
-            android:id="@+id/lengthNr"
+            android:id="@+id/from"
             android:layout_width="110dp"
             android:layout_height="25dp"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintBottom_toBottomOf="parent"/>
 
         <TextView
-            android:id="@+id/airQ"
+            android:id="@+id/to"
             android:layout_width="110dp"
             android:layout_height="25dp"
-            android:text="Air quality:"
             android:textAlignment="center"
             card_view:layout_constraintStart_toEndOf="@id/length"
-            card_view:layout_constraintBottom_toTopOf="@+id/airQImg"
             card_view:layout_constraintTop_toBottomOf="@+id/picture"/>
 
-        <ImageView
-            android:id="@+id/airQImg"
-            android:layout_width="110dp"
-            android:layout_height="25dp"
-            card_view:layout_constraintStart_toEndOf="@+id/lengthNr"
-            card_view:layout_constraintBottom_toBottomOf="parent" />
-
         <TextView
-            android:id="@+id/diff"
+            android:id="@+id/duration"
             android:layout_width="110dp"
             android:layout_height="25dp"
-            android:text="Difficulty:"
             android:textAlignment="center"
-            card_view:layout_constraintBottom_toTopOf="@+id/rating"
             card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@id/airQ"
+            card_view:layout_constraintStart_toEndOf="@id/to"
             card_view:layout_constraintTop_toBottomOf="@+id/picture" />
-
-        <ImageView
-            android:id="@+id/rating"
-            android:layout_width="110dp"
-            android:layout_height="25dp"
-            card_view:layout_constraintBottom_toBottomOf="parent"
-            card_view:layout_constraintEnd_toEndOf="parent"
-            card_view:layout_constraintStart_toEndOf="@+id/airQImg" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
