@@ -29,12 +29,12 @@ class Datasource { // evt la datasource ta inn path som parameter
         }
     }
 
-    suspend fun loadWheather(lat : String, lon : String, verbose: String) : Data {
+    suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data {
         // Just a sample URL. Has to be changed later
         val coordinate = "lat=$lat&lon=$lon"
         val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/$verbose$coordinate"
         val response : LocationForecast = client.get(path)
-        Log.d("load wheater","Loaded: "+response)
+        Log.d("load weather","Loaded: "+response)
         return response.properties.timeseries[0].data // currently only getting the first timeseries
     }
 
