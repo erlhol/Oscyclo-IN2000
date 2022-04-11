@@ -1,6 +1,7 @@
 package com.example.sykkelapp.ui.map
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.*
 import com.example.sykkelapp.data.Datasource
 import com.example.sykkelapp.data.airquality.AirQualityItem
@@ -42,12 +43,66 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
+            loadGeo()
+            loadAir()
+            loadParking()
+            loadWeather()
+            loadAirQualityForecast()
+            loadBySykkel()
+        }
+    }
+
+    private suspend fun loadGeo() {
+        try {
             _geo.postValue(source.loadGeo())
+        }
+        catch(exception: Exception) {
+            Log.d("Map Viewmodel","Exception occured loadGeo")
+        }
+    }
+
+    private suspend fun loadAir() {
+        try {
             _air.postValue(source.loadAir())
+        }
+        catch(exception : Exception) {
+            Log.d("Map Viewmodel","Exception occured loadAir")
+        }
+    }
+
+    private suspend fun loadParking() {
+        try {
             _parking.postValue(source.loadParking())
+        }
+        catch(exception : Exception) {
+            Log.d("Map Viewmodel","Exception occured loadParking")
+        }
+    }
+
+    private suspend fun loadWeather() {
+        try {
             _data.postValue(source.loadWeather("59.94410", "10.7185","complete?"))
+        }
+        catch (exception: Exception) {
+            Log.d("Map Viewmodel","Exception occured loadWeather")
+        }
+    }
+
+    private suspend fun loadAirQualityForecast() {
+        try {
             _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
+        }
+        catch (exception: Exception) {
+            Log.d("Map Viewmodel","Exception occured loadAirQualityForecast")
+        }
+    }
+
+    private suspend fun loadBySykkel() {
+        try {
             _station.postValue(source.loadBySykkel())
+        }
+        catch (exception: Exception) {
+            Log.d("Map Viewmodel","Exception occured loadAirQualityForecast")
         }
     }
 
@@ -55,9 +110,8 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             val lat = locationData.value?.latitude
             val lon = locationData.value?.longitude
-            _data.postValue(source.loadWeather("%.4f".format(lat), "%.4f".format(lon),"complete?"))
-            _airquality.postValue(source.loadAirQualityForecast("%.4f".format(lat), "%.4f".format(lon)))
+            _data.postValue(source.loadWeather(lat.toString(), lon.toString(),"complete?"))
+            _airquality.postValue(source.loadAirQualityForecast(lat.toString(), lon.toString()))
         }
-
     }
 }
