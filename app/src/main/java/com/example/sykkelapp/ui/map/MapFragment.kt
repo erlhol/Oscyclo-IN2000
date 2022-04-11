@@ -84,7 +84,6 @@ class MapFragment : Fragment() {
 
         onOptionClick()
 
-        val locationButton = binding.loactionButton
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
 
@@ -92,10 +91,6 @@ class MapFragment : Fragment() {
                 isGPSEnabled = isGPSEnable
             }
         })
-        locationButton.setOnClickListener {
-            invokeLocationAction()
-            //
-        }
 
         return root
     }
