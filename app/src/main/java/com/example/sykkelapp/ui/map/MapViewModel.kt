@@ -42,67 +42,71 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         get() = _locationData
 
     init {
-        viewModelScope.launch(Dispatchers.IO) {
             loadGeo()
             loadAir()
             loadParking()
             loadWeather()
             loadAirQualityForecast()
             loadBySykkel()
+    }
+
+    fun loadGeo() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _geo.postValue(source.loadGeo())
+            } catch (exception: Exception) {
+                Log.d("Map Viewmodel", "Exception occured loadGeo")
+            }
         }
     }
 
-    private suspend fun loadGeo() {
-        try {
-            _geo.postValue(source.loadGeo())
-        }
-        catch(exception: Exception) {
-            Log.d("Map Viewmodel","Exception occured loadGeo")
-        }
-    }
-
-    private suspend fun loadAir() {
-        try {
-            _air.postValue(source.loadAir())
-        }
-        catch(exception : Exception) {
-            Log.d("Map Viewmodel","Exception occured loadAir")
+    fun loadAir() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _air.postValue(source.loadAir())
+            } catch (exception: Exception) {
+                Log.d("Map Viewmodel", "Exception occured loadAir")
+            }
         }
     }
 
-    private suspend fun loadParking() {
-        try {
-            _parking.postValue(source.loadParking())
-        }
-        catch(exception : Exception) {
-            Log.d("Map Viewmodel","Exception occured loadParking")
-        }
-    }
-
-    private suspend fun loadWeather() {
-        try {
-            _data.postValue(source.loadWeather("59.94410", "10.7185","complete?"))
-        }
-        catch (exception: Exception) {
-            Log.d("Map Viewmodel","Exception occured loadWeather")
+    fun loadParking() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _parking.postValue(source.loadParking())
+            } catch (exception: Exception) {
+                Log.d("Map Viewmodel", "Exception occured loadParking")
+            }
         }
     }
 
-    private suspend fun loadAirQualityForecast() {
-        try {
-            _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
-        }
-        catch (exception: Exception) {
-            Log.d("Map Viewmodel","Exception occured loadAirQualityForecast")
+    fun loadWeather() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _data.postValue(source.loadWeather("59.94410", "10.7185", "complete?"))
+            } catch (exception: Exception) {
+                Log.d("Map Viewmodel", "Exception occured loadWeather")
+            }
         }
     }
 
-    private suspend fun loadBySykkel() {
-        try {
-            _station.postValue(source.loadBySykkel())
+    fun loadAirQualityForecast() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
+            } catch (exception: Exception) {
+                Log.d("Map Viewmodel", "Exception occured loadAirQualityForecast")
+            }
         }
-        catch (exception: Exception) {
-            Log.d("Map Viewmodel","Exception occured loadAirQualityForecast")
+    }
+
+    fun loadBySykkel() {
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                _station.postValue(source.loadBySykkel())
+            } catch (exception: Exception) {
+                Log.d("Map Viewmodel", "Exception occured loadAirQualityForecast")
+            }
         }
     }
 
