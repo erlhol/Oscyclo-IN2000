@@ -25,7 +25,7 @@ class FeatureRenderer(
      * The icon to use for each cluster item
      */
     private val parkeringsPlass: BitmapDescriptor by lazy {
-        val color = Color.parseColor("#0047AB")
+        val color = Color.parseColor("#0035BA")
         BitmapHelper.vectorToBitmap(
             context,
             R.drawable.ic_baseline_local_parking_24,
@@ -52,5 +52,6 @@ class FeatureRenderer(
      */
     override fun onClusterItemRendered(clusterItem: Feature, marker: Marker) {
         marker.tag = clusterItem
+        marker.snippet = "Capicity:"+clusterItem.properties.antall_parkeringsplasser.toString()
     }
 }
