@@ -20,8 +20,7 @@ import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 
-class Datasource { // evt la datasource ta inn path som parameter
-    // burde hvert api vaere hver sin datasource?
+class Datasource {
 
     private val client = HttpClient(CIO) {
         install(JsonFeature) {
@@ -29,7 +28,7 @@ class Datasource { // evt la datasource ta inn path som parameter
         }
     }
 
-    suspend fun loadWheather(lat : String, lon : String, verbose: String) : Data {
+    suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data {
         // Just a sample URL. Has to be changed later
         val coordinate = "lat=$lat&lon=$lon"
         val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/$verbose$coordinate"
@@ -49,7 +48,7 @@ class Datasource { // evt la datasource ta inn path som parameter
         val path = "https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Asykkelparkering&outputFormat=application/json&srsName=EPSG:4326"
         val response : Parking = client.get(path)
         Log.d("loaded parking","Loaded: "+response)
-        return response.features.filter {it.geometry.coordinates.size == 2}
+        return response.features.filter {it.geometry.coordinates.size == 2 && it.properties.antall_parkeringsplasser > 20}
     }
 
     suspend fun loadAir() : List<AirQualityItem> {
