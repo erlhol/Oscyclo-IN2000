@@ -10,7 +10,7 @@
         android:title="@string/title_map" />
 
     <item
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_profile"
         android:icon="@drawable/ic_baseline_person_outline_24"
         android:title="@string/title_profile" />
 </menu>
