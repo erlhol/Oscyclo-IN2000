@@ -51,6 +51,8 @@ class MapFragment : Fragment() {
     private var airQualityLayerActive = false
     private var airQualityList = mutableListOf<Marker>()
 
+    private var prevWindRotation : Float = 0.0F
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -66,7 +68,7 @@ class MapFragment : Fragment() {
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        mapView = root.findViewById(R.id.mapView)
+        mapView = binding.mapView
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
 
@@ -75,12 +77,13 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            bySykkelManager = addBysykkelClusteredMarkers(map, homeViewModel)
+            //bySykkelManager = addBysykkelClusteredMarkers(map, homeViewModel)
             parkeringManager = addParkingClusteredMarkers(map, homeViewModel)
-            onCameraMoved(map)
+            //onCameraMoved(map)
         }
 
         onOptionClick()
+
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
 
@@ -92,14 +95,9 @@ class MapFragment : Fragment() {
         return root
     }
 
-    override fun onStart() {
-        super.onStart()
-        invokeLocationAction()
-    }
-
     @SuppressLint("MissingPermission")
     private fun startLocationUpdate() {
-        homeViewModel.locationData.observe(this) {
+        homeViewModel.locationData.observe(viewLifecycleOwner) {
             if (isGPSEnabled) {
                 mMap.isMyLocationEnabled = true
                 mMap.uiSettings.isMyLocationButtonEnabled = true
@@ -108,8 +106,8 @@ class MapFragment : Fragment() {
                 mMap.isMyLocationEnabled = false
                 mMap.uiSettings.isMyLocationButtonEnabled = false
             }
+            homeViewModel.updateLocation()
             Log.d("Main activity", it.longitude.toString() + " "+ it.latitude.toString())
-            homeViewModel.updateLocation() // TODO: update weather per location update is too much
         }
     }
 
@@ -122,10 +120,9 @@ class MapFragment : Fragment() {
             shouldShowRequestPermissionRationale() -> Log.d("Map fragment",getString(R.string.permission_request))
 
             else -> ActivityCompat.requestPermissions(
-                requireActivity(),
-                arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                LOCATION_REQUEST
-            )
+                    requireActivity(),
+                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
+                    LOCATION_REQUEST)
         }
     }
 
@@ -176,9 +173,11 @@ class MapFragment : Fragment() {
                 uvView.drawable,
                 uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView)
             )
-            //uvTextView.text = it.instant.details.ultraviolet_index_clear_sky.toString()
-            //windRotation.animate().rotationBy(it.instant.details.wind_from_direction.toFloat())
-            //    .start()
+            windRotation.animate().rotationBy((-prevWindRotation))
+                .start()
+            prevWindRotation = it.instant.details.wind_from_direction.toFloat()
+            windRotation.animate().rotationBy(prevWindRotation)
+                .start()
         }
     }
 
@@ -364,7 +363,7 @@ class MapFragment : Fragment() {
     }
 
     private fun onCameraMoved(mMap: GoogleMap) {
-        mMap.setOnCameraMoveListener {
+        mMap.setOnCameraMoveStartedListener {
             when (bysykkelLayerActive) {
                 true -> {
                     bySykkelManager.clusterMarkerCollection.showAll()
@@ -387,6 +386,30 @@ class MapFragment : Fragment() {
                 }
             }
         }
+        mMap.setOnCameraIdleListener {
+            when (bysykkelLayerActive) {
+                true -> {
+                    bySykkelManager.clusterMarkerCollection.showAll()
+                    bySykkelManager.markerCollection.showAll()
+                }
+                false -> {
+                    bySykkelManager.clusterMarkerCollection.hideAll()
+                    bySykkelManager.markerCollection.hideAll()
+                }
+            }
+
+            when (parkingLayerActive) {
+                true -> {
+                    parkeringManager.clusterMarkerCollection.showAll()
+                    parkeringManager.markerCollection.showAll()
+                }
+                false -> {
+                    parkeringManager.clusterMarkerCollection.hideAll()
+                    parkeringManager.markerCollection.hideAll()
+                }
+            }
+        }
+
     }
 
     private fun hideAllLayers() {
