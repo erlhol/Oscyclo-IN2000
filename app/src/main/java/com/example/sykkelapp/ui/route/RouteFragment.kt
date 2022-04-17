@@ -1,4 +1,4 @@
-package com.example.sykkelapp.ui.paths
+package com.example.sykkelapp.ui.route
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,10 +10,10 @@ import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
-import com.example.sykkelapp.databinding.FragmentPathBinding
+import com.example.sykkelapp.databinding.FragmentRouteBinding
 
-class PathFragment : Fragment(), AdapterView.OnItemSelectedListener {
-    private lateinit var binding : FragmentPathBinding
+class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
+    private lateinit var binding : FragmentRouteBinding
 
 
     override fun onCreateView(
@@ -21,9 +21,9 @@ class PathFragment : Fragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val pathViewModel =
-            ViewModelProvider(this).get(PathViewModel::class.java)
-        binding = FragmentPathBinding.inflate(inflater, container, false)
+        val routeViewModel =
+            ViewModelProvider(this)[RouteViewModel::class.java]
+        binding = FragmentRouteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         val spinner: Spinner = binding.spinner
@@ -39,8 +39,8 @@ class PathFragment : Fragment(), AdapterView.OnItemSelectedListener {
         // Just one example, has to be changed to MVVM
         val recyclerView = binding.recyclerView
 
-        pathViewModel.routes.observe(viewLifecycleOwner) {
-                routes -> recyclerView.adapter = PathAdapter(routes)
+        routeViewModel.routes.observe(viewLifecycleOwner) {
+                routes -> recyclerView.adapter = RouteAdapter(routes)
         }
         return root
     }
