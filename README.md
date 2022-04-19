@@ -1,5 +1,5 @@
 # IN2000-gruppe-3
-Vårt prosjektarbeid i IN2000.
+Vårt prosjektarbeid i IN2000
 
 Lenker prosjektarbeid:
 
@@ -15,4 +15,8 @@ API-lenker:
 
 API fra MET: https://in2000-apiproxy.ifi.uio.no
 
+API fra NILU: https://api.nilu.no
+
 API fra Bymiljøetaten: https://developer.oslo.kommune.no/katalog/data/bym-byruter
+
+API fra Oslo Bysykkel: https://oslobysykkel.no/apne-data/sanntid

@@ -3,17 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@+id/navigation_map">
 
 
     <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.example.sykkelapp.ui.paths.PathFragment"
-        android:label="@string/title_route"
-        tools:layout="@layout/fragment_path" />
+        android:id="@+id/navigation_routes"
+        android:name="com.example.sykkelapp.ui.route.RouteFragment"
+        android:label="@string/title_routes"
+        tools:layout="@layout/fragment_route" />
 
     <fragment
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_map"
         android:name="com.example.sykkelapp.ui.map.MapFragment"
         android:label="@string/title_map"
         tools:layout="@layout/fragment_map" />
