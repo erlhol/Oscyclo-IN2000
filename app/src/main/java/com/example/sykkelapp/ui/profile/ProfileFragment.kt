@@ -1,5 +1,6 @@
 package com.example.sykkelapp.ui.profile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.sykkelapp.AccountSettingsActivity
 import com.example.sykkelapp.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -22,16 +24,20 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
+        val profileViewModel =
             ViewModelProvider(this)[ProfileViewModel::class.java]
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        notificationsViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        _binding!!.editProfile.setOnClickListener{
+            startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
+
+//        val textView: TextView = binding.profileFragmentUsername
+//        profileViewModel.text.observe(viewLifecycleOwner) {
+//            textView.text = it
+//        }
         return root
     }
 

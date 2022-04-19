@@ -1,4 +1,4 @@
-package com.example.sykkelapp.ui.paths
+package com.example.sykkelapp.ui.route
 
 import android.location.Location
 import android.util.Log
@@ -25,7 +25,7 @@ import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import kotlinx.coroutines.runBlocking
 
-class PathAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.Adapter<PathAdapter.ViewHolder>() {
+class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using

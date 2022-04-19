@@ -1,4 +1,4 @@
-package com.example.sykkelapp.ui.paths
+package com.example.sykkelapp.ui.route
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PathViewModel : ViewModel() {
+class RouteViewModel : ViewModel() {
     private val source = Datasource()
     private val _routes = MutableLiveData<List<BysykkelItem>>()
 
