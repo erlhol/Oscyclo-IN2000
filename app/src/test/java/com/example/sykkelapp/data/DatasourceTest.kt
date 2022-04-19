@@ -25,7 +25,8 @@ internal class DatasourceTest {
     fun loadWeatherCorrectInput() {
         runBlocking {
             try {
-                val returnVal = source.loadWeather("59.94410", "10.7185","complete?")
+                // because of platform type we have to cast to Data?
+                val returnVal = source.loadWeather("59.94410", "10.7185","complete?") as Data?
                 assert(returnVal is Data)
                 // TODO : make nullable
             }
@@ -38,7 +39,7 @@ internal class DatasourceTest {
     fun loadGeo() {
         runBlocking {
             try {
-                val returnVal = source.loadGeo()
+                val returnVal = source.loadGeo() as String?
                 assert(returnVal is String)
 
             }
@@ -51,7 +52,7 @@ internal class DatasourceTest {
     fun loadParking() {
         runBlocking {
             try {
-                val returnVal = source.loadParking()
+                val returnVal = source.loadParking() as List<Feature>?
                 assert(returnVal is List<Feature>)
 
             }
@@ -64,7 +65,7 @@ internal class DatasourceTest {
     fun loadAir() {
         runBlocking {
             try {
-                val returnVal = source.loadAir()
+                val returnVal = source.loadAir() as List<AirQualityItem>?
                 assert(returnVal is List<AirQualityItem>)
 
             }
@@ -84,7 +85,7 @@ internal class DatasourceTest {
     fun loadAirQualityForecastCorrectInput() {
         try {
             runBlocking {
-                val returnVal = source.loadAirQualityForecast("59.94410", "10.7185")
+                val returnVal = source.loadAirQualityForecast("59.94410", "10.7185") as Pm10Concentration?
                 assert(returnVal is Pm10Concentration)
             }
         }
@@ -96,7 +97,7 @@ internal class DatasourceTest {
     fun loadBySykkel() {
         runBlocking {
             try {
-                val returnVal = source.loadBySykkel()
+                val returnVal = source.loadBySykkel() as List<Station>?
                 assert(returnVal is List<Station>)
 
             }
@@ -109,9 +110,8 @@ internal class DatasourceTest {
     fun loadBySykkelRoutes() {
         runBlocking {
             try {
-                val returnVal = source.loadBySykkelRoutes()
+                val returnVal = source.loadBySykkelRoutes() as List<BysykkelItem>?
                 assert(returnVal is List<BysykkelItem>)
-
             }
             catch (exception : Exception) {
             }

@@ -15,17 +15,14 @@ import com.example.sykkelapp.data.parking.Parking
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 
 class Datasource : DataSourceInterface {
 
-    private val client = HttpClient(CIO) {
-        install(JsonFeature) {
-            serializer = GsonSerializer()
-        }
+    private val client = HttpClient {
+        install(JsonFeature)
     }
 
     override suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data {
