@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/let_s_get_started"
+        android:textAlignment="center"
         android:textSize="35sp"
         android:textStyle="bold"
         android:textColor="@color/black"
