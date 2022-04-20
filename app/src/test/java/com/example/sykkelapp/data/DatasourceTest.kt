@@ -28,7 +28,6 @@ internal class DatasourceTest {
                 // because of platform type we have to cast to Data?
                 val returnVal = source.loadWeather("59.94410", "10.7185","complete?") as Data?
                 assert(returnVal is Data)
-                // TODO : make nullable
             }
             catch (exception : Exception) {
             }
