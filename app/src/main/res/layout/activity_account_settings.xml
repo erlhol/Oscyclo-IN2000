@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#e2fdf0"
     tools:context=".AccountSettingsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -35,7 +36,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:src="@drawable/ic_exit" />
+                    android:background="@android:color/transparent"
+                    android:src="@drawable/ic_exit"
+                    android:contentDescription="@string/exit_button" />
 
             </RelativeLayout>
 
@@ -65,7 +68,7 @@
         android:layout_below="@+id/profile_image"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="13dp"
-        android:text="Change profile picture"
+        android:text="@string/change_profile_picture"
         android:textColor="@color/black"
         android:textSize="16sp"
         android:textStyle="bold"
@@ -74,37 +77,38 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_image" />
 
     <EditText
-        android:id="@+id/full_name"
+        android:id="@+id/full_name2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/change_profile_picture_button"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="20dp"
+        android:autofillHints="Full Name"
+        android:hint="@string/full_name2"
         android:inputType="text"
-        android:hint="Full Name"
         app:layout_constraintBottom_toTopOf="@+id/email"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/change_profile_picture_button"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.456" />
 
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/full_name"
+        android:layout_below="@+id/full_name2"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="92dp"
         android:layout_marginRight="20dp"
-        android:hint="Email"
+        android:layout_marginBottom="16dp"
+        android:autofillHints="Email"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/save_button"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/full_name" />
+        app:layout_constraintTop_toBottomOf="@+id/change_profile_picture_button" />
 
     <Button
         android:id="@+id/save_button"
@@ -113,10 +117,10 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="20dp"
-        android:text="Save"
-        android:backgroundTint="@color/white"
+        android:text="@string/save"
+        android:backgroundTint="#056005"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/logout_button"
         app:layout_constraintEnd_toEndOf="parent"
@@ -129,15 +133,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:layout_marginRight="20dp"
-        android:backgroundTint="@color/white"
-        android:text="Logout"
+        android:backgroundTint="#056005"
+        android:text="@string/logout"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/save_button" />
 
@@ -148,10 +151,10 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
-        android:backgroundTint="@color/white"
-        android:text="Deactivate Account"
+        android:backgroundTint="#056005"
+        android:text="@string/deactivate_account"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
