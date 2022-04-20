@@ -39,8 +39,7 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
     }
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
-        val from : TextView
-        val to : TextView
+        val title : TextView
         val duration: TextView
         val distance : TextView
 
@@ -48,8 +47,7 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
             // Define click listener for the ViewHolder's View.
             imageView = view.findViewById(R.id.picture)
             distance = view.findViewById(R.id.length)
-            from = view.findViewById(R.id.from)
-            to = view.findViewById(R.id.to)
+            title = view.findViewById(R.id.title)
             duration = view.findViewById(R.id.duration)
         }
     }
@@ -70,9 +68,8 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
         // contents of the view with that element
 
         // viewHolder.imageView = exampleList[position].
-        viewHolder.from.text = exampleList[position].start_station_name
-        viewHolder.to.text = exampleList[position].end_station_name
-        viewHolder.duration.text = exampleList[position].duration.toString()
+        viewHolder.title.text = exampleList[position].start_station_name + " til " + exampleList[position].end_station_name
+        viewHolder.duration.text = String.format("%.2f",exampleList[position].duration.toDouble() / 60) + " min"
 
 
         val end_station_lat =  exampleList[position].end_station_latitude
@@ -85,14 +82,14 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
 
         val start_coord = listOf(start_station_lon,start_station_lat)
 
-        viewHolder.distance.text = findDistance(start_coord,end_coord)
+        viewHolder.distance.text = String.format("%.1f",findDistance(start_coord,end_coord)/1000) + "km"
         setImage(viewHolder.imageView, exampleList[position].start_station_name)
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = exampleList.size
 
-    private fun findDistance(start: List<Double>, end : List<Double> ) : String {
+    private fun findDistance(start: List<Double>, end : List<Double> ) : Double {
         var geometry: List<List<Double>> = listOf(start,end)
         val results = FloatArray(5)
 
@@ -119,7 +116,7 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
             firstLatitude = secondLatitude
             firstLongtitude = secondLongtitude
         }
-        return totalLength.toString() + "metres"
+        return totalLength
 
     }
 
