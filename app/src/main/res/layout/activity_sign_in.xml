@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2fdf0"
+    android:background="#E5FFF4"
     tools:context=".SignInActivity">
 
     <TextView
@@ -77,7 +77,7 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
-        android:backgroundTint="#056005"
+        android:backgroundTint="#275C5C"
         android:text="@string/sign_in"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
@@ -93,6 +93,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal"
+        android:gravity="center"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -124,7 +125,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#e2fdf0"
+            android:backgroundTint="#E5FFF4"
             android:gravity="center"
             android:text="@string/sign_up"
             android:textAllCaps="false"

@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2fdf0"
+    android:background="#E5FFF4"
     tools:context=".ui.profile.ProfileFragment">
 
     <TextView
@@ -41,7 +41,7 @@
         android:id="@+id/edit_profile"
         android:layout_width="170dp"
         android:layout_height="48dp"
-        android:backgroundTint="#056005"
+        android:backgroundTint="#275C5C"
         android:text="@string/edit_profile"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
