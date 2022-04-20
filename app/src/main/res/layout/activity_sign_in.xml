@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E5FFF4"
+    android:background="@color/primary_accent"
     tools:context=".SignInActivity">
 
     <TextView
@@ -15,7 +15,7 @@
         android:textSize="35sp"
         android:textStyle="bold"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/app_logo"
+        app:layout_constraintBottom_toTopOf="@+id/sign_in_app_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         app:layout_constraintVertical_bias="0.752" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/app_logo"
+        android:id="@+id/sign_in_app_logo"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_marginTop="104dp"
@@ -36,27 +36,26 @@
         app:shapeAppearanceOverlay="@style/styleRoundedCornersImage" />
 
     <EditText
-        android:id="@+id/email2"
+        android:id="@+id/sign_in_email"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/app_logo"
+        android:layout_below="@+id/sign_in_app_logo"
         android:layout_marginStart="17dp"
         android:layout_marginTop="28dp"
         android:layout_marginEnd="14dp"
-        android:autofillHints=""
-        android:hint="@string/email2"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/app_logo" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_app_logo" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/sign_in_password"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:layout_below="@+id/app_logo"
+        android:layout_below="@+id/sign_in_app_logo"
         android:layout_marginStart="17dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
@@ -67,13 +66,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email2" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_email" />
 
     <Button
-        android:id="@+id/sign_in_button"
+        android:id="@+id/sign_in_button_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
+        android:layout_below="@+id/sign_in_password"
         android:layout_marginStart="17dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
@@ -86,7 +85,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_password" />
 
     <LinearLayout
         android:id="@+id/linearLayout5"
@@ -100,7 +99,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sign_in_button"
+        app:layout_constraintTop_toBottomOf="@+id/sign_in_button_main"
         app:layout_constraintVertical_bias="0.098">
 
         <TextView
@@ -117,15 +116,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.146"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_button"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_button_main"
             app:layout_constraintVertical_bias="0.142" />
 
         <Button
-            android:id="@+id/sign_up_button"
+            android:id="@+id/sign_in_sign_up_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#E5FFF4"
+            android:backgroundTint="@color/primary_accent"
             android:gravity="center"
             android:text="@string/sign_up"
             android:textAllCaps="false"
@@ -136,7 +135,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.78"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_button"
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_button_main"
             app:layout_constraintVertical_bias="0.133" />
 
     </LinearLayout>
