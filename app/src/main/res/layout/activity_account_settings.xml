@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2fdf0"
+    android:background="#E5FFF4"
     tools:context=".AccountSettingsActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -118,7 +118,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginRight="20dp"
         android:text="@string/save"
-        android:backgroundTint="#056005"
+        android:backgroundTint="#275C5C"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="16sp"
@@ -135,7 +135,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="32dp"
         android:layout_marginRight="20dp"
-        android:backgroundTint="#056005"
+        android:backgroundTint="#275C5C"
         android:text="@string/logout"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -151,7 +151,7 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="20dp"
-        android:backgroundTint="#056005"
+        android:backgroundTint="#275C5C"
         android:text="@string/deactivate_account"
         android:textAllCaps="false"
         android:textColor="@color/white"

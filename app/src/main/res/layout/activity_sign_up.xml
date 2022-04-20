@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#e2fdf0"
+    android:background="#E5FFF4"
     tools:context=".SignUpActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
@@ -90,7 +90,7 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="14dp"
-        android:backgroundTint="#056005"
+        android:backgroundTint="#275C5C"
         android:text="@string/create_account"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
@@ -137,7 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#e2fdf0"
+            android:backgroundTint="#E5FFF4"
             android:gravity="center"
             android:text="@string/sign_in2"
             android:textAllCaps="false"
