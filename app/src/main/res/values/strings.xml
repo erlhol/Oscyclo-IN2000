@@ -13,7 +13,7 @@
     <string name="permission_request">App requires location permission</string>
 
     <string name="full_name">Full name</string>
-    <string name="edit_profile">Edit profile</string>
+    <string name="settings">Settings</string>
     <string name="label_total_points">Total points:</string>
     <string name="label_weekly_points">Weekly points:</string>
     <string name="total_points">0</string>
@@ -22,32 +22,25 @@
     <string name="my_favourite_routes">My favourite routes</string>
     <string name="my_history">My history</string>
 
-    <string name="exit_button">Exit button</string>
-    <string name="change_profile_picture">Change profile picture</string>
-    <string name="full_name2">Name</string>
-    <string name="email">Email</string>
-    <string name="save">Save</string>
+    <string name="edit_profile">Edit profile</string>
     <string name="logout">Logout</string>
     <string name="deactivate_account">Deactivate Account</string>
 
+    <string name="exit_button">Exit button</string>
+    <string name="change_profile_picture">Change profile picture</string>
+    <string name="email">Email</string>
+    <string name="save">Save</string>
+
     <string name="let_s_get_started">Let\'s get started!</string>
     <string name="app_logo">App logo</string>
-    <string name="email2">Email</string>
     <string name="password">Password</string>
-    <string name="sign_in">Sign in</string>
+    <string name="sign_in"><u>Sign in</u></string>
     <string name="don_t_have_an_account">Don\'t have an account?</string>
     <string name="sign_up"><u>Sign up</u></string>
 
-    <string name="app_logo3">App logo3</string>
-    <string name="full_name3">Name</string>
-    <string name="email3">Email</string>
-    <string name="password2">Password</string>
     <string name="confirm_password">Confirm password</string>
     <string name="create_account">Create Account</string>
     <string name="already_have_an_account">Already have an account?</string>
-    <string name="sign_in2">Sign in</string>
-
-
 
     <string-array name="sortBy">
         <item>Length</item>

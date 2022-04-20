@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E5FFF4"
+    android:background="@color/primary_accent"
     tools:context=".SignUpActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/app_logo3"
+        android:id="@+id/sign_up_app_logo"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="190dp"
         android:layout_marginBottom="490dp"
-        android:contentDescription="@string/app_logo3"
+        android:contentDescription="@string/app_logo"
         android:src="@drawable/cycling_logo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -24,13 +24,13 @@
         app:shapeAppearanceOverlay="@style/styleRoundedCornersImage" />
 
     <EditText
-        android:id="@+id/name3"
+        android:id="@+id/sign_up_full_name"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="256dp"
         android:layout_marginEnd="14dp"
-        android:hint="@string/full_name3"
+        android:hint="@string/full_name"
         android:inputType="text"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -39,37 +39,37 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/email3"
+        android:id="@+id/sign_up_email"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
-        android:hint="@string/email3"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name3" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_full_name" />
 
     <EditText
-        android:id="@+id/password2"
+        android:id="@+id/sign_up_password"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
-        android:hint="@string/password2"
+        android:hint="@string/password"
         android:inputType="textPassword"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email3" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_email" />
 
     <EditText
-        android:id="@+id/confirm_password"
+        android:id="@+id/sign_up_confirm_password"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_marginStart="17dp"
@@ -81,7 +81,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password2" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_password" />
 
     <Button
         android:id="@+id/create_account"
@@ -99,7 +99,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirm_password" />
+        app:layout_constraintTop_toBottomOf="@+id/sign_up_confirm_password" />
 
     <LinearLayout
         android:id="@+id/linearLayout6"
@@ -133,13 +133,13 @@
             app:layout_constraintVertical_bias="0.133" />
 
         <Button
-            android:id="@+id/sign_in_button2"
+            android:id="@+id/sign_up_sign_in_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:backgroundTint="#E5FFF4"
+            android:backgroundTint="@color/primary_accent"
             android:gravity="center"
-            android:text="@string/sign_in2"
+            android:text="@string/sign_in"
             android:textAllCaps="false"
             android:textColor="@android:color/black"
             android:textSize="17sp"
