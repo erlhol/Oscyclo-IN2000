@@ -45,7 +45,7 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         routeViewModel.routes.observe(viewLifecycleOwner) {
                 routes -> recyclerView.adapter = RouteAdapter(routes)
-            println(routes[0].air_qualtiy)
+            println(routes[0].air_quality)
         }
         return root
     }
