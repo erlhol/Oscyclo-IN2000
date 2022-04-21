@@ -25,7 +25,7 @@ class FeatureRenderer(
      * The icon to use for each cluster item
      */
     private val parkeringsPlass: BitmapDescriptor by lazy {
-        val color = Color.parseColor("#0035BA")
+        val color = Color.parseColor("#FFDE03")
         BitmapHelper.vectorToBitmap(
             context,
             R.drawable.ic_baseline_local_parking_24,
