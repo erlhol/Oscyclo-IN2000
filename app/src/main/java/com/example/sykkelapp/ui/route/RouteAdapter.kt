@@ -81,8 +81,12 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
         val start_station_lon = exampleList[position].start_station_longitude
 
         val start_coord = listOf(start_station_lon,start_station_lat)
+        viewHolder.imageView.setImageDrawable(null)
         viewHolder.distance.text = String.format("%.1f",findDistance(start_coord,end_coord)/1000) + "km"
-        setImage(viewHolder.imageView, exampleList[position])
+
+        GlobalScope.async {
+            setImage(viewHolder.imageView, exampleList[position].start_station_name)
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -119,7 +123,7 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
 
     }
 
-    private fun setImage(imageView: ImageView, item : BysykkelItem) {
+    private suspend fun setImage(imageView: ImageView, placeName : String) {
         Places.initialize(imageView.context, BuildConfig.MAPS_API_KEY)
 
         // Create a new PlacesClient instance
@@ -128,7 +132,8 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
         // Specify fields. Requests for photos must always have the PHOTO_METADATAS field.
         val fields = listOf(Place.Field.PHOTO_METADATAS)
 
-        val placeId = item.placeid ?: return
+        val placeId : String
+        placeId = loadPlaceId(placeName)
 
         // Get a Place object (this example uses fetchPlace(), but you can also use findCurrentPlace())
         val placeRequest = FetchPlaceRequest.newInstance(placeId, fields)
@@ -165,5 +170,15 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
                         }
                     }
             }
+    }
+
+    private suspend fun loadPlaceId(name : String) : String {
+        val path = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=place_id&input=$name&inputtype=textquery&key=${BuildConfig.MAPS_API_KEY}"
+        val response : PlaceName = client.get(path)
+        Log.d("Loaded placeId","Loaded: "+response)
+        if (response.candidates.isNotEmpty()) {
+            return response.candidates[0].place_id
+        }
+        return "ChIJOfBn8mFuQUYRmh4j019gkn4"
     }
 }

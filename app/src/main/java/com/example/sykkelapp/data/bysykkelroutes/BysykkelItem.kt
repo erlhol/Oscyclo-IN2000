@@ -13,7 +13,5 @@ data class BysykkelItem(
     val start_station_latitude: Double,
     val start_station_longitude: Double,
     val start_station_name: String,
-    val started_at: String,
-    var air_qualtiy: Double,
-    var placeid : String?,
+    val started_at: String
 )
