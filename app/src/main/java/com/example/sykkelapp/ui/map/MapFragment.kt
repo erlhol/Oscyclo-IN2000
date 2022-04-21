@@ -42,12 +42,6 @@ class MapFragment : Fragment() {
     private lateinit var homeViewModel : MapViewModel
     private var isGPSEnabled = false
 
-    private var bysykkelLayerActive = false
-    private lateinit var bySykkelManager : ClusterManager<Station>
-
-    private var parkingLayerActive = false
-    private lateinit var parkeringManager: ClusterManager<Feature>
-
     private var airQualityLayerActive = false
     private var airQualityList = mutableListOf<Marker>()
 
@@ -77,13 +71,10 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            //bySykkelManager = addBysykkelClusteredMarkers(map, homeViewModel)
-            parkeringManager = addParkingClusteredMarkers(map, homeViewModel)
-            //onCameraMoved(map)
+            //addBysykkelClusteredMarkers(map, homeViewModel)
+            addParkingClusteredMarkers(map, homeViewModel)
+            onOptionClick()
         }
-
-        //onOptionClick()
-
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
 
@@ -259,7 +250,7 @@ class MapFragment : Fragment() {
 
     }
 
-    private fun addBysykkelClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) : ClusterManager<Station> {
+    private fun addBysykkelClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
         // Create the ClusterManager class and set the custom renderer.
         val clusterManager = ClusterManager<Station>(context, mMap)
         clusterManager.renderer =
@@ -280,10 +271,9 @@ class MapFragment : Fragment() {
                 clusterManager.onCameraIdle()
             }
         }
-        return clusterManager
     }
 
-    private fun addParkingClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) : ClusterManager<Feature> {
+    private fun addParkingClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
         // Create the ClusterManager class and set the custom renderer.
         val clusterManager = ClusterManager<Feature>(context, mMap)
         clusterManager.renderer =
@@ -304,44 +294,9 @@ class MapFragment : Fragment() {
                 clusterManager.onCameraIdle()
             }
         }
-        return clusterManager
     }
-    /*
+
     private fun onOptionClick() {
-        binding.bysykkelButton.setOnClickListener {
-            bysykkelLayerActive = when (bysykkelLayerActive) {
-                false -> {
-                    bySykkelManager.clusterMarkerCollection.showAll()
-                    bySykkelManager.markerCollection.showAll()
-                    binding.bysykkelButton.setColorFilter(Color.parseColor("#FF3700B3"))
-                    true
-                }
-                true -> {
-                    bySykkelManager.clusterMarkerCollection.hideAll()
-                    bySykkelManager.markerCollection.hideAll()
-                    binding.bysykkelButton.clearColorFilter()
-                    false
-                }
-            }
-        }
-
-        binding.parkingButton.setOnClickListener {
-            parkingLayerActive = when (parkingLayerActive) {
-                false -> {
-                    parkeringManager.clusterMarkerCollection.showAll()
-                    parkeringManager.markerCollection.showAll()
-                    binding.parkingButton.setColorFilter(Color.parseColor("#FF3700B3"))
-                    true
-                }
-                true -> {
-                    parkeringManager.clusterMarkerCollection.hideAll()
-                    parkeringManager.markerCollection.hideAll()
-                    binding.parkingButton.clearColorFilter()
-                    false
-                }
-            }
-        }
-
         binding.airQualityButton.setOnClickListener {
             when (airQualityLayerActive) {
                 false -> {
@@ -360,68 +315,6 @@ class MapFragment : Fragment() {
                 }
             }
         }
-    }
-
-     */
-
-    private fun onCameraMoved(mMap: GoogleMap) {
-        mMap.setOnCameraMoveStartedListener {
-            when (bysykkelLayerActive) {
-                true -> {
-                    bySykkelManager.clusterMarkerCollection.showAll()
-                    bySykkelManager.markerCollection.showAll()
-                }
-                false -> {
-                    bySykkelManager.clusterMarkerCollection.hideAll()
-                    bySykkelManager.markerCollection.hideAll()
-                }
-            }
-
-            when (parkingLayerActive) {
-                true -> {
-                    parkeringManager.clusterMarkerCollection.showAll()
-                    parkeringManager.markerCollection.showAll()
-                }
-                false -> {
-                    parkeringManager.clusterMarkerCollection.hideAll()
-                    parkeringManager.markerCollection.hideAll()
-                }
-            }
-        }
-        mMap.setOnCameraIdleListener {
-            when (bysykkelLayerActive) {
-                true -> {
-                    bySykkelManager.clusterMarkerCollection.showAll()
-                    bySykkelManager.markerCollection.showAll()
-                }
-                false -> {
-                    bySykkelManager.clusterMarkerCollection.hideAll()
-                    bySykkelManager.markerCollection.hideAll()
-                }
-            }
-
-            when (parkingLayerActive) {
-                true -> {
-                    parkeringManager.clusterMarkerCollection.showAll()
-                    parkeringManager.markerCollection.showAll()
-                }
-                false -> {
-                    parkeringManager.clusterMarkerCollection.hideAll()
-                    parkeringManager.markerCollection.hideAll()
-                }
-            }
-        }
-
-    }
-
-    private fun hideAllLayers() {
-        airQualityList.forEach {
-            it.isVisible = false
-        }
-        bySykkelManager.clusterMarkerCollection.hideAll()
-        bySykkelManager.markerCollection.hideAll()
-        parkeringManager.clusterMarkerCollection.hideAll()
-        parkeringManager.markerCollection.hideAll()
     }
 
 }
