@@ -52,6 +52,6 @@ class FeatureRenderer(
      */
     override fun onClusterItemRendered(clusterItem: Feature, marker: Marker) {
         marker.tag = clusterItem
-        marker.snippet = "Capicity:"+clusterItem.properties.antall_parkeringsplasser.toString()
+        marker.snippet = "Capacity: "+clusterItem.properties.antall_parkeringsplasser.toString()
     }
 }
