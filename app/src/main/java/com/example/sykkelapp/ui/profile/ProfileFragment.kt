@@ -30,9 +30,11 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        _binding!!.editProfile.setOnClickListener{
+      /*  _binding!!.editProfile.setOnClickListener{
             //startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
+
+       */
 
 //        val textView: TextView = binding.profileFragmentUsername
 //        profileViewModel.text.observe(viewLifecycleOwner) {
