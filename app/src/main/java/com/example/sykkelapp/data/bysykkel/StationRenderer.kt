@@ -54,5 +54,6 @@ import com.google.maps.android.clustering.view.DefaultClusterRenderer
          */
         override fun onClusterItemRendered(clusterItem: Station, marker: Marker) {
             marker.tag = clusterItem
+            marker.snippet = "Capacity: "+clusterItem.capacity
         }
     }
