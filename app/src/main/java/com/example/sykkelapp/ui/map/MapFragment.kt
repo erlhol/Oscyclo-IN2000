@@ -20,6 +20,7 @@ import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkel.StationRenderer
 import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.data.parking.FeatureRenderer
+import com.example.sykkelapp.data.parking.Parking
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -71,8 +72,12 @@ class MapFragment : Fragment() {
             initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
-            //addBysykkelClusteredMarkers(map, homeViewModel)
-            addParkingClusteredMarkers(map, homeViewModel)
+            val bySykkelC = addBysykkelClusteredMarkers(map, homeViewModel)
+            val parkingC = addParkingClusteredMarkers(map, homeViewModel)
+            map.setOnCameraIdleListener {
+                parkingC.onCameraIdle()
+                bySykkelC.onCameraIdle()
+            }
             onOptionClick()
         }
 
@@ -213,7 +218,7 @@ class MapFragment : Fragment() {
     }
 
     private fun uniqueColor(layer: GeoJsonLayer) {
-        val colors = listOf<Int>(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
+        val colors = listOf(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
             Color.YELLOW,Color.GRAY,Color.LTGRAY,
             Color.rgb(255, 128, 0),Color.rgb(128, 0, 0))
 
@@ -250,7 +255,7 @@ class MapFragment : Fragment() {
 
     }
 
-    private fun addBysykkelClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
+    private fun addBysykkelClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) : ClusterManager<Station> {
         // Create the ClusterManager class and set the custom renderer.
         val clusterManager = ClusterManager<Station>(context, mMap)
         clusterManager.renderer =
@@ -267,13 +272,11 @@ class MapFragment : Fragment() {
         viewModel.station.observe(viewLifecycleOwner) {
             clusterManager.addItems(it)
             clusterManager.cluster()
-            mMap.setOnCameraIdleListener {
-                clusterManager.onCameraIdle()
-            }
         }
+        return clusterManager
     }
 
-    private fun addParkingClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) {
+    private fun addParkingClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) : ClusterManager<Feature> {
         // Create the ClusterManager class and set the custom renderer.
         val clusterManager = ClusterManager<Feature>(context, mMap)
         clusterManager.renderer =
@@ -290,10 +293,8 @@ class MapFragment : Fragment() {
         viewModel.parking.observe(viewLifecycleOwner) {
             clusterManager.addItems(it)
             clusterManager.cluster()
-            mMap.setOnCameraIdleListener {
-                clusterManager.onCameraIdle()
-            }
         }
+        return clusterManager
     }
 
     private fun onOptionClick() {
