@@ -14,6 +14,7 @@ import com.example.sykkelapp.data.locationForecast.LocationForecast
 import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.data.parking.Parking
 import com.example.sykkelapp.data.placeid.PlaceName
+import com.example.sykkelapp.ui.route.RouteViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.*
@@ -76,14 +77,20 @@ class Datasource : DataSourceInterface {
     }
 
     override suspend fun loadBySykkelRoutes() : List<BysykkelItem> {
-        val path = "https://data.urbansharing.com/oslobysykkel.no/trips/v1/2022/03.json"
+        val path = "https://data.urbansharing.com/oslobysykkel.no/trips/v1/2021/12.json"
         val response : HttpResponse = client.request(path)
         val jsonText = response.readText()
         val liste = object : TypeToken<List<BysykkelItem>>() {}.type
-        val res : List<BysykkelItem> = Gson().fromJson(jsonText,liste)
+        val res : List<BysykkelItem> = Gson().fromJson<List<BysykkelItem>?>(jsonText,liste).filter {it.duration>600}
         CoroutineScope(Dispatchers.IO).async {
             res.forEach {
                 it.placeid = loadPlaceId(it.start_station_name)
+                it.air_qualtiy = averageAirQuality(
+                    it.start_station_latitude,
+                    it.start_station_longitude,
+                    it.end_station_latitude,
+                    it.end_station_longitude
+                )
             }
         }
         return res
@@ -97,5 +104,11 @@ class Datasource : DataSourceInterface {
             return response.candidates[0].place_id
         }
         return "ChIJOfBn8mFuQUYRmh4j019gkn4"
+    }
+
+    private suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
+        val start  = loadAirQualityForecast(latStart.toString(), lonStart.toString()).value
+        val end = loadAirQualityForecast(latEnd.toString(), longEnd.toString()).value
+        return (start + end)/2
     }
 }

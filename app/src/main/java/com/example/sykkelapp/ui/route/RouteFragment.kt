@@ -39,36 +39,19 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 spinner.adapter = adapter
             }
         }
-        averageAirQuality(routeViewModel)
+
         // Just one example, has to be changed to MVVM
         val recyclerView = binding.recyclerView
 
         routeViewModel.routes.observe(viewLifecycleOwner) {
                 routes -> recyclerView.adapter = RouteAdapter(routes)
+            println(routes[0].air_qualtiy)
         }
         return root
     }
 
-    private fun averageAirQuality(viewModel: RouteViewModel){
-        viewModel.routes.observe(viewLifecycleOwner){
-            var i = 0
-            while(i < it.size){
-                val startLong = it[i].start_station_longitude
-                val startLat = it[i].start_station_latitude
 
-                val sluttLong = it[i].end_station_longitude
-                val sluttLat = it[i].end_station_latitude
 
-                val start = viewModel.getAirQ(startLat.toString(), startLong.toString())
-                val end = viewModel.getAirQ(sluttLat.toString(), sluttLong.toString())
-
-                val total = start!! + end!!
-                println("total$total")
-                it[i].air_qualtiy = total/2
-                i += 1
-            }
-        }
-    }
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
