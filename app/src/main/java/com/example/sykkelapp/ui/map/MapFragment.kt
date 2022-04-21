@@ -82,7 +82,7 @@ class MapFragment : Fragment() {
             //onCameraMoved(map)
         }
 
-        onOptionClick()
+        //onOptionClick()
 
 
         GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
@@ -306,7 +306,7 @@ class MapFragment : Fragment() {
         }
         return clusterManager
     }
-
+    /*
     private fun onOptionClick() {
         binding.bysykkelButton.setOnClickListener {
             bysykkelLayerActive = when (bysykkelLayerActive) {
@@ -361,6 +361,8 @@ class MapFragment : Fragment() {
             }
         }
     }
+
+     */
 
     private fun onCameraMoved(mMap: GoogleMap) {
         mMap.setOnCameraMoveStartedListener {
