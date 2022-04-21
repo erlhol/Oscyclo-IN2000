@@ -5,8 +5,10 @@
       <map>
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/roundstyle.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/activity_main.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/element.xml" value="0.1" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/fragment_dashboard.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/fragment_home.xml" value="0.20052083333333334" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/fragment_map.xml" value="0.10552536231884058" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/fragment_notifications.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/menu/bottom_nav_menu.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/HP/Documents/GitHub/IN2000---gruppe-3/app/src/main/res/drawable/ic_baseline_map_24.xml" value="0.1355" />
@@ -40,6 +42,23 @@
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/layout/message.xml" value="0.1" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/layout/position_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/drawable-anydpi/ic_exit.xml" value="0.1865" />
+        <entry key="app/src/main/res/drawable/circlebutton.xml" value="0.1865" />
+        <entry key="app/src/main/res/drawable/roundstyle.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/account_settings_fragment.xml" value="0.25104166666666666" />
+        <entry key="app/src/main/res/layout/activity_account_settings.xml" value="0.32382246376811596" />
+        <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.25104166666666666" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21603260869565216" />
+        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.33016304347826086" />
+        <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.25104166666666666" />
+        <entry key="app/src/main/res/layout/activity_sign_up2.xml" value="0.37604166666666666" />
+        <entry key="app/src/main/res/layout/element.xml" value="0.25104166666666666" />
+        <entry key="app/src/main/res/layout/fragment_map.xml" value="0.25104166666666666" />
+        <entry key="app/src/main/res/layout/fragment_notifications.xml" value="0.16530797101449277" />
+        <entry key="app/src/main/res/layout/fragment_path.xml" value="0.22542648253452477" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.32382246376811596" />
+        <entry key="app/src/main/res/layout/fragment_route.xml" value="0.19791666666666666" />
+        <entry key="app/src/main/res/menu/bottom_nav_menu.xml" value="0.1" />
       </map>
     </option>
   </component>

@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-//import com.example.sykkelapp.AccountSettingsActivity
+import com.example.sykkelapp.AccountSettingsActivity
 import com.example.sykkelapp.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -30,9 +30,9 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //_binding!!.editProfile.setOnClickListener{
-            //startActivity(Intent(context, AccountSettingsActivity::class.java))
-        //}
+        _binding!!.profileSettingsButton.setOnClickListener{
+            startActivity(Intent(context, AccountSettingsActivity::class.java))
+        }
 
 //        val textView: TextView = binding.profileFragmentUsername
 //        profileViewModel.text.observe(viewLifecycleOwner) {
