@@ -82,44 +82,13 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
 
         val start_coord = listOf(start_station_lon,start_station_lat)
         viewHolder.imageView.setImageDrawable(null)
-        viewHolder.distance.text = String.format("%.1f",findDistance(start_coord,end_coord)/1000) + "km"
+        viewHolder.distance.text = String.format("%.1f",exampleList[position].distance) + "km"
 
         setImage(viewHolder.imageView, exampleList[position])
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = exampleList.size
-
-    private fun findDistance(start: List<Double>, end : List<Double> ) : Double {
-        var geometry: List<List<Double>> = listOf(start,end)
-        val results = FloatArray(5)
-
-        var totalLength: Double = 0.0
-        //var firstLatitude = 0.0
-        //var firstLongtitude = 0.0
-        //val results = FloatArray(5)
-        var i = 1
-        var secondLongtitude = 0.0
-        var secondLatitude = 0.0
-        val x = geometry[0]
-        var firstLongtitude: Double = x[0]
-        var firstLatitude: Double = x[1]
-        //Location.distanceBetween(firstLatitude, firstLongtitude, 59.92190524, 10.71821751, results)
-        //totalLength += results
-        while(i < geometry.size){
-            secondLongtitude = geometry[i][0]
-            secondLatitude = geometry[i][1]
-            Location.distanceBetween(firstLatitude, firstLongtitude, secondLatitude, secondLongtitude, results)
-            results.forEach {
-                totalLength += it
-            }
-            i += 1
-            firstLatitude = secondLatitude
-            firstLongtitude = secondLongtitude
-        }
-        return totalLength
-
-    }
 
     private fun setImage(imageView: ImageView, item: BysykkelItem) {
         Places.initialize(imageView.context, BuildConfig.MAPS_API_KEY)
