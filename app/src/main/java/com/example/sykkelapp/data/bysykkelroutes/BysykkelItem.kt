@@ -18,5 +18,6 @@ data class BysykkelItem(
     val started_at: String,
     var placeid: String?,
     var air_quality: Double,
-    var directions : Leg
+    var directions : Leg,
+    var popularity : Int
 )

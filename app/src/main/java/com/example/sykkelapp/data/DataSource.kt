@@ -1,6 +1,5 @@
 package com.example.sykkelapp.data
 
-import android.location.Location
 import android.util.Log
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.data.airquality.AirQuality
@@ -17,7 +16,6 @@ import com.example.sykkelapp.data.locationForecast.LocationForecast
 import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.data.parking.Parking
 import com.example.sykkelapp.data.placeid.PlaceName
-import com.example.sykkelapp.ui.route.RouteViewModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import io.ktor.client.*
@@ -76,11 +74,20 @@ class Datasource : DataSourceInterface {
         val response : HttpResponse = client.request(path)
         val jsonText = response.readText()
         val liste = object : TypeToken<List<BysykkelItem>>() {}.type
-        val res : List<BysykkelItem> = Gson().fromJson<List<BysykkelItem>?>(jsonText,liste).filter{it.duration > 1500}.take(15)
+        var res : List<BysykkelItem> = Gson().fromJson<List<BysykkelItem>?>(jsonText,liste).filter{it.duration > 1500 && it.start_station_id != it.end_station_id}
+        val startEndMap = res.map {
+            Key(it.start_station_id,it.end_station_id) to it
+        }.toMap()
+        val eachCountMap = res.groupingBy { Key(it.start_station_id,it.end_station_id) }.eachCount()
+        var popularRoutes = mutableListOf<BysykkelItem>()
+        eachCountMap.toList().sortedByDescending { it.second }.take(20).forEach {
+            startEndMap[it.first]?.let { it1 -> popularRoutes.add(it1)
+            it1.popularity = it.second}
+        }
         val jobsList = mutableListOf<Deferred<Unit>>()
 
         Log.d("DataSource",res.size.toString())
-            res.forEach {
+            popularRoutes.forEach {
                 val job = CoroutineScope(Dispatchers.IO).async {
                 it.placeid = loadPlaceId(it.start_station_name)
                 it.air_quality = averageAirQuality(
@@ -94,7 +101,7 @@ class Datasource : DataSourceInterface {
             jobsList.add(job)
         }
         jobsList.awaitAll()
-        return res
+        return popularRoutes
     }
 
     override suspend fun loadPlaceId(name : String) : String {
@@ -119,3 +126,5 @@ class Datasource : DataSourceInterface {
         return response.routes[0].legs[0]
     }
 }
+
+data class Key(val startStation: String, val endStation: String)
