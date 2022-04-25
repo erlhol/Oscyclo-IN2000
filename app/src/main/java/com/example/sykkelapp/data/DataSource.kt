@@ -75,10 +75,15 @@ class Datasource : DataSourceInterface {
         val jsonText = response.readText()
         val liste = object : TypeToken<List<BysykkelItem>>() {}.type
         var res : List<BysykkelItem> = Gson().fromJson<List<BysykkelItem>?>(jsonText,liste).filter{it.duration > 1500 && it.start_station_id != it.end_station_id}
+        // create map of routes: Key = start,end. Value = BysykkelItem
         val startEndMap = res.map {
             Key(it.start_station_id,it.end_station_id) to it
         }.toMap()
+
+        // aggregate the routes with same start_id and end_id and count it
         val eachCountMap = res.groupingBy { Key(it.start_station_id,it.end_station_id) }.eachCount()
+
+        // add the most popular routes in a list. Just the 20 most popular
         var popularRoutes = mutableListOf<BysykkelItem>()
         eachCountMap.toList().sortedByDescending { it.second }.take(20).forEach {
             startEndMap[it.first]?.let { it1 -> popularRoutes.add(it1)
