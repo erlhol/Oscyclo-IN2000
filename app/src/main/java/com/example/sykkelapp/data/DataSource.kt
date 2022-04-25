@@ -106,7 +106,7 @@ class Datasource : DataSourceInterface {
         return res
     }
 
-    suspend fun loadPlaceId(name : String) : String {
+    override suspend fun loadPlaceId(name : String) : String {
         val path = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=place_id&input=$name&inputtype=textquery&key=${BuildConfig.MAPS_API_KEY}"
         val response : PlaceName = client.get(path)
         if (response.candidates.isNotEmpty()) {
@@ -115,7 +115,7 @@ class Datasource : DataSourceInterface {
         return "ChIJOfBn8mFuQUYRmh4j019gkn4"
     }
 
-    private suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
+    override suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
         val start  = loadAirQualityForecast(latStart.toString(), lonStart.toString()).value
         val end = loadAirQualityForecast(latEnd.toString(), longEnd.toString()).value
         return (start + end)/2

@@ -53,9 +53,22 @@ class FakeDataSource : DataSourceInterface {
     }
 
     override suspend fun loadBySykkelRoutes(): List<BysykkelItem> {
-        val firstBysykkelItem = BysykkelItem(duration=174, end_station_description="ovenfor Fredrikke Qvams gate", end_station_id="499", end_station_latitude=59.925488, end_station_longitude=10.746058, end_station_name="Bjerregaards gate", "2022-03-01 04:11:44.654000+00:00", start_station_description="langs Dalsbergstien", start_station_id="578", start_station_latitude=59.922777, start_station_longitude=10.738655, start_station_name="Hallings gate", started_at="2022-03-01 04:08:50.263000+00:00","test")
-        val secondBysykkelItem = BysykkelItem(duration=320, end_station_description="Mellom Oslo City og The Hub hotel", end_station_id="2328", end_station_latitude=59.912522370233745, end_station_longitude=10.750910185807754, end_station_name="The Hub", ended_at="2022-03-01 04:38:55.016000+00:00", start_station_description="ved gangbroen", start_station_id="464", start_station_latitude=59.905124380703484, start_station_longitude=10.753763553726515, start_station_name="Sukkerbiten", started_at="2022-03-01 04:33:34.941000+00:00","test")
+        val firstBysykkelItem = BysykkelItem(duration=174, end_station_description="ovenfor Fredrikke Qvams gate", end_station_id="499", end_station_latitude=59.925488, end_station_longitude=10.746058, end_station_name="Bjerregaards gate", "2022-03-01 04:11:44.654000+00:00", start_station_description="langs Dalsbergstien", start_station_id="578", start_station_latitude=59.922777, start_station_longitude=10.738655, start_station_name="Hallings gate", started_at="2022-03-01 04:08:50.263000+00:00","ChIJOfBn8mFuQUYRmh4j019gkn4",4.0,500.0)
+        val secondBysykkelItem = BysykkelItem(duration=320, end_station_description="Mellom Oslo City og The Hub hotel", end_station_id="2328", end_station_latitude=59.912522370233745, end_station_longitude=10.750910185807754, end_station_name="The Hub", ended_at="2022-03-01 04:38:55.016000+00:00", start_station_description="ved gangbroen", start_station_id="464", start_station_latitude=59.905124380703484, start_station_longitude=10.753763553726515, start_station_name="Sukkerbiten", started_at="2022-03-01 04:33:34.941000+00:00","ChIJOfBn8mFuQUYRmh4j019gkn4",3.0,1000.0)
         return listOf(firstBysykkelItem,secondBysykkelItem)
+    }
+
+    override suspend fun loadPlaceId(name: String): String {
+        return "ChIJOfBn8mFuQUYRmh4j019gkn4"
+    }
+
+    override suspend fun averageAirQuality(
+        latStart: Double,
+        lonStart: Double,
+        latEnd: Double,
+        longEnd: Double
+    ): Double {
+        return 5.0
     }
 
 

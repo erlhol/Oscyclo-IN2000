@@ -21,4 +21,8 @@ interface DataSourceInterface {
     suspend fun loadBySykkel() : List<Station>
 
     suspend fun loadBySykkelRoutes() : List<BysykkelItem>
+
+    suspend fun loadPlaceId(name : String) : String
+
+    suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double
 }
