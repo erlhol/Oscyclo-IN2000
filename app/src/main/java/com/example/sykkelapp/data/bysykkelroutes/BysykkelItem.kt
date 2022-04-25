@@ -1,5 +1,7 @@
 package com.example.sykkelapp.data.bysykkelroutes
 
+import com.example.sykkelapp.data.directions.Leg
+
 data class BysykkelItem(
     val duration: Int,
     val end_station_description: String,
@@ -16,5 +18,5 @@ data class BysykkelItem(
     val started_at: String,
     var placeid: String?,
     var air_quality: Double,
-    var distance : Double
+    var directions : Leg
 )

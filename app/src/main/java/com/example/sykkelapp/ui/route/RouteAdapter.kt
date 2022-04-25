@@ -68,23 +68,14 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
         // contents of the view with that element
 
         // viewHolder.imageView = exampleList[position].
-        viewHolder.title.text = exampleList[position].start_station_name + " til " + exampleList[position].end_station_name
-        viewHolder.duration.text = String.format("%.2f",exampleList[position].duration.toDouble() / 60) + " min"
+        viewHolder.title.text = exampleList[position].start_station_name + " to " + exampleList[position].end_station_name
+        viewHolder.duration.text = exampleList[position].directions.duration.text
 
-
-        val end_station_lat =  exampleList[position].end_station_latitude
-        val end_station_lon = exampleList[position].end_station_longitude
-
-        val end_coord = listOf(end_station_lon,end_station_lat)
-
-        val start_station_lat = exampleList[position].start_station_latitude
-        val start_station_lon = exampleList[position].start_station_longitude
-
-        val start_coord = listOf(start_station_lon,start_station_lat)
         viewHolder.imageView.setImageDrawable(null)
-        viewHolder.distance.text = String.format("%.1f",exampleList[position].distance) + "km"
+        viewHolder.distance.text = exampleList[position].directions.distance.text
 
         setImage(viewHolder.imageView, exampleList[position])
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)

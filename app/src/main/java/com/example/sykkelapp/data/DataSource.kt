@@ -10,6 +10,8 @@ import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.bysykkel.BySykkel
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
+import com.example.sykkelapp.data.directions.Directions
+import com.example.sykkelapp.data.directions.Leg
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
 import com.example.sykkelapp.data.parking.Feature
@@ -70,15 +72,15 @@ class Datasource : DataSourceInterface {
     }
 
     override suspend fun loadBySykkelRoutes() : List<BysykkelItem> {
-        val path = "https://data.urbansharing.com/oslobysykkel.no/trips/v1/2021/12.json"
+        val path = "https://data.urbansharing.com/oslobysykkel.no/trips/v1/2022/04.json"
         val response : HttpResponse = client.request(path)
         val jsonText = response.readText()
         val liste = object : TypeToken<List<BysykkelItem>>() {}.type
-        val res : List<BysykkelItem> = Gson().fromJson<List<BysykkelItem>?>(jsonText,liste).filter {it.duration>6000}
+        val res : List<BysykkelItem> = Gson().fromJson<List<BysykkelItem>?>(jsonText,liste).filter{it.duration > 1500}.take(15)
         val jobsList = mutableListOf<Deferred<Unit>>()
 
         Log.d("DataSource",res.size.toString())
-            res.forEachIndexed { i, it ->
+            res.forEach {
                 val job = CoroutineScope(Dispatchers.IO).async {
                 it.placeid = loadPlaceId(it.start_station_name)
                 it.air_quality = averageAirQuality(
@@ -87,21 +89,10 @@ class Datasource : DataSourceInterface {
                     it.end_station_latitude,
                     it.end_station_longitude
                 )
-                val end_station_lat =  it.end_station_latitude
-                val end_station_lon = it.end_station_longitude
-
-                val end_coord = listOf(end_station_lon,end_station_lat)
-
-                val start_station_lat = it.start_station_latitude
-                val start_station_lon = it.start_station_longitude
-
-                val start_coord = listOf(start_station_lon,start_station_lat)
-                it.distance = findDistance(start_coord,end_coord)
-
+                it.directions = getDirection(it.start_station_latitude.toString()+","+it.start_station_longitude,it.end_station_latitude.toString()+","+it.start_station_longitude)
             }
             jobsList.add(job)
         }
-
         jobsList.awaitAll()
         return res
     }
@@ -121,33 +112,10 @@ class Datasource : DataSourceInterface {
         return (start + end)/2
     }
 
-    private fun findDistance(start: List<Double>, end : List<Double> ) : Double {
-        var geometry: List<List<Double>> = listOf(start,end)
-        val results = FloatArray(5)
-
-        var totalLength: Double = 0.0
-        //var firstLatitude = 0.0
-        //var firstLongtitude = 0.0
-        //val results = FloatArray(5)
-        var i = 1
-        var secondLongtitude = 0.0
-        var secondLatitude = 0.0
-        val x = geometry[0]
-        var firstLongtitude: Double = x[0]
-        var firstLatitude: Double = x[1]
-        //Location.distanceBetween(firstLatitude, firstLongtitude, 59.92190524, 10.71821751, results)
-        //totalLength += results
-        while(i < geometry.size){
-            secondLongtitude = geometry[i][0]
-            secondLatitude = geometry[i][1]
-            Location.distanceBetween(firstLatitude, firstLongtitude, secondLatitude, secondLongtitude, results)
-            results.forEach {
-                totalLength += it
-            }
-            i += 1
-            firstLatitude = secondLatitude
-            firstLongtitude = secondLongtitude
-        }
-        return totalLength
+    // haandtere exceptions!
+    suspend fun getDirection(destlatlon : String, originlatlon: String) : Leg {
+        val path = "https://maps.googleapis.com/maps/api/directions/json?avoid=highways&destination=$destlatlon&mode=bicycling&origin=$originlatlon&key=${BuildConfig.MAPS_API_KEY}"
+        val response : Directions = client.get(path)
+        return response.routes[0].legs[0]
     }
 }
