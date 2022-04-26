@@ -94,14 +94,14 @@ class Datasource : DataSourceInterface {
         Log.d("DataSource",res.size.toString())
             popularRoutes.forEach {
                 val job = CoroutineScope(Dispatchers.IO).async {
-                it.placeid = loadPlaceId(it.start_station_name)
+                it.placeid = loadPlaceId(it.start_station_name,(it.start_station_latitude.toString()+","+it.start_station_longitude))
                 it.air_quality = averageAirQuality(
                     it.start_station_latitude,
                     it.start_station_longitude,
                     it.end_station_latitude,
                     it.end_station_longitude
                 )
-                it.directions = getDirection(it.start_station_latitude.toString()+","+it.start_station_longitude,it.end_station_latitude.toString()+","+it.start_station_longitude)
+                it.directions = getDirection(it.start_station_latitude.toString()+","+it.start_station_longitude,it.end_station_latitude.toString()+","+it.end_station_longitude)
             }
             jobsList.add(job)
         }
@@ -109,8 +109,8 @@ class Datasource : DataSourceInterface {
         return popularRoutes
     }
 
-    override suspend fun loadPlaceId(name : String) : String {
-        val path = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=place_id&input=$name&inputtype=textquery&key=${BuildConfig.MAPS_API_KEY}"
+    override suspend fun loadPlaceId(name : String, startPoint: String) : String {
+        val path = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json?fields=place_id&input=$name&inputtype=textquery&locationbias=point:$startPoint&key=${BuildConfig.MAPS_API_KEY}"
         val response : PlaceName = client.get(path)
         if (response.candidates.isNotEmpty()) {
             return response.candidates[0].place_id
