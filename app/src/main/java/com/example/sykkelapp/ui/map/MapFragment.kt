@@ -212,28 +212,9 @@ class MapFragment : Fragment() {
             layer.setOnFeatureClickListener {
                 Toast.makeText(context, it.getProperty("rute"), Toast.LENGTH_SHORT).show()
             }
-            uniqueColor(layer)
             layer.addLayerToMap()
         }
     }
-
-    private fun uniqueColor(layer: GeoJsonLayer) {
-        val colors = listOf(Color.BLUE,Color.BLACK,Color.RED,Color.GREEN,
-            Color.YELLOW,Color.GRAY,Color.LTGRAY,
-            Color.rgb(255, 128, 0),Color.rgb(128, 0, 0))
-
-        layer.features.forEach {
-            val color : Int
-            val route = it.getProperty("rute")
-            val lineStringStyle = GeoJsonLineStringStyle()
-            val routeNum = route.toInt()
-            color = colors[routeNum % (colors.size-1)]
-            lineStringStyle.color = color
-            it.lineStringStyle = lineStringStyle
-        }
-        layer.addLayerToMap()
-    }
-
 
     private fun uvColor(uvIndex : Double, view: TextView) : Int {
         if (uvIndex < 3) {
