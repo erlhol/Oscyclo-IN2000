@@ -1,6 +1,5 @@
 package com.example.sykkelapp.ui.route
 
-import android.location.Location
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.R
 import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
-import com.example.sykkelapp.data.placeid.PlaceName
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -19,11 +17,6 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
-import io.ktor.client.*
-import io.ktor.client.engine.cio.*
-import io.ktor.client.features.json.*
-import io.ktor.client.request.*
-import kotlinx.coroutines.*
 
 class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
 
@@ -31,12 +24,6 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-
-    private val client = HttpClient(CIO) {
-        install(JsonFeature) {
-            serializer = GsonSerializer()
-        }
-    }
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
         val title : TextView
