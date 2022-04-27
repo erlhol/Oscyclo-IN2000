@@ -15,16 +15,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SykkelApp" >
         <activity
-            android:name=".AccountSettingsActivity"
+            android:name=".ui.profile.AccountSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".ui.profile.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".SignInActivity"
+            android:name=".ui.profile.SignInActivity"
             android:exported="false" />
         <activity
-            android:name=".EditAccountActivity"
+            android:name=".ui.profile.EditAccountActivity"
             android:exported="false" />
 
         <meta-data

@@ -1,10 +1,10 @@
-package com.example.sykkelapp
+package com.example.sykkelapp.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sykkelapp.MainActivity
 import com.example.sykkelapp.databinding.ActivityEditAccountBinding
-import com.example.sykkelapp.ui.profile.ProfileFragment
 
 class EditAccountActivity : AppCompatActivity() {
 

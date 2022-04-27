@@ -1,11 +1,9 @@
-package com.example.sykkelapp
+package com.example.sykkelapp.ui.profile
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.sykkelapp.databinding.ActivityAccountSettingsBinding
-import com.example.sykkelapp.databinding.ActivityEditAccountBinding
-import com.example.sykkelapp.ui.profile.ProfileFragment
 
 class AccountSettingsActivity : AppCompatActivity() {
     private lateinit var _binding: ActivityAccountSettingsBinding
