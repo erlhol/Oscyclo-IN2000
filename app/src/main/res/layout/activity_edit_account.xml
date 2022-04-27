@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primary_accent"
+    android:background="@color/white"
     tools:context=".ui.profile.EditAccountActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="19dp"
-        android:background="@color/primary_accent"
+        android:background="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/edit_profile_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +25,7 @@
             android:layout_marginLeft="6dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="6dp"
-            android:background="@color/primary_accent">
+            android:background="@color/white">
 
             <RelativeLayout
                 android:layout_width="match_parent"
