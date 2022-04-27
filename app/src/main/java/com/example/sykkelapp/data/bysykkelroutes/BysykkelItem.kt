@@ -17,7 +17,7 @@ data class BysykkelItem(
     val start_station_name: String,
     val started_at: String,
     var placeid: String?,
-    var air_quality: Double,
+    var air_quality: String,
     var directions : Leg,
     var popularity : Int
 )

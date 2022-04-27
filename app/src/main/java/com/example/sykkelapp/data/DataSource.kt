@@ -100,7 +100,7 @@ class Datasource : DataSourceInterface {
                     it.start_station_longitude,
                     it.end_station_latitude,
                     it.end_station_longitude
-                )
+                ) + " " + getUnit()
                 it.directions = getDirection(it.start_station_latitude.toString()+","+it.start_station_longitude,it.end_station_latitude.toString()+","+it.end_station_longitude)
             }
             jobsList.add(job)
@@ -118,14 +118,16 @@ class Datasource : DataSourceInterface {
         return "ChIJOfBn8mFuQUYRmh4j019gkn4"
     }
 
-    override suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
+    override suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): String {
         val start  = loadAirQualityForecast(latStart.toString(), lonStart.toString()).value
         val end = loadAirQualityForecast(latEnd.toString(), longEnd.toString()).value
-        return (start + end)/2
+        return String.format("%.2f",((start + end)/2))
     }
 
+    private suspend fun getUnit(): String {return loadAirQualityForecast("60", "10").units}
+
     // haandtere exceptions!
-    suspend fun getDirection(destlatlon : String, originlatlon: String) : Leg {
+    private suspend fun getDirection(destlatlon : String, originlatlon: String) : Leg {
         val path = "https://maps.googleapis.com/maps/api/directions/json?avoid=highways&destination=$destlatlon&mode=bicycling&origin=$originlatlon&key=${BuildConfig.MAPS_API_KEY}"
         val response : Directions = client.get(path)
         return response.routes[0].legs[0]

@@ -29,6 +29,7 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
         val title : TextView
         val duration: TextView
         val distance : TextView
+        val airQ : TextView
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -36,6 +37,7 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
             distance = view.findViewById(R.id.length)
             title = view.findViewById(R.id.title)
             duration = view.findViewById(R.id.duration)
+            airQ = view.findViewById(R.id.airQ)
         }
     }
 
@@ -57,10 +59,9 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
         // viewHolder.imageView = exampleList[position].
         viewHolder.title.text = exampleList[position].start_station_name + " to " + exampleList[position].end_station_name
         viewHolder.duration.text = exampleList[position].directions.duration.text
-
         viewHolder.imageView.setImageDrawable(null)
         viewHolder.distance.text = exampleList[position].directions.distance.text
-
+        viewHolder.airQ.text = exampleList[position].air_quality
         setImage(viewHolder.imageView, exampleList[position])
 
     }

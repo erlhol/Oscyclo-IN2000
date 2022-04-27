@@ -24,5 +24,6 @@ interface DataSourceInterface {
 
     suspend fun loadPlaceId(name : String, startPoint: String) : String
 
-    suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double
+    suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): String
+
 }
