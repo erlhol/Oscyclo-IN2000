@@ -11,6 +11,8 @@ import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
 import com.example.sykkelapp.data.directions.Directions
 import com.example.sykkelapp.data.directions.Leg
+import com.example.sykkelapp.data.elevation.Elevation
+import com.example.sykkelapp.data.elevation.Result
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
 import com.example.sykkelapp.data.parking.Feature
@@ -74,39 +76,7 @@ class Datasource : DataSourceInterface {
         val response : HttpResponse = client.request(path)
         val jsonText = response.readText()
         val liste = object : TypeToken<List<BysykkelItem>>() {}.type
-        var res : List<BysykkelItem> = Gson().fromJson<List<BysykkelItem>?>(jsonText,liste).filter{it.duration > 1500 && it.start_station_id != it.end_station_id}
-        // create map of routes: Key = start,end. Value = BysykkelItem
-        val startEndMap = res.map {
-            Key(it.start_station_id,it.end_station_id) to it
-        }.toMap()
-
-        // aggregate the routes with same start_id and end_id and count it
-        val eachCountMap = res.groupingBy { Key(it.start_station_id,it.end_station_id) }.eachCount()
-
-        // add the most popular routes in a list. Just the 20 most popular
-        var popularRoutes = mutableListOf<BysykkelItem>()
-        eachCountMap.toList().sortedByDescending { it.second }.take(20).forEach {
-            startEndMap[it.first]?.let { it1 -> popularRoutes.add(it1)
-            it1.popularity = it.second}
-        }
-        val jobsList = mutableListOf<Deferred<Unit>>()
-
-        Log.d("DataSource",res.size.toString())
-            popularRoutes.forEach {
-                val job = CoroutineScope(Dispatchers.IO).async {
-                it.placeid = loadPlaceId(it.start_station_name,(it.start_station_latitude.toString()+","+it.start_station_longitude))
-                it.air_quality = averageAirQuality(
-                    it.start_station_latitude,
-                    it.start_station_longitude,
-                    it.end_station_latitude,
-                    it.end_station_longitude
-                )
-                it.directions = getDirection(it.start_station_latitude.toString()+","+it.start_station_longitude,it.end_station_latitude.toString()+","+it.end_station_longitude)
-            }
-            jobsList.add(job)
-        }
-        jobsList.awaitAll()
-        return popularRoutes
+        return Gson().fromJson<List<BysykkelItem>?>(jsonText,liste).filter{it.duration > 1500 && it.start_station_id != it.end_station_id}
     }
 
     override suspend fun loadPlaceId(name : String, startPoint: String) : String {
@@ -130,6 +100,11 @@ class Datasource : DataSourceInterface {
         val response : Directions = client.get(path)
         return response.routes[0].legs[0]
     }
-}
 
-data class Key(val startStation: String, val endStation: String)
+    // haandtere exceptions!
+    suspend fun getElevation(destlatlon : String, originlatlon: String): List<Result> {
+        val path = "https://maps.googleapis.com/maps/api/elevation/json?locations=$destlatlon|$originlatlon&key=${BuildConfig.MAPS_API_KEY}"
+        val response : Elevation = client.get(path)
+        return response.results
+    }
+}

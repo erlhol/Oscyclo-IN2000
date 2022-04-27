@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.R
-import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
+import com.example.sykkelapp.data.Route
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -18,7 +18,7 @@ import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
 
-class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
+class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
@@ -68,7 +68,7 @@ class RouteAdapter(private val exampleList: List<BysykkelItem>) : RecyclerView.A
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = exampleList.size
 
-    private fun setImage(imageView: ImageView, item: BysykkelItem) {
+    private fun setImage(imageView: ImageView, item: Route) {
         Places.initialize(imageView.context, BuildConfig.MAPS_API_KEY)
 
         // Create a new PlacesClient instance

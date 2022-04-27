@@ -1,18 +1,21 @@
-package com.example.sykkelapp.data.bysykkelroutes
+package com.example.sykkelapp.data
 
-data class BysykkelItem(
-    val duration: Int,
+import com.example.sykkelapp.data.directions.Leg
+
+data class Route(
     val end_station_description: String,
     val end_station_id: String,
     val end_station_latitude: Double,
     val end_station_longitude: Double,
     val end_station_name: String,
-    val ended_at: String,
     val start_station_description: String,
     val start_station_id: String,
     val start_station_latitude: Double,
     val start_station_longitude: Double,
     val start_station_name: String,
-    val started_at: String,
-    var popularity : Int
+    val placeid: String,
+    val air_quality: Double,
+    val directions : Leg,
+    val popularity : Int,
+    val elevation : Double
 )

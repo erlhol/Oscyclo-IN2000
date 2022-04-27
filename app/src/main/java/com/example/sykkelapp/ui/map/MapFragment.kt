@@ -73,9 +73,9 @@ class MapFragment : Fragment() {
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
             val bySykkelC = addBysykkelClusteredMarkers(map, homeViewModel)
-            val parkingC = addParkingClusteredMarkers(map, homeViewModel)
+            //val parkingC = addParkingClusteredMarkers(map, homeViewModel)
             map.setOnCameraIdleListener {
-                parkingC.onCameraIdle()
+                //parkingC.onCameraIdle()
                 bySykkelC.onCameraIdle()
             }
             onOptionClick()

@@ -4,6 +4,7 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import com.example.sykkelapp.data.Datasource
+import com.example.sykkelapp.data.Repository
 import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.bysykkel.Station
@@ -22,7 +23,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
     private val _air = MutableLiveData<List<AirQualityItem>>()
     private val _airquality = MutableLiveData<Pm10Concentration>()
     private val _station = MutableLiveData<List<Station>>()
-    private val source = Datasource()
+    private val source = Repository(Datasource())
 
     private val _locationData = LocationLiveData(application)
 
@@ -42,71 +43,14 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         get() = _locationData
 
     init {
-            loadGeo()
-            loadAir()
-            loadParking()
-            loadWeather()
-            loadAirQualityForecast()
-            loadBySykkel()
-    }
-
-    fun loadGeo() {
         viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _geo.postValue(source.loadGeo())
-            } catch (exception: Exception) {
-                Log.d("Map Viewmodel", "Exception occured loadGeo")
-            }
-        }
-    }
+            _geo.postValue(source.loadGeo())
+            _air.postValue(source.loadAir())
+            _parking.postValue(source.loadParking())
+            _data.postValue(source.loadWeather("59.94410", "10.7185", "complete?"))
+            _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
+            _station.postValue(source.loadBySykkel())
 
-    fun loadAir() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _air.postValue(source.loadAir())
-            } catch (exception: Exception) {
-                Log.d("Map Viewmodel", "Exception occured loadAir")
-            }
-        }
-    }
-
-    fun loadParking() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _parking.postValue(source.loadParking())
-            } catch (exception: Exception) {
-                Log.d("Map Viewmodel", "Exception occured loadParking")
-            }
-        }
-    }
-
-    fun loadWeather() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _data.postValue(source.loadWeather("59.94410", "10.7185", "complete?"))
-            } catch (exception: Exception) {
-                Log.d("Map Viewmodel", "Exception occured loadWeather")
-            }
-        }
-    }
-
-    fun loadAirQualityForecast() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
-            } catch (exception: Exception) {
-                Log.d("Map Viewmodel", "Exception occured loadAirQualityForecast")
-            }
-        }
-    }
-
-    fun loadBySykkel() {
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                _station.postValue(source.loadBySykkel())
-            } catch (exception: Exception) {
-                Log.d("Map Viewmodel", "Exception occured loadAirQualityForecast")
-            }
         }
     }
 
