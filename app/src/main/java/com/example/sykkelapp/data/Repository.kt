@@ -86,11 +86,12 @@ class Repository (private val datasource: Datasource) {
         popularRoutes.forEach {
             val job = CoroutineScope(Dispatchers.IO).async {
                 val placeid = datasource.loadPlaceId(it.start_station_name,(it.start_station_latitude.toString()+","+it.start_station_longitude))
-                val air_quality = datasource.averageAirQuality(
+                val air_quality = averageAirQuality(
                     it.start_station_latitude,
                     it.start_station_longitude,
                     it.end_station_latitude,
                     it.end_station_longitude)
+                val airq_unit = datasource.loadAirQualityForecast(it.start_station_latitude.toString(),it.start_station_longitude.toString())
                 val directions = datasource.getDirection(it.start_station_latitude.toString()+","+it.start_station_longitude,it.end_station_latitude.toString()+","+it.end_station_longitude)
                 val elevation = findElevationDiff(it.start_station_latitude.toString()+","+it.start_station_longitude,it.end_station_latitude.toString()+","+it.end_station_longitude)
                 routes.add(
@@ -107,6 +108,7 @@ class Repository (private val datasource: Datasource) {
                     it.start_station_name,
                     placeid,
                     air_quality,
+                    airq_unit.units,
                     directions,
                     it.popularity,
                     elevation)
@@ -125,6 +127,12 @@ class Repository (private val datasource: Datasource) {
         // if elevation is positive - it means that you are cycling downwards
         // else - cycling upwards
         return originlatlonElevation - destlatlonElevation
+    }
+
+    suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
+        val start  = loadAirQualityForecast(latStart.toString(), lonStart.toString())?.value ?: -1.0
+        val end = loadAirQualityForecast(latEnd.toString(), longEnd.toString())?.value ?: -1.0
+        return (start + end)/2
     }
 }
 

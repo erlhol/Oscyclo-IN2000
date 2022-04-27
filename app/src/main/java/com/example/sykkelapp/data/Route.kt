@@ -15,6 +15,7 @@ data class Route(
     val start_station_name: String,
     val placeid: String,
     val air_quality: Double,
+    val airq_unit : String,
     val directions : Leg,
     val popularity : Int,
     val elevation : Double

@@ -88,12 +88,6 @@ class Datasource : DataSourceInterface {
         return "ChIJOfBn8mFuQUYRmh4j019gkn4"
     }
 
-    override suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
-        val start  = loadAirQualityForecast(latStart.toString(), lonStart.toString()).value
-        val end = loadAirQualityForecast(latEnd.toString(), longEnd.toString()).value
-        return (start + end)/2
-    }
-
     // haandtere exceptions!
     suspend fun getDirection(destlatlon : String, originlatlon: String) : Leg {
         val path = "https://maps.googleapis.com/maps/api/directions/json?avoid=highways&destination=$destlatlon&mode=bicycling&origin=$originlatlon&key=${BuildConfig.MAPS_API_KEY}"

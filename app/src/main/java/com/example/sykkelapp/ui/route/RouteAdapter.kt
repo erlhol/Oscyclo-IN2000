@@ -61,7 +61,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         viewHolder.duration.text = exampleList[position].directions.duration.text
         viewHolder.imageView.setImageDrawable(null)
         viewHolder.distance.text = exampleList[position].directions.distance.text
-        viewHolder.airQ.text = exampleList[position].air_quality
+        viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
         setImage(viewHolder.imageView, exampleList[position])
 
     }
