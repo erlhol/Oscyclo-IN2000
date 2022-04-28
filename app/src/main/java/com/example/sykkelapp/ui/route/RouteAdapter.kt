@@ -88,18 +88,19 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
     override fun getItemCount() = exampleList.size
 
     private fun setDifficulty(diff: TextView, route: Route){
-        val dur = route.directions.duration.value
-        val dis = route.directions.distance.value
-        val avgSpeed = dis/dur
+        // TODO: add elevation too?
+        val second = route.directions.duration.value.toDouble()
+        val meters = route.directions.distance.value.toDouble()
+        val avgSpeed = meters/second
 
         when {
-            avgSpeed<15 -> {
+            avgSpeed < 4.16 -> {
                 diff.text = "Easy"
             }
-            avgSpeed.toDouble() in 15.0..20.0 -> {
+            avgSpeed in 4.16 .. 5.5 -> {
                 diff.text = "Medium"
             }
-            avgSpeed>20 -> {
+            avgSpeed > 5.5 -> {
                 diff.text = "Hard"
             }
             else -> {
