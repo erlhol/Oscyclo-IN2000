@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -32,6 +33,9 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         val distance : TextView
         val airQ : TextView
         val difficulty : TextView
+        val bookmark : ImageButton
+        var bookmarked : Boolean
+
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -41,6 +45,8 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             duration = view.findViewById(R.id.duration)
             airQ = view.findViewById(R.id.airQ)
             difficulty = view.findViewById(R.id.difficulty)
+            bookmark = view.findViewById(R.id.bookmark)
+            bookmarked = false
         }
     }
 
@@ -68,6 +74,15 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         setImage(viewHolder.imageView, exampleList[position])
         setDifficulty(viewHolder.difficulty, exampleList[position])
 
+        viewHolder.bookmark.setOnClickListener{
+            if(!viewHolder.bookmarked){
+                viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_24)
+                viewHolder.bookmarked = true
+            }else{
+                viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_border_24)
+                viewHolder.bookmarked = false
+            }
+        }
     }
 
     // Return the size of your dataset (invoked by the layout manager)

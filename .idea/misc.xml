@@ -3,8 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/bookmark_selector.xml" value="0.123" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/circlebutton.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.1395" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_baseline_bookmark_border_24.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/roundstyle.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/activity_main.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/element.xml" value="0.4472168905950096" />

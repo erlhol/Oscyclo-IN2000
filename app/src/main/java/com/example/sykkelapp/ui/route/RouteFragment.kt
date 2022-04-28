@@ -9,11 +9,8 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentRouteBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding : FragmentRouteBinding
