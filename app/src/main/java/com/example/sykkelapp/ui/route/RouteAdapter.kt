@@ -18,7 +18,6 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
-import kotlin.text.split as split
 
 class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
 
@@ -89,18 +88,23 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
     override fun getItemCount() = exampleList.size
 
     private fun setDifficulty(diff: TextView, route: Route){
-        val dur = route.directions.duration.text.split(" ")[0].toDouble()/60
-        val dis = route.directions.distance.text.split(" ")[0].toDouble()
+        val dur = route.directions.duration.value
+        val dis = route.directions.distance.value
         val avgSpeed = dis/dur
 
-        if(avgSpeed<15){
-            diff.text = "Easy"
-        }else if(avgSpeed in 15.0..20.0){
-            diff.text = "Medium"
-        }else if(avgSpeed>20){
-            diff.text = "Hard"
-        }else{
-            diff.text = "FAILED"
+        when {
+            avgSpeed<15 -> {
+                diff.text = "Easy"
+            }
+            avgSpeed.toDouble() in 15.0..20.0 -> {
+                diff.text = "Medium"
+            }
+            avgSpeed>20 -> {
+                diff.text = "Hard"
+            }
+            else -> {
+                diff.text = "FAILED"
+            }
         }
     }
     private fun setImage(imageView: ImageView, item: Route) {
