@@ -8,7 +8,8 @@
     app:cardCornerRadius="35dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_gravity="center"
-    android:layout_marginTop="15dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="15dp"
     android:layout_marginHorizontal="40dp"
     card_view:cardElevation="8dp"
     android:backgroundTint="@color/white"
@@ -45,6 +46,7 @@
             android:textAlignment="center"
             android:fontFamily="sans-serif-black"
             android:textSize="15sp"
+            android:textColor="@color/black"
             card_view:layout_constraintBottom_toTopOf="@+id/length"
             card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent" />
@@ -55,6 +57,7 @@
             android:layout_height="25dp"
             android:layout_marginStart="15dp"
             android:textAlignment="center"
+            android:textColor="@color/black"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintStart_toStartOf="parent" />
 
@@ -64,6 +67,7 @@
             android:layout_height="25dp"
             android:layout_marginEnd="15dp"
             android:textAlignment="center"
+            android:textColor="@color/black"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toEndOf="parent" />
 
@@ -72,6 +76,7 @@
             android:layout_width="100dp"
             android:layout_height="25dp"
             android:textAlignment="center"
+            android:textColor="@color/black"
             card_view:layout_constraintBottom_toBottomOf="parent"
             card_view:layout_constraintEnd_toStartOf="@+id/duration"
             card_view:layout_constraintStart_toEndOf="@+id/length" />
@@ -82,6 +87,7 @@
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
             android:layout_height="25dp"
+            android:textColor="@color/black"
             android:text="Difficulty"
             android:textAlignment="textEnd"
             android:layout_marginEnd="10dp"
