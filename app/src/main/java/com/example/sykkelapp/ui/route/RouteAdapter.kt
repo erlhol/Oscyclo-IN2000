@@ -17,6 +17,7 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
+import kotlin.text.split as split
 
 class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
 
@@ -30,6 +31,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         val duration: TextView
         val distance : TextView
         val airQ : TextView
+        val difficulty : TextView
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -38,6 +40,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             title = view.findViewById(R.id.title)
             duration = view.findViewById(R.id.duration)
             airQ = view.findViewById(R.id.airQ)
+            difficulty = view.findViewById(R.id.difficulty)
         }
     }
 
@@ -63,12 +66,28 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         viewHolder.distance.text = exampleList[position].directions.distance.text
         viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
         setImage(viewHolder.imageView, exampleList[position])
+        setDifficulty(viewHolder.difficulty, exampleList[position])
 
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = exampleList.size
 
+    private fun setDifficulty(diff: TextView, route: Route){
+        val dur = route.directions.duration.text.split(" ")[0].toDouble()/60
+        val dis = route.directions.distance.text.split(" ")[0].toDouble()
+        val avgSpeed = dis/dur
+
+        if(avgSpeed<15){
+            diff.text = "Easy"
+        }else if(avgSpeed in 15.0..20.0){
+            diff.text = "Medium"
+        }else if(avgSpeed>20){
+            diff.text = "Hard"
+        }else{
+            diff.text = "FAILED"
+        }
+    }
     private fun setImage(imageView: ImageView, item: Route) {
         Places.initialize(imageView.context, BuildConfig.MAPS_API_KEY)
 
