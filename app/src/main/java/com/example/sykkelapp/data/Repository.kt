@@ -1,6 +1,5 @@
 package com.example.sykkelapp.data
 
-import android.util.Log
 import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.bysykkel.Station
@@ -107,7 +106,7 @@ class Repository (private val datasource: Datasource) {
                     directions,
                     it.popularity,
                     elevation,
-                    setDifficulty(directions))
+                    setDifficulty(directions.legs[0]))
                 )
                 1
             }
