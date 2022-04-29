@@ -71,7 +71,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         viewHolder.distance.text = exampleList[position].directions.distance.text
         viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
         setImage(viewHolder.imageView, exampleList[position])
-        setDifficulty(viewHolder.difficulty, exampleList[position])
+        viewHolder.difficulty.text = exampleList[position].difficulty
 
         viewHolder.bookmark.setOnClickListener{
             if(!viewHolder.bookmarked){
@@ -87,27 +87,6 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = exampleList.size
 
-    private fun setDifficulty(diff: TextView, route: Route){
-        // TODO: add elevation too?
-        val second = route.directions.duration.value.toDouble()
-        val meters = route.directions.distance.value.toDouble()
-        val avgSpeed = meters/second
-
-        when {
-            avgSpeed < 4.16 -> {
-                diff.text = "Easy"
-            }
-            avgSpeed in 4.16 .. 5.5 -> {
-                diff.text = "Medium"
-            }
-            avgSpeed > 5.5 -> {
-                diff.text = "Hard"
-            }
-            else -> {
-                diff.text = "FAILED"
-            }
-        }
-    }
     private fun setImage(imageView: ImageView, item: Route) {
         Places.initialize(imageView.context, BuildConfig.MAPS_API_KEY)
 

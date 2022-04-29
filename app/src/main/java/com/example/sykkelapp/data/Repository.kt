@@ -5,6 +5,7 @@ import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
+import com.example.sykkelapp.data.directions.Leg
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.parking.Feature
 import kotlinx.coroutines.*
@@ -111,7 +112,8 @@ class Repository (private val datasource: Datasource) {
                     airq_unit.units,
                     directions,
                     it.popularity,
-                    elevation)
+                    elevation,
+                    setDifficulty(directions))
                 )
             }
             jobsList.add(job)
@@ -133,6 +135,28 @@ class Repository (private val datasource: Datasource) {
         val start  = loadAirQualityForecast(latStart.toString(), lonStart.toString())?.value ?: -1.0
         val end = loadAirQualityForecast(latEnd.toString(), longEnd.toString())?.value ?: -1.0
         return (start + end)/2
+    }
+
+    private fun setDifficulty(leg : Leg) : String {
+        // TODO: add elevation too?
+        val second = leg.duration.value.toDouble()
+        val meters = leg.distance.value.toDouble()
+        val avgSpeed = meters/second
+
+        return when {
+            avgSpeed < 4.16 -> {
+                "Easy"
+            }
+            avgSpeed in 4.16 .. 5.5 -> {
+                "Medium"
+            }
+            avgSpeed > 5.5 -> {
+                "Hard"
+            }
+            else -> {
+                "FAILED"
+            }
+        }
     }
 }
 
