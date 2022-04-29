@@ -12,7 +12,8 @@
     <string name="enable_gps">Please enable your gps</string>
     <string name="permission_request">App requires location permission</string>
 
-    <string name="full_name">Full name</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
     <string name="settings">Settings</string>
     <string name="label_total_points">Total points:</string>
     <string name="label_weekly_points">Weekly points:</string>
@@ -41,6 +42,7 @@
     <string name="confirm_password">Confirm password</string>
     <string name="create_account">Create Account</string>
     <string name="already_have_an_account">Already have an account?</string>
+
 
     <string-array name="sortBy">
         <item>Length</item>
