@@ -20,7 +20,6 @@ import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkel.StationRenderer
 import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.data.parking.FeatureRenderer
-import com.example.sykkelapp.data.parking.Parking
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -32,7 +31,6 @@ import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.maps.android.clustering.ClusterManager
 import com.google.maps.android.data.geojson.GeoJsonLayer
-import com.google.maps.android.data.geojson.GeoJsonLineStringStyle
 import org.json.JSONObject
 
 class MapFragment : Fragment() {
@@ -156,7 +154,7 @@ class MapFragment : Fragment() {
         val uvView = binding.uvIcon
         val uvTextView = binding.uvText
         val windRotation = binding.windDirection
-        viewModel.data.observe(viewLifecycleOwner) {
+        viewModel.weatherforecast.observe(viewLifecycleOwner) {
             val id = resources.getIdentifier(
                 it.next_1_hours.summary.symbol_code,
                 "drawable",
@@ -178,7 +176,7 @@ class MapFragment : Fragment() {
     }
 
     private fun initAirQuality(mMap: GoogleMap, viewModel: MapViewModel) {
-        viewModel.air.observe(viewLifecycleOwner) { list ->
+        viewModel.airq.observe(viewLifecycleOwner) { list ->
             list.forEach {
                 val airqualityIcon: BitmapDescriptor by lazy {
                     val color = Color.parseColor("#" + it.color)
@@ -195,7 +193,7 @@ class MapFragment : Fragment() {
                 airQualityList.add(luftkvalitetMarker)
             }
         }
-        viewModel.airquality.observe(viewLifecycleOwner) {
+        viewModel.airqualityforecast.observe(viewLifecycleOwner) {
             Log.d("Map fragment",it.toString())
         }
     }
@@ -205,7 +203,7 @@ class MapFragment : Fragment() {
         val ojd = LatLng(59.94410, 10.7185)
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
         var layer : GeoJsonLayer
-        viewModel.geo.observe(viewLifecycleOwner) {
+        viewModel.osloroutes.observe(viewLifecycleOwner) {
                 geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
             val layer_style = layer.defaultLineStringStyle
             layer_style.isClickable = true
@@ -250,7 +248,7 @@ class MapFragment : Fragment() {
         //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
 
         // Add the places to the ClusterManager.
-        viewModel.station.observe(viewLifecycleOwner) {
+        viewModel.bysykkel_station.observe(viewLifecycleOwner) {
             clusterManager.addItems(it)
             clusterManager.cluster()
         }

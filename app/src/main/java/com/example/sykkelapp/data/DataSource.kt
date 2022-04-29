@@ -40,7 +40,7 @@ class Datasource : DataSourceInterface {
         return response.properties.timeseries[0].data // currently only getting the first timeseries
     }
 
-    override suspend fun loadGeo() : String {
+    override suspend fun loadOsloRoutes() : String {
         val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326&CQL_FILTER=rute+IS+NOT+Null")
         val data = response.readText()
         return data
@@ -52,7 +52,7 @@ class Datasource : DataSourceInterface {
         return response.features.filter {it.geometry.coordinates.size == 2 && it.properties.antall_parkeringsplasser > 20}
     }
 
-    override suspend fun loadAir() : List<AirQualityItem> {
+    override suspend fun loadNILUAirQ() : List<AirQualityItem> {
         val path = "https://api.nilu.no/aq/utd?areas=oslo&components=pm10"
         val response : AirQuality = client.get(path)
         return response
