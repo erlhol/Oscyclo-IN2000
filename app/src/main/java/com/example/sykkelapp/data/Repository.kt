@@ -13,18 +13,16 @@ import kotlinx.coroutines.*
 class Repository (private val datasource: Datasource) {
     suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data? {
         return try {
-            datasource.loadWeather("59.94410", "10.7185", "complete?")
+            datasource.loadWeather(lat, lon, verbose)
         } catch (exception: Exception) {
-            Log.d("Map Viewmodel", "Exception occured loadWeather")
             null
         }
     }
 
-    suspend fun loadGeo() : String? {
+    suspend fun loadOsloRoutes() : String? {
         return try {
-            datasource.loadGeo()
+            datasource.loadOsloRoutes()
         } catch (exception: Exception) {
-            Log.d("Map Viewmodel", "Exception occured loadGeo")
             null
         }
     }
@@ -33,25 +31,22 @@ class Repository (private val datasource: Datasource) {
         return try {
             datasource.loadParking()
         } catch (exception: Exception) {
-            Log.d("Map Viewmodel", "Exception occured loadParking")
             null
         }
     }
 
-    suspend fun loadAir() : List<AirQualityItem>? {
+    suspend fun loadNILUAirQ() : List<AirQualityItem>? {
         return try {
-            datasource.loadAir()
+            datasource.loadNILUAirQ()
         } catch (exception: Exception) {
-            Log.d("Map Viewmodel", "Exception occured loadAir")
             null
         }
     }
 
     suspend fun loadAirQualityForecast(lat: String, lon: String) : Pm10Concentration? {
         return try {
-            datasource.loadAirQualityForecast("59.94410", "10.7185")
+            datasource.loadAirQualityForecast(lat, lon)
         } catch (exception: Exception) {
-            Log.d("Map Viewmodel", "Exception occured loadAirQualityForecast")
             null
         }
     }
@@ -60,7 +55,6 @@ class Repository (private val datasource: Datasource) {
         return try {
             return datasource.loadBySykkel()
         } catch (exception: Exception) {
-            Log.d("Map Viewmodel", "Exception occured loadAirQualityForecast")
             null
         }
     }
@@ -82,7 +76,7 @@ class Repository (private val datasource: Datasource) {
             startEndMap[it.first]?.let { it1 -> popularRoutes.add(it1)
                 it1.popularity = it.second}
         }
-        val jobsList = mutableListOf<Deferred<Boolean>>()
+        val jobsList = mutableListOf<Deferred<Int>>()
 
         popularRoutes.forEach {
             val job = CoroutineScope(Dispatchers.IO).async {
@@ -115,6 +109,7 @@ class Repository (private val datasource: Datasource) {
                     elevation,
                     setDifficulty(directions))
                 )
+                1
             }
             jobsList.add(job)
         }
