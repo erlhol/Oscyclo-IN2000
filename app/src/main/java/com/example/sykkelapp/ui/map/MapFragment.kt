@@ -155,6 +155,9 @@ class MapFragment : Fragment() {
         val uvTextView = binding.uvText
         val windRotation = binding.windDirection
         viewModel.weatherforecast.observe(viewLifecycleOwner) {
+            if (it == null) {
+                return@observe
+            }
             val id = resources.getIdentifier(
                 it.next_1_hours.summary.symbol_code,
                 "drawable",
@@ -177,6 +180,9 @@ class MapFragment : Fragment() {
 
     private fun initAirQuality(mMap: GoogleMap, viewModel: MapViewModel) {
         viewModel.airq.observe(viewLifecycleOwner) { list ->
+            if (list == null) {
+                return@observe
+            }
             list.forEach {
                 val airqualityIcon: BitmapDescriptor by lazy {
                     val color = Color.parseColor("#" + it.color)
@@ -194,6 +200,9 @@ class MapFragment : Fragment() {
             }
         }
         viewModel.airqualityforecast.observe(viewLifecycleOwner) {
+            if (it == null) {
+                return@observe
+            }
             Log.d("Map fragment",it.toString())
         }
     }
@@ -204,7 +213,11 @@ class MapFragment : Fragment() {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
         var layer : GeoJsonLayer
         viewModel.osloroutes.observe(viewLifecycleOwner) {
-                geo -> layer = GeoJsonLayer(mMap, JSONObject(geo))
+                geo ->
+            if (geo == null) {
+                return@observe
+            }
+            layer = GeoJsonLayer(mMap, JSONObject(geo))
             val layer_style = layer.defaultLineStringStyle
             layer_style.isClickable = true
             layer.setOnFeatureClickListener {
@@ -249,6 +262,9 @@ class MapFragment : Fragment() {
 
         // Add the places to the ClusterManager.
         viewModel.bysykkel_station.observe(viewLifecycleOwner) {
+            if (it == null) {
+                return@observe
+            }
             clusterManager.addItems(it)
             clusterManager.cluster()
         }
@@ -270,6 +286,9 @@ class MapFragment : Fragment() {
 
         // Add the places to the ClusterManager.
         viewModel.parking.observe(viewLifecycleOwner) {
+            if (it == null) {
+                return@observe
+            }
             clusterManager.addItems(it)
             clusterManager.cluster()
         }

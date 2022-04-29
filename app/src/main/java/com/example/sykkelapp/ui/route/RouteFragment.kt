@@ -41,14 +41,14 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val recyclerView = binding.recyclerView
 
         routeViewModel.routes.observe(viewLifecycleOwner) {
-                routes -> recyclerView.adapter = RouteAdapter(routes)
-            println(routes[0].air_quality)
+            routes ->
+                if (routes == null) {
+                    return@observe
+                }
+                recyclerView.adapter = RouteAdapter(routes)
         }
         return root
     }
-
-
-
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
