@@ -18,6 +18,8 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
+import com.google.maps.android.PolyUtil
+
 
 class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
 
@@ -66,12 +68,18 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
 
         // viewHolder.imageView = exampleList[position].
         viewHolder.title.text = exampleList[position].start_station_name + " to " + exampleList[position].end_station_name
-        viewHolder.duration.text = exampleList[position].directions.duration.text
+        viewHolder.duration.text = exampleList[position].directions.legs[0].duration.text
         viewHolder.imageView.setImageDrawable(null)
-        viewHolder.distance.text = exampleList[position].directions.distance.text
+        viewHolder.distance.text = exampleList[position].directions.legs[0].distance.text
         viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
         setImage(viewHolder.imageView, exampleList[position])
         viewHolder.difficulty.text = exampleList[position].difficulty
+        println(exampleList[position].directions.overview_polyline)
+        val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
+        println(decodedPath)
+
+        // https://github.com/googlemaps/android-maps-utils/blob/main/demo/src/v3/java/com/google/maps/android/utils/demo/PolyDecodeDemoActivity.java
+
 
         viewHolder.bookmark.setOnClickListener{
             if(!viewHolder.bookmarked){
@@ -96,7 +104,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         // Specify fields. Requests for photos must always have the PHOTO_METADATAS field.
         val fields = listOf(Place.Field.PHOTO_METADATAS)
 
-        val placeId = item.placeid ?: return
+        val placeId = item.placeid
 
         // Get a Place object (this example uses fetchPlace(), but you can also use findCurrentPlace())
         val placeRequest = FetchPlaceRequest.newInstance(placeId, fields)
@@ -124,7 +132,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
                 placesClient.fetchPhoto(photoRequest)
                     .addOnSuccessListener { fetchPhotoResponse: FetchPhotoResponse ->
                         val bitmap = fetchPhotoResponse.bitmap
-                        imageView.setImageBitmap(bitmap)
+                        imageView.setImageBitmap(bitmap) // erstatt med Glide?
                     }.addOnFailureListener { exception: Exception ->
                         if (exception is ApiException) {
                             Log.e("TAG", "Place not found: " + exception.message)
