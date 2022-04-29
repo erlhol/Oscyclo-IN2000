@@ -10,7 +10,7 @@ import com.example.sykkelapp.data.bysykkel.BySykkel
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
 import com.example.sykkelapp.data.directions.Directions
-import com.example.sykkelapp.data.directions.Leg
+import com.example.sykkelapp.data.directions.Route
 import com.example.sykkelapp.data.elevation.Elevation
 import com.example.sykkelapp.data.elevation.Result
 import com.example.sykkelapp.data.locationForecast.Data
@@ -24,7 +24,6 @@ import io.ktor.client.*
 import io.ktor.client.features.json.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
-import kotlinx.coroutines.*
 
 class Datasource : DataSourceInterface {
 
@@ -89,10 +88,10 @@ class Datasource : DataSourceInterface {
     }
 
     // haandtere exceptions!
-    suspend fun getDirection(destlatlon : String, originlatlon: String) : Leg {
+    suspend fun getDirection(destlatlon : String, originlatlon: String) : Route  {
         val path = "https://maps.googleapis.com/maps/api/directions/json?avoid=highways&destination=$destlatlon&mode=bicycling&origin=$originlatlon&key=${BuildConfig.MAPS_API_KEY}"
         val response : Directions = client.get(path)
-        return response.routes[0].legs[0]
+        return response.routes[0]
     }
 
     // haandtere exceptions!
