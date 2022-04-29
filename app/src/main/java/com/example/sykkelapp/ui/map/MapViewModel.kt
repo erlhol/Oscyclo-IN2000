@@ -1,7 +1,6 @@
 package com.example.sykkelapp.ui.map
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.*
 import com.example.sykkelapp.data.Datasource
 import com.example.sykkelapp.data.Repository
@@ -17,39 +16,39 @@ import kotlinx.coroutines.launch
 
 class MapViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _geo = MutableLiveData<String>()
+    private val _osloroutes = MutableLiveData<String>()
     private val _parking = MutableLiveData<List<Feature>>()
-    private val _data = MutableLiveData<Data>()
-    private val _air = MutableLiveData<List<AirQualityItem>>()
-    private val _airquality = MutableLiveData<Pm10Concentration>()
-    private val _station = MutableLiveData<List<Station>>()
+    private val _weatherforecast = MutableLiveData<Data>()
+    private val _airq = MutableLiveData<List<AirQualityItem>>()
+    private val _airqualityforecast = MutableLiveData<Pm10Concentration>()
+    private val _bysykkel_station = MutableLiveData<List<Station>>()
     private val source = Repository(Datasource())
 
     private val _locationData = LocationLiveData(application)
 
-    val geo : LiveData<String>
-        get() = _geo
-    val data : LiveData<Data>
-        get() = _data
-    val air : LiveData<List<AirQualityItem>>
-        get() = _air
+    val osloroutes : LiveData<String>
+        get() = _osloroutes
+    val weatherforecast : LiveData<Data>
+        get() = _weatherforecast
+    val airq : LiveData<List<AirQualityItem>>
+        get() = _airq
     val parking : LiveData<List<Feature>>
         get() = _parking
-    val airquality : LiveData<Pm10Concentration>
-        get() = _airquality
-    val station : LiveData<List<Station>>
-      get() = _station
+    val airqualityforecast : LiveData<Pm10Concentration>
+        get() = _airqualityforecast
+    val bysykkel_station : LiveData<List<Station>>
+        get() = _bysykkel_station
     val locationData : LiveData<LocationModel>
         get() = _locationData
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            _geo.postValue(source.loadGeo())
-            _air.postValue(source.loadAir())
+            _osloroutes.postValue(source.loadOsloRoutes())
+            _airq.postValue(source.loadNILUAirQ())
             _parking.postValue(source.loadParking())
-            _data.postValue(source.loadWeather("59.94410", "10.7185", "complete?"))
-            _airquality.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
-            _station.postValue(source.loadBySykkel())
+            _weatherforecast.postValue(source.loadWeather("59.94410", "10.7185", "complete?"))
+            _airqualityforecast.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
+            _bysykkel_station.postValue(source.loadBySykkel())
 
         }
     }
@@ -58,8 +57,8 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         viewModelScope.launch(Dispatchers.IO) {
             val lat = locationData.value?.latitude
             val lon = locationData.value?.longitude
-            _data.postValue(source.loadWeather(lat.toString(), lon.toString(),"complete?"))
-            _airquality.postValue(source.loadAirQualityForecast(lat.toString(), lon.toString()))
+            _weatherforecast.postValue(source.loadWeather(lat.toString(), lon.toString(),"complete?"))
+            _airqualityforecast.postValue(source.loadAirQualityForecast(lat.toString(), lon.toString()))
         }
     }
 }
