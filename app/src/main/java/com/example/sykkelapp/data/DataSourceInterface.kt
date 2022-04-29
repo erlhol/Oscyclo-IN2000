@@ -10,11 +10,11 @@ import com.example.sykkelapp.data.parking.Feature
 interface DataSourceInterface {
     suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data
 
-    suspend fun loadGeo() : String
+    suspend fun loadOsloRoutes() : String
 
     suspend fun loadParking() : List<Feature>
 
-    suspend fun loadAir() : List<AirQualityItem>
+    suspend fun loadNILUAirQ() : List<AirQualityItem>
 
     suspend fun loadAirQualityForecast(lat: String, lon: String) : Pm10Concentration
 
