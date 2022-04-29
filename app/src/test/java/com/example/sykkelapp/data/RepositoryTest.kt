@@ -1,9 +1,11 @@
 package com.example.sykkelapp.data
 
+import com.example.sykkelapp.data.airquality.AirQuality
 import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
+import com.example.sykkelapp.data.locationForecast.Data
 import kotlinx.coroutines.runBlocking
 import com.example.sykkelapp.data.parking.Feature
 import org.junit.Test
@@ -27,7 +29,7 @@ internal class RepositoryTest {
         runBlocking {
             // because of platform type we have to cast to Data?
             val returnVal = source.loadWeather("59.94410", "10.7185","complete?")
-            assert(returnVal != null)
+            assert(returnVal is Data)
         }
     }
 
@@ -35,7 +37,7 @@ internal class RepositoryTest {
     fun loadOsloRoutes() {
         runBlocking {
             val returnVal = source.loadOsloRoutes()
-            assert(returnVal != null)
+            assert(returnVal is String)
         }
     }
 
@@ -43,7 +45,7 @@ internal class RepositoryTest {
     fun loadParking() {
         runBlocking {
             val returnVal = source.loadParking()
-            assert(returnVal != null)
+            assert(returnVal is List<Feature>)
         }
     }
 
@@ -51,7 +53,7 @@ internal class RepositoryTest {
     fun loadNILUAirQ() {
         runBlocking {
             val returnVal = source.loadNILUAirQ()
-            assert(returnVal != null)
+            assert(returnVal is List<AirQualityItem>)
         }
     }
 
@@ -67,7 +69,7 @@ internal class RepositoryTest {
     fun loadAirQualityForecastCorrectInput() {
         runBlocking {
             val returnVal = source.loadAirQualityForecast("59.94410", "10.7185")
-            assert(returnVal != null)
+            assert(returnVal is Pm10Concentration)
         }
     }
 
@@ -75,7 +77,7 @@ internal class RepositoryTest {
     fun loadBySykkel() {
         runBlocking {
             val returnVal = source.loadBySykkel()
-            assert(returnVal != null)
+            assert(returnVal is List<Station>)
         }
     }
 
@@ -83,7 +85,7 @@ internal class RepositoryTest {
     fun loadBySykkelRoutes() {
         runBlocking {
             val returnVal = source.loadBySykkelRoutes()
-            assert(returnVal != null)
+            assert(returnVal is List<Route>)
         }
     }
 
