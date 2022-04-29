@@ -1,6 +1,7 @@
 package com.example.sykkelapp.data
 
 import com.example.sykkelapp.data.directions.Leg
+import com.example.sykkelapp.data.directions.Route
 
 data class Route(
     val end_station_description: String,
@@ -15,9 +16,9 @@ data class Route(
     val start_station_name: String,
     val placeid: String,
     val air_quality: Double,
-    val airq_unit : String,
-    val directions : Leg,
-    val popularity : Int,
-    val elevation : Double,
-    val difficulty : String
+    val airq_unit: String,
+    val directions: Route,
+    val popularity: Int,
+    val elevation: Double,
+    val difficulty: String
 )
