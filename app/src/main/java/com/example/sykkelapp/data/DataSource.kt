@@ -88,14 +88,14 @@ class Datasource : DataSourceInterface {
     }
 
     // haandtere exceptions!
-    suspend fun getDirection(destlatlon : String, originlatlon: String) : Route  {
+    override suspend fun getDirection(destlatlon : String, originlatlon: String) : Route  {
         val path = "https://maps.googleapis.com/maps/api/directions/json?avoid=highways&destination=$destlatlon&mode=bicycling&origin=$originlatlon&key=${BuildConfig.MAPS_API_KEY}"
         val response : Directions = client.get(path)
         return response.routes[0]
     }
 
     // haandtere exceptions!
-    suspend fun getElevation(destlatlon : String, originlatlon: String): List<Result> {
+    override suspend fun getElevation(destlatlon : String, originlatlon: String): List<Result> {
         val path = "https://maps.googleapis.com/maps/api/elevation/json?locations=$destlatlon|$originlatlon&key=${BuildConfig.MAPS_API_KEY}"
         val response : Elevation = client.get(path)
         return response.results
