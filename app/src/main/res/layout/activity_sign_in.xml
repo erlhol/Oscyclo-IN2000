@@ -8,13 +8,14 @@
     tools:context=".ui.profile.SignInActivity">
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/let_s_get_started"
         android:textAlignment="center"
+        android:textColor="@color/black"
         android:textSize="35sp"
         android:textStyle="bold"
-        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/sign_in_app_logo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
