@@ -71,7 +71,7 @@ class Datasource : DataSourceInterface {
     }
 
     override suspend fun loadBySykkelRoutes() : List<BysykkelItem> {
-        val path = "https://data.urbansharing.com/oslobysykkel.no/trips/v1/2022/04.json"
+        val path = "https://data.urbansharing.com/oslobysykkel.no/trips/v1/2022/05.json"
         val response : HttpResponse = client.request(path)
         val jsonText = response.readText()
         val liste = object : TypeToken<List<BysykkelItem>>() {}.type
