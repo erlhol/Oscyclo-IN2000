@@ -49,8 +49,8 @@
     <string name="Email">Email:</string>
 
     <string-array name="sortBy">
-        <item>Length</item>
         <item>Air quality</item>
+        <item>Length</item>
         <item>Difficulty</item>
     </string-array>
 </resources>
