@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
+import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
@@ -14,6 +16,7 @@ import com.example.sykkelapp.databinding.FragmentRouteBinding
 
 class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding : FragmentRouteBinding
+    private lateinit var routeViewModel : RouteViewModel
 
 
     override fun onCreateView(
@@ -21,8 +24,7 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val routeViewModel =
-            ViewModelProvider(this)[RouteViewModel::class.java]
+        routeViewModel = ViewModelProvider(this)[RouteViewModel::class.java]
         binding = FragmentRouteBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -51,6 +53,16 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
+        if(p2 == 0){
+            routeViewModel.routes.value?.sortedBy {it.air_quality}
+            binding.recyclerView.adapter?.notifyItemChanged(p2)
+        }else if(p2 == 1){
+            Toast.makeText(context, "test", Toast.LENGTH_SHORT).show()
+            //routeViewModel.routes.value?.sortedBy {}
+        }else if(p2 == 2){
+            routeViewModel.routes.value?.sortedBy {it.difficulty}
+            binding.recyclerView.adapter?.notifyItemChanged(p2)
+        }
     }
 
     override fun onNothingSelected(p0: AdapterView<*>?) {

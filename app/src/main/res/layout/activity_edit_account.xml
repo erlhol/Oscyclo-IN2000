@@ -77,45 +77,64 @@
         app:layout_constraintTop_toBottomOf="@+id/edit_profile_image" />
 
     <EditText
-        android:id="@+id/edit_full_name"
+        android:id="@+id/edit_first_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/edit_profile_image_button"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="16dp"
         android:layout_marginRight="20dp"
-        android:autofillHints="Full Name"
-        android:hint="@string/full_name"
+        android:autofillHints="First Name"
+        android:hint="@string/first_name"
         android:inputType="text"
         app:layout_constraintBottom_toTopOf="@+id/edit_email"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edit_profile_image_button"
-        app:layout_constraintVertical_bias="0.456" />
+        app:layout_constraintVertical_bias="0.254" />
+
+    <EditText
+        android:id="@+id/edit_last_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/edit_profile_image_button"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="20dp"
+        android:autofillHints="Last Name"
+        android:hint="@string/last_name"
+        android:inputType="text"
+        app:layout_constraintBottom_toTopOf="@+id/edit_email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_image_button"
+        app:layout_constraintVertical_bias="0.887" />
 
     <EditText
         android:id="@+id/edit_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/edit_full_name"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="92dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="16dp"
+        android:layout_below="@+id/edit_last_name"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="150dp"
+        android:layout_marginEnd="20dp"
         android:autofillHints="Email"
         android:hint="@string/email"
         android:inputType="textEmailAddress"
-        app:layout_constraintBottom_toTopOf="@+id/save_button"
+        android:minHeight="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edit_profile_image_button" />
+        app:layout_constraintTop_toBottomOf="@+id/edit_profile_image_button"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginRight="20dp"
         android:backgroundTint="#275C5C"
         android:text="@string/save"

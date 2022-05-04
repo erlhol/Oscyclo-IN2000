@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "973056490317",
+    "firebase_url": "https://sykkel-app-01-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "sykkel-app-01",
+    "storage_bucket": "sykkel-app-01.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:973056490317:android:0b7c6e4aa3e7fa63875504",
+        "android_client_info": {
+          "package_name": "com.example.sykkelapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "973056490317-9enajop77aq951m4aun4h0hfn69c43gc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4bTpR6Pmb75YBcbWb6FYqvCPYhoADWWg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "973056490317-9enajop77aq951m4aun4h0hfn69c43gc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

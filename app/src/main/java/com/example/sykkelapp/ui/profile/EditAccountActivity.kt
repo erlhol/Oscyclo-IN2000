@@ -16,9 +16,11 @@ class EditAccountActivity : AppCompatActivity() {
         setContentView(_binding.root)
 
         _binding.saveButton.setOnClickListener{
-            val intent = Intent(this@EditAccountActivity, MainActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             finish()
         }
+        //Hide action bar
+        supportActionBar?.hide()
     }
 }

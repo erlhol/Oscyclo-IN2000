@@ -2,16 +2,24 @@ package com.example.sykkelapp.ui.profile
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.databinding.FragmentProfileBinding
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.*
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
+
+    private lateinit var user: FirebaseUser
+    private lateinit var reference: DatabaseReference
+    private lateinit var userID: String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -28,15 +36,54 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+//        val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
+//        if (pref != null) {
+//            this.userID = pref.getString("profileId", "none").toString()
+//        }
+
         _binding!!.profileSettingsButton.setOnClickListener{
             startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
-
-//        val textView: TextView = binding.profileFragmentUsername
-//        profileViewModel.text.observe(viewLifecycleOwner) {
-//            textView.text = it
-//        }
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            userInformation()
+        }
         return root
+    }
+
+    private fun userInformation() {
+        user = FirebaseAuth.getInstance().currentUser!!
+        reference = FirebaseDatabase.getInstance().getReference("Users")
+        userID = user.uid
+
+        reference.child(userID).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                Log.d("Datasnapshot",dataSnapshot.exists().toString())
+                if (dataSnapshot.exists()) {
+                    val user = dataSnapshot.getValue(User::class.java)
+                    val email = "${dataSnapshot.child("email").value}"
+                    val firstName = "${dataSnapshot.child("firstname").value}"
+                    val lastName = "${dataSnapshot.child("lastname").value}"
+                    if (user != null) {
+                        Log.d("FirstName", firstName)
+                        Log.d("LastName", lastName)
+                        _binding?.profileFullName?.text = "$firstName  $lastName"
+                    }
+                }
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("Datasnapshot", databaseError.getMessage())
+            }
+        })
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if(currentUser == null){
+            startActivity(Intent(context, SignInActivity::class.java))
+        }
     }
 
     override fun onDestroyView() {
