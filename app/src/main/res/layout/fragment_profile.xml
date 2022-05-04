@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="15dp"
                 android:maxLines="1"
-                android:text="@string/label_total_points"
+                android:text="@string/label_total_kilometers"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
@@ -87,7 +87,7 @@
                 android:id="@+id/profile_weekly_points_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_weekly_points"
+                android:text="@string/label_weekly_kilometers"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="bold" />
