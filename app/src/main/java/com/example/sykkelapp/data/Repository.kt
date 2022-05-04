@@ -117,7 +117,7 @@ class Repository (private val datasource: Datasource) {
             }
             jobsList.awaitAll()
 
-            return routes.sortedByDescending { it.popularity } // way to sort recyclerview
+            return routes.sortedBy { it.air_quality } // way to sort recyclerview
         }
         catch (exception: Exception) {
             return null
