@@ -37,16 +37,15 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
         }
 
-        // Just one example, has to be changed to MVVM
         val recyclerView = binding.recyclerView
 
         routeViewModel.routes.observe(viewLifecycleOwner) {
             routes ->
-                if (routes == null) {
-                    return@observe
+                if (routes != null) {
+                    recyclerView.adapter = RouteAdapter(routes)
                 }
-                recyclerView.adapter = RouteAdapter(routes)
         }
+
         return root
     }
 

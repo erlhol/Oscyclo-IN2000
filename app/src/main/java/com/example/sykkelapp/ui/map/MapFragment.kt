@@ -155,55 +155,51 @@ class MapFragment : Fragment() {
         val uvTextView = binding.uvText
         val windRotation = binding.windDirection
         viewModel.weatherforecast.observe(viewLifecycleOwner) {
-            if (it == null) {
-                return@observe
+            if (it != null) {
+                val id = resources.getIdentifier(
+                    it.next_1_hours.summary.symbol_code,
+                    "drawable",
+                    context?.packageName
+                )
+                imageView.setImageResource(id)
+                tempView.text = it.instant.details.air_temperature.toString() + "°"
+                windView.text = it.instant.details.wind_speed.toString()
+                DrawableCompat.setTint(
+                    uvView.drawable,
+                    uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView)
+                )
+                windRotation.animate().rotationBy((-prevWindRotation))
+                    .start()
+                prevWindRotation = it.instant.details.wind_from_direction.toFloat()
+                windRotation.animate().rotationBy(prevWindRotation)
+                    .start()
             }
-            val id = resources.getIdentifier(
-                it.next_1_hours.summary.symbol_code,
-                "drawable",
-                context?.packageName
-            )
-            imageView.setImageResource(id)
-            tempView.text = it.instant.details.air_temperature.toString() + "°"
-            windView.text = it.instant.details.wind_speed.toString()
-            DrawableCompat.setTint(
-                uvView.drawable,
-                uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView)
-            )
-            windRotation.animate().rotationBy((-prevWindRotation))
-                .start()
-            prevWindRotation = it.instant.details.wind_from_direction.toFloat()
-            windRotation.animate().rotationBy(prevWindRotation)
-                .start()
         }
     }
 
     private fun initAirQuality(mMap: GoogleMap, viewModel: MapViewModel) {
         viewModel.airq.observe(viewLifecycleOwner) { list ->
-            if (list == null) {
-                return@observe
-            }
-            list.forEach {
+            list?.forEach {
                 val airqualityIcon: BitmapDescriptor by lazy {
                     val color = Color.parseColor("#" + it.color)
                     BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_eco_24, color)
                 }
-                val point = LatLng(it.latitude,it.longitude)
-                val luftkvalitetMarker = mMap.addMarker(MarkerOptions()
-                    .position(point)
-                    .title(it.station)
-                    .snippet("Svevestøvnivå: "+it.value + it.unit)
-                    .icon(airqualityIcon)
-                    .visible(false)
+                val point = LatLng(it.latitude, it.longitude)
+                val luftkvalitetMarker = mMap.addMarker(
+                    MarkerOptions()
+                        .position(point)
+                        .title(it.station)
+                        .snippet("Svevestøvnivå: " + it.value + it.unit)
+                        .icon(airqualityIcon)
+                        .visible(false)
                 )!!
                 airQualityList.add(luftkvalitetMarker)
             }
         }
         viewModel.airqualityforecast.observe(viewLifecycleOwner) {
-            if (it == null) {
-                return@observe
+            if (it != null) {
+                Log.d("Map fragment",it.toString())
             }
-            Log.d("Map fragment",it.toString())
         }
     }
 
@@ -212,18 +208,16 @@ class MapFragment : Fragment() {
         val ojd = LatLng(59.94410, 10.7185)
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(ojd,15f))
         var layer : GeoJsonLayer
-        viewModel.osloroutes.observe(viewLifecycleOwner) {
-                geo ->
-            if (geo == null) {
-                return@observe
+        viewModel.osloroutes.observe(viewLifecycleOwner) { geo ->
+            if (geo != null) {
+                layer = GeoJsonLayer(mMap, JSONObject(geo))
+                val layer_style = layer.defaultLineStringStyle
+                layer_style.isClickable = true
+                layer.setOnFeatureClickListener {
+                    Toast.makeText(context, it.getProperty("rute"), Toast.LENGTH_SHORT).show()
+                }
+                layer.addLayerToMap()
             }
-            layer = GeoJsonLayer(mMap, JSONObject(geo))
-            val layer_style = layer.defaultLineStringStyle
-            layer_style.isClickable = true
-            layer.setOnFeatureClickListener {
-                Toast.makeText(context, it.getProperty("rute"), Toast.LENGTH_SHORT).show()
-            }
-            layer.addLayerToMap()
         }
     }
 
@@ -262,11 +256,10 @@ class MapFragment : Fragment() {
 
         // Add the places to the ClusterManager.
         viewModel.bysykkel_station.observe(viewLifecycleOwner) {
-            if (it == null) {
-                return@observe
+            if (it != null) {
+                clusterManager.addItems(it)
+                clusterManager.cluster()
             }
-            clusterManager.addItems(it)
-            clusterManager.cluster()
         }
         return clusterManager
     }
@@ -286,11 +279,10 @@ class MapFragment : Fragment() {
 
         // Add the places to the ClusterManager.
         viewModel.parking.observe(viewLifecycleOwner) {
-            if (it == null) {
-                return@observe
+            if (it != null) {
+                clusterManager.addItems(it)
+                clusterManager.cluster()
             }
-            clusterManager.addItems(it)
-            clusterManager.cluster()
         }
         return clusterManager
     }
