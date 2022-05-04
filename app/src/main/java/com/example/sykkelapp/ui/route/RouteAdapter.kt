@@ -1,5 +1,6 @@
 package com.example.sykkelapp.ui.route
 
+import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -117,6 +118,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
                 val metada = place.photoMetadatas
                 if (metada == null || metada.isEmpty()) {
                     Log.w("TAG", "No photo metadata.")
+                    imageView.setImageResource(R.drawable.ic_baseline_pedal_bike_24)
                     return@addOnSuccessListener
                 }
                 val photoMetadata = metada.first()
@@ -132,7 +134,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
                 placesClient.fetchPhoto(photoRequest)
                     .addOnSuccessListener { fetchPhotoResponse: FetchPhotoResponse ->
                         val bitmap = fetchPhotoResponse.bitmap
-                        imageView.setImageBitmap(bitmap) // erstatt med Glide?
+                        imageView.setImageBitmap(bitmap)
                     }.addOnFailureListener { exception: Exception ->
                         if (exception is ApiException) {
                             Log.e("TAG", "Place not found: " + exception.message)
