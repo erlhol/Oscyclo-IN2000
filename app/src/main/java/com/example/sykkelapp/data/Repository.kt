@@ -108,7 +108,8 @@ class Repository (private val datasource: Datasource) {
                             directions,
                             it.popularity,
                             elevation,
-                            setDifficulty(directions.legs[0])
+                            setDifficulty(directions.legs[0]),
+                            false
                         )
                     )
                     1

@@ -36,7 +36,6 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         val airQ : TextView
         val difficulty : TextView
         val bookmark : ImageButton
-        var bookmarked : Boolean
 
 
         init {
@@ -48,7 +47,6 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             airQ = view.findViewById(R.id.airQ)
             difficulty = view.findViewById(R.id.difficulty)
             bookmark = view.findViewById(R.id.bookmark)
-            bookmarked = false
         }
     }
 
@@ -81,15 +79,13 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
 
         // https://github.com/googlemaps/android-maps-utils/blob/main/demo/src/v3/java/com/google/maps/android/utils/demo/PolyDecodeDemoActivity.java
 
-
+        if(exampleList[position].bookmarked){
+            viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_24)
+        }else{
+            viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_border_24)
+        }
         viewHolder.bookmark.setOnClickListener{
-            if(!viewHolder.bookmarked){
-                viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_24)
-                viewHolder.bookmarked = true
-            }else{
-                viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_border_24)
-                viewHolder.bookmarked = false
-            }
+            updateBookmark(viewHolder,position)
         }
     }
 
@@ -143,5 +139,15 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
                         }
                     }
             }
+    }
+
+    fun updateBookmark(viewHolder: ViewHolder, position: Int) {
+        if(!exampleList[position].bookmarked){
+            viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_24)
+            exampleList[position].bookmarked = true
+        }else{
+            viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_border_24)
+            exampleList[position].bookmarked = false
+        }
     }
 }
