@@ -1,6 +1,5 @@
 package com.example.sykkelapp.data
 
-import com.example.sykkelapp.data.directions.Leg
 import com.example.sykkelapp.data.directions.Route
 
 data class Route(

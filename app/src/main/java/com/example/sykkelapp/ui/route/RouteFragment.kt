@@ -53,15 +53,20 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
 
-        if(p2 == 0){
-            routeViewModel.routes.value?.sortedBy {it.air_quality}
-            binding.recyclerView.adapter?.notifyItemChanged(p2)
-        }else if(p2 == 1){
-            Toast.makeText(context, "test", Toast.LENGTH_SHORT).show()
-            //routeViewModel.routes.value?.sortedBy {}
-        }else if(p2 == 2){
-            routeViewModel.routes.value?.sortedBy {it.difficulty}
-            binding.recyclerView.adapter?.notifyItemChanged(p2)
+        when (p2) {
+            0 -> {
+                val routesSorted = routeViewModel.routes.value?.sortedBy {it.air_quality}
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it) }
+                // update routes function in RouteAdapter
+            }
+            1 -> {
+                val routesSorted = routeViewModel.routes.value?.sortedBy {it.directions.legs[0].distance.value}
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it) }
+            }
+            2 -> {
+                val routesSorted = routeViewModel.routes.value?.sortedBy {it.difficulty}
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it) }
+            }
         }
     }
 
