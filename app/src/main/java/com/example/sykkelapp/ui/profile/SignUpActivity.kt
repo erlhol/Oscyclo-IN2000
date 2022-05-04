@@ -106,8 +106,7 @@ class SignUpActivity : AppCompatActivity() {
         userMap["firstname"] = firstName
         userMap["lastname"] = lastName
         userMap["email"] = email
-        userMap["image"] = "https://firebasestorage.googleapis.com/v0/b/sykkel-app-01.appspot.com/o/Default%20Images%2Fprofile.jpeg?alt=media&token=89a2ef0c-5520-4f11-9013-3802504c95d0"
-
+        userMap["image"] = "https://firebasestorage.googleapis.com/v0/b/sykkel-app-fc597.appspot.com/o/Default%20Images%2Fprofile.png?alt=media&token=76031157-decd-4fa0-b0d2-6ef8d2bf1d30"
         //https://firebase.google.com/docs/auth/android/start?authuser=0#kotlin+ktx_4
         usersReference.child(currentUserID).setValue(userMap)
             .addOnCompleteListener { task ->
