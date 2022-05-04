@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.databinding.FragmentProfileBinding
+import com.example.sykkelapp.ui.route.RouteAdapter
+import com.example.sykkelapp.ui.route.RouteViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
@@ -30,8 +32,8 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val profileViewModel =
-            ViewModelProvider(this)[ProfileViewModel::class.java]
+        val routeViewModel =
+            ViewModelProvider(this)[RouteViewModel::class.java]
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -44,6 +46,15 @@ class ProfileFragment : Fragment() {
         _binding!!.profileSettingsButton.setOnClickListener{
             startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
+
+        val recyclerView = binding.recyclerView
+        routeViewModel.routes.observe(viewLifecycleOwner) {
+                routes ->
+            if (routes != null) {
+                recyclerView.adapter = RouteAdapter(routes) // filter by bookmarks
+            }
+        }
+
         if (FirebaseAuth.getInstance().currentUser != null) {
             userInformation()
         }
