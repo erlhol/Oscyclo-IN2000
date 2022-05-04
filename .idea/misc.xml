@@ -48,6 +48,8 @@
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/layout/message.xml" value="0.1" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/layout/position_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
+        <entry key="app/src/main/res/drawable/circlebutton.xml" value="0.1455" />
+        <entry key="app/src/main/res/drawable/roundstyle.xml" value="0.1455" />
         <entry key="app/src/main/res/layout/activity_account_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.34375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21829710144927536" />

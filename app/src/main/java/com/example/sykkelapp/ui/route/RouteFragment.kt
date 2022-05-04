@@ -47,7 +47,6 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
                     recyclerView.adapter = RouteAdapter(routes)
                 }
         }
-
         return root
     }
 
