@@ -1,6 +1,8 @@
 package com.example.sykkelapp.ui.route
 
 import android.graphics.BitmapFactory
+import android.graphics.Color.parseColor
+import android.graphics.Color.rgb
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -73,6 +75,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
         setImage(viewHolder.imageView, exampleList[position])
         viewHolder.difficulty.text = exampleList[position].difficulty
+        displayDifficulty(viewHolder.difficulty.text as String, viewHolder.difficulty)
         println(exampleList[position].directions.overview_polyline)
         val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
         println(decodedPath)
@@ -91,6 +94,16 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = exampleList.size
+
+    private fun displayDifficulty(diff: String, view: TextView){
+        if(diff == "Easy"){
+            view.setBackgroundResource(R.drawable.easy)
+        }else if(diff == "Medium"){
+            view.setBackgroundResource(R.drawable.medium)
+        }else if(diff == "Hard"){
+            view.setBackgroundResource(R.drawable.hard)
+        }
+    }
 
     private fun setImage(imageView: ImageView, item: Route) {
         Places.initialize(imageView.context, BuildConfig.MAPS_API_KEY)
