@@ -98,7 +98,7 @@ class SignInFragment : Fragment() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if(currentUser != null){
             (context as FragmentActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, Fragment()).addToBackStack(null)
+                .replace(R.id.nav_host_fragment_activity_main, SignInFragment()).addToBackStack(null)
                 .commit()
 //            startActivity(Intent(context, MainActivity::class.java)
 //                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
