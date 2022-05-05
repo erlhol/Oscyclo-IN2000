@@ -127,6 +127,17 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:21.0.3'
     implementation 'com.google.firebase:firebase-database:20.0.4'
     implementation 'com.google.firebase:firebase-storage:20.0.1'
+
+    // Dependencies for Android instrumented unit tests
+    androidTestImplementation "junit:junit:4.+"
+    androidTestImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0"
+
+    // Testing code should not be included in the main code.
+    // Once https://issuetracker.google.com/128612536 is fixed this can be fixed.
+
+    debugImplementation "androidx.fragment:fragment-testing:1.4.0"
+    implementation "androidx.test:core:1.4.0"
+
 }
 
 apply plugin: 'com.google.gms.google-services'

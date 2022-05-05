@@ -1,7 +1,5 @@
 package com.example.sykkelapp.ui.route
 
-import android.graphics.BitmapFactory
-import android.graphics.Color.parseColor
 import android.graphics.Color.rgb
 import android.util.Log
 import android.view.LayoutInflater
@@ -30,7 +28,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
         val title : TextView
         val duration: TextView
@@ -38,7 +36,6 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         val airQ : TextView
         val difficulty : TextView
         val bookmark : ImageButton
-
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -49,6 +46,9 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             airQ = view.findViewById(R.id.airQ)
             difficulty = view.findViewById(R.id.difficulty)
             bookmark = view.findViewById(R.id.bookmark)
+            view.setOnClickListener{
+                openMapFromCoordinates(bindingAdapterPosition)
+            }
         }
     }
 
@@ -76,10 +76,6 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         setImage(viewHolder.imageView, exampleList[position])
         viewHolder.difficulty.text = exampleList[position].difficulty
         displayDifficulty(viewHolder.difficulty.text as String, viewHolder.difficulty)
-        println(exampleList[position].directions.overview_polyline)
-        val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
-        println(decodedPath)
-
 
         // https://github.com/googlemaps/android-maps-utils/blob/main/demo/src/v3/java/com/google/maps/android/utils/demo/PolyDecodeDemoActivity.java
 
@@ -88,8 +84,8 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         }else{
             viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_border_24)
         }
-        viewHolder.bookmark.setOnClickListener{
-            updateBookmark(viewHolder,position)
+        viewHolder.bookmark.setOnClickListener {
+            updateBookmark(viewHolder, position)
         }
 
     }
@@ -166,4 +162,10 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             exampleList[position].bookmarked = false
         }
     }
+
+    fun openMapFromCoordinates(position: Int) {
+        val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
+    }
+
+
 }
