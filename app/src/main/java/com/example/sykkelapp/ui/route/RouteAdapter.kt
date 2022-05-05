@@ -28,7 +28,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
         val title : TextView
         val duration: TextView
@@ -36,7 +36,6 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         val airQ : TextView
         val difficulty : TextView
         val bookmark : ImageButton
-
 
         init {
             // Define click listener for the ViewHolder's View.
@@ -47,6 +46,9 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             airQ = view.findViewById(R.id.airQ)
             difficulty = view.findViewById(R.id.difficulty)
             bookmark = view.findViewById(R.id.bookmark)
+            view.setOnClickListener{
+                openMapFromCoordinates(bindingAdapterPosition)
+            }
         }
     }
 
@@ -64,7 +66,6 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-
         // viewHolder.imageView = exampleList[position].
         viewHolder.title.text = exampleList[position].start_station_name + " to " + exampleList[position].end_station_name
         viewHolder.duration.text = exampleList[position].directions.legs[0].duration.text
@@ -73,9 +74,6 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
         setImage(viewHolder.imageView, exampleList[position])
         viewHolder.difficulty.text = exampleList[position].difficulty
-        println(exampleList[position].directions.overview_polyline)
-        val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
-        println(decodedPath)
 
         // https://github.com/googlemaps/android-maps-utils/blob/main/demo/src/v3/java/com/google/maps/android/utils/demo/PolyDecodeDemoActivity.java
 
@@ -84,8 +82,8 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         }else{
             viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_border_24)
         }
-        viewHolder.bookmark.setOnClickListener{
-            updateBookmark(viewHolder,position)
+        viewHolder.bookmark.setOnClickListener {
+            updateBookmark(viewHolder, position)
         }
     }
 
@@ -150,4 +148,10 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             exampleList[position].bookmarked = false
         }
     }
+
+    fun openMapFromCoordinates(position: Int) {
+        val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
+    }
+
+
 }
