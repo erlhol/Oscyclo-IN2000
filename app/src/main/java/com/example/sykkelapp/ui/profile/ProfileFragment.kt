@@ -73,10 +73,13 @@ class ProfileFragment : Fragment() {
                     val email = "${dataSnapshot.child("email").value}"
                     val firstName = "${dataSnapshot.child("firstname").value}"
                     val lastName = "${dataSnapshot.child("lastname").value}"
+                    val level = "Level: Beginner"
+
                     if (user != null) {
                         Log.d("FirstName", firstName)
                         Log.d("LastName", lastName)
                         _binding?.profileFullName?.text = "$firstName  $lastName"
+                        _binding?.profileUserLevel?.text = level
                     }
                 }
             }

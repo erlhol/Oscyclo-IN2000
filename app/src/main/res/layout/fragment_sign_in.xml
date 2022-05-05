@@ -30,7 +30,7 @@
     android:layout_height="160dp"
     android:layout_marginTop="132dp"
     android:contentDescription="@string/app_logo"
-    android:src="@drawable/cycling_logo"
+    android:src="@drawable/oscyclo_logo"
     app:layout_constraintEnd_toEndOf="parent"
     app:layout_constraintHorizontal_bias="0.498"
     app:layout_constraintStart_toStartOf="parent"
