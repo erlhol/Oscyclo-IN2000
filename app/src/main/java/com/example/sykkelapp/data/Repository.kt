@@ -134,7 +134,7 @@ class Repository (private val datasource: Datasource) {
         val eachCountMap = bysykkelItems.groupingBy { Key(it.start_station_id,it.end_station_id) }.eachCount()
 
         // add the most popular routes in a list. Just the 20 most popular
-        var popularRoutes = mutableListOf<BysykkelItem>()
+        val popularRoutes = mutableListOf<BysykkelItem>()
         eachCountMap.toList().sortedByDescending { it.second }.take(20).forEach {
             startEndMap[it.first]?.let { it1 -> popularRoutes.add(it1)
                 it1.popularity = it.second}
@@ -142,7 +142,7 @@ class Repository (private val datasource: Datasource) {
         return popularRoutes
     }
 
-    suspend fun findElevationDiff(destlatlon: String, originlatlon: String): Double {
+    private suspend fun findElevationDiff(destlatlon: String, originlatlon: String): Double {
         val res = datasource.getElevation(destlatlon, originlatlon)
         val destlatlonElevation = res[0].elevation
         val originlatlonElevation = res[1].elevation
@@ -151,27 +151,26 @@ class Repository (private val datasource: Datasource) {
         return originlatlonElevation - destlatlonElevation
     }
 
-    suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
+    private suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
         val start  = loadAirQualityForecast(latStart.toString(), lonStart.toString())?.value ?: -1.0
         val end = loadAirQualityForecast(latEnd.toString(), longEnd.toString())?.value ?: -1.0
         return (start + end)/2
     }
 
     private fun setDifficulty(leg : Leg) : String {
-        // TODO: add elevation too?
         val second = leg.duration.value.toDouble()
         val meters = leg.distance.value.toDouble()
         val avgSpeed = meters/second
 
         return when {
             avgSpeed < 4.16 -> {
-                "Easy"
+                "Hard"
             }
             avgSpeed in 4.16 .. 5.5 -> {
                 "Medium"
             }
             avgSpeed > 5.5 -> {
-                "Hard"
+                "Easy"
             }
             else -> {
                 "FAILED"
