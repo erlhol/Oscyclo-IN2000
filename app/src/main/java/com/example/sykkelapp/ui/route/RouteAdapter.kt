@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.R
@@ -94,12 +95,16 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
     override fun getItemCount() = exampleList.size
 
     private fun displayDifficulty(diff: String, view: TextView){
-        if(diff == "Easy"){
-            view.setBackgroundResource(R.drawable.easy)
-        }else if(diff == "Medium"){
-            view.setBackgroundResource(R.drawable.medium)
-        }else if(diff == "Hard"){
-            view.setBackgroundResource(R.drawable.hard)
+        when (diff) {
+            "Easy" -> {
+                view.setBackgroundResource(R.drawable.easy)
+            }
+            "Medium" -> {
+                view.setBackgroundResource(R.drawable.medium)
+            }
+            "Hard" -> {
+                view.setBackgroundResource(R.drawable.hard)
+            }
         }
     }
 
@@ -153,7 +158,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             }
     }
 
-    fun updateBookmark(viewHolder: ViewHolder, position: Int) {
+    private fun updateBookmark(viewHolder: ViewHolder, position: Int) {
         if(!exampleList[position].bookmarked){
             viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_24)
             exampleList[position].bookmarked = true
