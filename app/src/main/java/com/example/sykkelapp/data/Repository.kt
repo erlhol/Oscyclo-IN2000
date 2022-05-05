@@ -135,7 +135,7 @@ class Repository (private val datasource: Datasource) {
 
         // add the most popular routes in a list. Just the 20 most popular
         var popularRoutes = mutableListOf<BysykkelItem>()
-        eachCountMap.toList().sortedByDescending { it.second }.take(10).forEach {
+        eachCountMap.toList().sortedByDescending { it.second }.take(20).forEach {
             startEndMap[it.first]?.let { it1 -> popularRoutes.add(it1)
                 it1.popularity = it.second}
         }

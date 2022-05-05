@@ -80,6 +80,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
         println(decodedPath)
 
+
         // https://github.com/googlemaps/android-maps-utils/blob/main/demo/src/v3/java/com/google/maps/android/utils/demo/PolyDecodeDemoActivity.java
 
         if(exampleList[position].bookmarked){
@@ -90,6 +91,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         viewHolder.bookmark.setOnClickListener{
             updateBookmark(viewHolder,position)
         }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
@@ -127,7 +129,8 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
                 val metada = place.photoMetadatas
                 if (metada == null || metada.isEmpty()) {
                     Log.w("TAG", "No photo metadata.")
-                    imageView.setImageResource(R.drawable.ic_baseline_pedal_bike_24)
+                    imageView.setImageResource(R.drawable.oscyclo_logo)
+                    imageView.setBackgroundColor(rgb(173,216,230))
                     return@addOnSuccessListener
                 }
                 val photoMetadata = metada.first()
