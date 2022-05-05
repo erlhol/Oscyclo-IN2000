@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentProfileBinding
 import com.example.sykkelapp.ui.route.RouteAdapter
+import com.example.sykkelapp.ui.route.RouteFragment
 import com.example.sykkelapp.ui.route.RouteViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -37,11 +40,6 @@ class ProfileFragment : Fragment() {
 
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-//        val pref = context?.getSharedPreferences("PREFS", Context.MODE_PRIVATE)
-//        if (pref != null) {
-//            this.userID = pref.getString("profileId", "none").toString()
-//        }
 
         _binding!!.profileSettingsButton.setOnClickListener{
             startActivity(Intent(context, AccountSettingsActivity::class.java))
@@ -89,11 +87,14 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onStart() {
+        println("Tilbake til start")
         super.onStart()
-
         val currentUser = FirebaseAuth.getInstance().currentUser
         if(currentUser == null){
-            startActivity(Intent(context, SignInActivity::class.java))
+                (context as FragmentActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main, SignInFragment()).addToBackStack(null)
+                .commit()
+//            startActivity(Intent(activity, SignInFragment::class.java))
         }
     }
 

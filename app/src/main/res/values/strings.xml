@@ -47,6 +47,7 @@
     <string name="already_have_an_account">Already have an account?</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="Email">Email:</string>
+    <string name="signing_in">Sign in</string>
 
     <string-array name="sortBy">
         <item>Air quality</item>

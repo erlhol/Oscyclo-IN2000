@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sykkelapp.MainActivity
 import com.example.sykkelapp.databinding.ActivityAccountSettingsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -28,7 +29,7 @@ class AccountSettingsActivity : AppCompatActivity() {
         _binding.settingsLogoutButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 
-            startActivity(Intent(this, SignInActivity::class.java)
+            startActivity(Intent(this, MainActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
             finish()
         }

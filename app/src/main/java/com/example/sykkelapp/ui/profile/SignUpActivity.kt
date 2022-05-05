@@ -1,6 +1,7 @@
 package com.example.sykkelapp.ui.profile
 
 import android.content.ContentValues.TAG
+import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
@@ -9,10 +10,11 @@ import android.util.Log
 import android.util.Patterns
 import android.view.View.GONE
 import android.view.View.VISIBLE
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.FragmentActivity
 import com.example.sykkelapp.MainActivity
+import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
@@ -28,7 +30,10 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(_binding.root)
 
         _binding.signUpSignInButton.setOnClickListener {
-            startActivity(Intent(this, SignInActivity::class.java))
+            (applicationContext as FragmentActivity).supportFragmentManager.beginTransaction()
+                .replace(R.id.nav_host_fragment_activity_main, SignInFragment())
+                .commit()
+           // startActivity(Intent(this, SignInFragment::class.java))
         }
         _binding.createAccount.setOnClickListener {
             createAccount()

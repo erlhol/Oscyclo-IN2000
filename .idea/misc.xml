@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="../../../../layout/custom_preview.xml" value="0.1" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/bookmark_selector.xml" value="0.123" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/circlebutton.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/easy.xml" value="0.123" />
@@ -54,11 +55,14 @@
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
         <entry key="app/src/main/res/layout/activity_account_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.34375" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.21829710144927536" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1016949152542373" />
         <entry key="app/src/main/res/layout/activity_progress_bar.xml" value="0.37604166666666666" />
-        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.29846014492753625" />
+        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_sign_up.xml" value="0.3161231884057971" />
+        <entry key="app/src/main/res/layout/blank_fragment.xml" value="0.3351449275362319" />
+        <entry key="app/src/main/res/layout/fragment_blank.xml" value="0.3351449275362319" />
         <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.3161231884057971" />
+        <entry key="app/src/main/res/layout/fragment_sign_in.xml" value="0.3351449275362319" />
       </map>
     </option>
   </component>

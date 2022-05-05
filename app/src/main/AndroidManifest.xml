@@ -20,9 +20,9 @@
         <activity
             android:name=".ui.profile.SignUpActivity"
             android:exported="false" />
-        <activity
-            android:name=".ui.profile.SignInActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".ui.profile.SignInActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".ui.profile.EditAccountActivity"
             android:exported="false" />

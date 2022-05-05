@@ -16,6 +16,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        println("CALLED onCreate")
         super.onCreate(savedInstanceState)
 
         //Fjerner top bar-en
