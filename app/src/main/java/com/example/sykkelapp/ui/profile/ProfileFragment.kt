@@ -7,12 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentProfileBinding
 import com.example.sykkelapp.ui.route.RouteAdapter
-import com.example.sykkelapp.ui.route.RouteFragment
 import com.example.sykkelapp.ui.route.RouteViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -35,6 +34,7 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        Log.d("Profile Fragment","On CreateView")
         val routeViewModel =
             ViewModelProvider(this)[RouteViewModel::class.java]
 
@@ -56,6 +56,7 @@ class ProfileFragment : Fragment() {
         if (FirebaseAuth.getInstance().currentUser != null) {
             userInformation()
         }
+        isLoggedIn()
         return root
     }
 
@@ -86,20 +87,15 @@ class ProfileFragment : Fragment() {
         })
     }
 
-    override fun onStart() {
-        println("Tilbake til start")
-        super.onStart()
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if(currentUser == null){
-                (context as FragmentActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, SignInFragment()).addToBackStack(null)
-                .commit()
-//            startActivity(Intent(activity, SignInFragment::class.java))
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    fun isLoggedIn() {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if(currentUser == null){
+            findNavController().navigate(R.id.signInFragment,null)
+        }
     }
 }

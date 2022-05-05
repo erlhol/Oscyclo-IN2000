@@ -14,6 +14,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.SavedStateHandle
+import androidx.navigation.fragment.findNavController
 import com.example.sykkelapp.MainActivity
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentSignInBinding
@@ -27,13 +29,18 @@ class SignInFragment : Fragment() {
 
     private val binding get() = _binding!!
 
+    private lateinit var savedStateHandle: SavedStateHandle
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
+        Log.d("Sign In Fragment","On CreateView")
         val signInViewModel =
             ViewModelProvider(this)[SignInViewModel::class.java]
+
+        savedStateHandle = findNavController().previousBackStackEntry!!.savedStateHandle
 
         _binding = FragmentSignInBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -72,12 +79,10 @@ class SignInFragment : Fragment() {
                 firebaseAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if(task.isSuccessful){
+                            findNavController().popBackStack()
                             Log.d(ContentValues.TAG, "signInWithEmail:success")
                             Toast.makeText(this.requireActivity(), "Signed in successfully",
                                 Toast.LENGTH_LONG).show()
-                            startActivity(Intent(context, MainActivity::class.java)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-                            activity?.finish()
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
@@ -89,21 +94,6 @@ class SignInFragment : Fragment() {
                         }
                     }
             }
-        }
-    }
-
-    // https://firebase.google.com/docs/auth/android/start?authuser=0#kotlin+ktx_3
-    override fun onStart() {
-        super.onStart()
-        val currentUser = FirebaseAuth.getInstance().currentUser
-        if(currentUser != null){
-            (context as FragmentActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, Fragment()).addToBackStack(null)
-                .commit()
-//            startActivity(Intent(context, MainActivity::class.java)
-//                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-//            activity?.finish()
-//            println("Start MainActivity")
         }
     }
 }

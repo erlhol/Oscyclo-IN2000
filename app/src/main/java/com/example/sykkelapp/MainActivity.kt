@@ -1,6 +1,7 @@
 package com.example.sykkelapp
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Window
 import android.view.WindowManager
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -16,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        println("CALLED onCreate")
+        Log.d("MainActivity","On create")
         super.onCreate(savedInstanceState)
 
         //Fjerner top bar-en
