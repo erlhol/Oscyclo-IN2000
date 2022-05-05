@@ -5,8 +5,12 @@
       <map>
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/bookmark_selector.xml" value="0.123" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/circlebutton.xml" value="0.1395" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/easy.xml" value="0.123" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/hard.xml" value="0.123" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_baseline_arrow_right_alt_24.xml" value="0.123" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_baseline_bookmark_24.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/ic_baseline_bookmark_border_24.xml" value="0.1395" />
+        <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/medium.xml" value="0.123" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/drawable/roundstyle.xml" value="0.1395" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/activity_main.xml" value="0.20052083333333334" />
         <entry key="..\:/Users/Bruker/AndroidStudioProjects/SykkelApp/app/src/main/res/layout/element.xml" value="0.4472168905950096" />
@@ -48,8 +52,6 @@
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/layout/message.xml" value="0.1" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/layout/position_fragment.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Hp/AndroidStudioProjects/IN2000---gruppe-3/app/src/main/res/menu/bottom_nav_menu.xml" value="0.25416666666666665" />
-        <entry key="app/src/main/res/drawable/circlebutton.xml" value="0.1455" />
-        <entry key="app/src/main/res/drawable/roundstyle.xml" value="0.1455" />
         <entry key="app/src/main/res/layout/activity_account_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_edit_account.xml" value="0.34375" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21829710144927536" />

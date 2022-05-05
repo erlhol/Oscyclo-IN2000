@@ -1,6 +1,6 @@
 package com.example.sykkelapp.ui.route
 
-import android.graphics.BitmapFactory
+import android.graphics.Color.rgb
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -66,6 +66,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
+
         // viewHolder.imageView = exampleList[position].
         viewHolder.title.text = exampleList[position].start_station_name + " to " + exampleList[position].end_station_name
         viewHolder.duration.text = exampleList[position].directions.legs[0].duration.text
@@ -74,6 +75,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
         setImage(viewHolder.imageView, exampleList[position])
         viewHolder.difficulty.text = exampleList[position].difficulty
+        displayDifficulty(viewHolder.difficulty.text as String, viewHolder.difficulty)
 
         // https://github.com/googlemaps/android-maps-utils/blob/main/demo/src/v3/java/com/google/maps/android/utils/demo/PolyDecodeDemoActivity.java
 
@@ -85,10 +87,21 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
         viewHolder.bookmark.setOnClickListener {
             updateBookmark(viewHolder, position)
         }
+
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = exampleList.size
+
+    private fun displayDifficulty(diff: String, view: TextView){
+        if(diff == "Easy"){
+            view.setBackgroundResource(R.drawable.easy)
+        }else if(diff == "Medium"){
+            view.setBackgroundResource(R.drawable.medium)
+        }else if(diff == "Hard"){
+            view.setBackgroundResource(R.drawable.hard)
+        }
+    }
 
     private fun setImage(imageView: ImageView, item: Route) {
         Places.initialize(imageView.context, BuildConfig.MAPS_API_KEY)
@@ -112,7 +125,8 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
                 val metada = place.photoMetadatas
                 if (metada == null || metada.isEmpty()) {
                     Log.w("TAG", "No photo metadata.")
-                    imageView.setImageResource(R.drawable.ic_baseline_pedal_bike_24)
+                    imageView.setImageResource(R.drawable.oscyclo_logo)
+                    imageView.setBackgroundColor(rgb(173,216,230))
                     return@addOnSuccessListener
                 }
                 val photoMetadata = metada.first()
