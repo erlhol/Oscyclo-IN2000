@@ -5,15 +5,17 @@ class User {
     private var firstName: String = ""
     private var lastName: String = ""
     private var fullName: String = ""
+    private var email: String = ""
 //    private var image: String = ""
 //    private var uid: String = ""
 
     constructor()
 
-    constructor(firstName: String, lastName: String) {
+    constructor(firstName: String, lastName: String, email: String) {
         this.firstName = firstName
         this.lastName = lastName
         this.fullName = "$firstName  $lastName"
+        this.email = email
 //        this.image = image
 //        this.uid = uid
     }
@@ -22,24 +24,16 @@ class User {
         return  fullName
     }
 
-    fun setFullName(fullName: String) {
-        this.fullName = fullName
-    }
-
     fun getFirstName(): String {
         return  firstName
-    }
-
-    fun setFirstName(firstName: String) {
-        this.firstName = firstName
     }
 
     fun getLastName(): String {
         return  lastName
     }
 
-    fun setLastName(lastName: String) {
-        this.lastName = lastName
+    fun getEmail(): String {
+        return  email
     }
 
 //    fun getImage(): String {

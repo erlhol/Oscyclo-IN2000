@@ -27,7 +27,6 @@ class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
 
-    private lateinit var user: FirebaseUser
     private lateinit var reference: DatabaseReference
     private lateinit var userID: String
 
@@ -47,13 +46,17 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        //Navigate to Account settings
         _binding!!.profileSettingsButton.setOnClickListener{
             startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
 
+        // Navigate to Sign up button
         _binding!!.signInSignUpButton.setOnClickListener{
             findNavController().navigate(R.id.signUpFragment)
         }
+
+        //Signing in user
         _binding!!.signInButtonMain.setOnClickListener {
             signInUser()
         }
@@ -70,39 +73,36 @@ class ProfileFragment : Fragment() {
             }
         }
 
+        //Get current user session
         if (FirebaseAuth.getInstance().currentUser != null) {
-            userInformation()
+            setUserInformation()
         }
         isLoggedIn()
         return root
     }
 
-    private fun userInformation() {
-        user = FirebaseAuth.getInstance().currentUser!!
+    private fun setUserInformation() {
+        val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
         reference = FirebaseDatabase.getInstance().getReference("Users")
-        userID = user.uid
+        userID = firebaseUser.uid
 
         reference.child(userID).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.d("Datasnapshot",dataSnapshot.exists().toString())
                 if (dataSnapshot.exists()) {
-                    val user = dataSnapshot.getValue(User::class.java)
-                    val email = "${dataSnapshot.child("email").value}"
                     val firstName = "${dataSnapshot.child("firstname").value}"
                     val lastName = "${dataSnapshot.child("lastname").value}"
+                    val email = "${dataSnapshot.child("email").value}"
+                    val user = User(firstName,lastName,email)
                     val level = "Level: Beginner"
 
-                    if (user != null) {
-                        Log.d("FirstName", firstName)
-                        Log.d("LastName", lastName)
-                        _binding?.profileFullName?.text = "$firstName  $lastName"
-                        _binding?.profileUserLevel?.text = level
-                    }
+                    _binding?.profileFullName?.text = user.getFullName()
+                    _binding?.profileUserLevel?.text = level
                 }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("Datasnapshot", databaseError.getMessage())
+                Log.d("Datasnapshot", databaseError.message)
             }
         })
     }
@@ -153,7 +153,7 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-    fun isLoggedIn() {
+    private fun isLoggedIn() {
         val currentUser = FirebaseAuth.getInstance().currentUser
         if(currentUser == null){
             binding.profileInformation.visibility = View.GONE
