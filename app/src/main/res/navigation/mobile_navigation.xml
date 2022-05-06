@@ -39,4 +39,8 @@
         android:name="com.example.sykkelapp.ui.profile.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up" />
+    <fragment
+        android:id="@+id/directionsFragment"
+        android:name="com.example.sykkelapp.ui.route.DirectionsFragment"
+        android:label="DirectionsFragment" />
 </navigation>

@@ -10,6 +10,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.FragmentActivity
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.R
@@ -176,12 +178,13 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
 
     fun openMapFromCoordinates(position: Int) {
         val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
-
         (routeFragment as FragmentActivity).supportFragmentManager.beginTransaction()
         .replace(R.id.nav_host_fragment_activity_main, DirectionsFragment(card, decodedPath)).addToBackStack(null)
         .commit()
-
     }
+    // TODO: fix to get correct image on routes
+
+    // TODO: add a new Livedata -list - containing favorites
 
 
 }
