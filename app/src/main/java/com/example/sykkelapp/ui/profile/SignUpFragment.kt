@@ -1,39 +1,39 @@
 package com.example.sykkelapp.ui.profile
 
 import android.content.ContentValues.TAG
-import android.content.Context
 import android.content.Intent
 import android.graphics.Paint
 import android.os.Bundle
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
-import android.view.View.GONE
-import android.view.View.VISIBLE
+import android.view.LayoutInflater
+import android.view.View
+import android.view.View.*
+import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.sykkelapp.MainActivity
-import com.example.sykkelapp.R
-import com.example.sykkelapp.databinding.ActivitySignUpBinding
+import com.example.sykkelapp.databinding.FragmentSignUpBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
-class SignUpActivity : AppCompatActivity() {
+class SignUpFragment : Fragment() {
 
-    private lateinit var _binding: ActivitySignUpBinding
+    private lateinit var _binding: FragmentSignUpBinding
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        _binding = ActivitySignUpBinding.inflate(layoutInflater)
-        setContentView(_binding.root)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentSignUpBinding.inflate(layoutInflater)
+        val root: View = _binding.root
 
         _binding.signUpSignInButton.setOnClickListener {
-            (applicationContext as FragmentActivity).supportFragmentManager.beginTransaction()
-                .replace(R.id.nav_host_fragment_activity_main, SignInFragment())
-                .commit()
-           // startActivity(Intent(this, SignInFragment::class.java))
+            findNavController().popBackStack()
         }
         _binding.createAccount.setOnClickListener {
             createAccount()
@@ -42,9 +42,7 @@ class SignUpActivity : AppCompatActivity() {
         //Underline text
         val button = _binding.signUpSignInButton
         button.paintFlags = button.paintFlags or Paint.UNDERLINE_TEXT_FLAG
-
-        //Hide action bar
-        supportActionBar?.hide()
+        return root
     }
 
     //Code inspired from Firebase documentation at https://firebase.google.com/docs/auth/android/start?authuser=0#kotlin+ktx_3
@@ -74,7 +72,7 @@ class SignUpActivity : AppCompatActivity() {
 
             TextUtils.isEmpty(confirmPassword) -> _binding.signUpConfirmPassword.error = "Confirm password is required"
             TextUtils.equals(password,confirmPassword).not() -> Toast.makeText(
-                this,
+                requireContext(),
                 "Please enter similar passwords",
                 Toast.LENGTH_LONG).show()
 
@@ -91,7 +89,7 @@ class SignUpActivity : AppCompatActivity() {
                             saveUserInformation(firstName,lastName,email)
                         } else {
                             Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                            Toast.makeText(baseContext, "Failed to create account. Please try again!", Toast.LENGTH_LONG).show()
+                            Toast.makeText(requireContext(), "Failed to create account. Please try again!", Toast.LENGTH_LONG).show()
                             FirebaseAuth.getInstance().signOut()
                             _binding.signUpProgressBar.visibility = GONE
                         }
@@ -117,17 +115,16 @@ class SignUpActivity : AppCompatActivity() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(TAG,"createUserWithEmail:success")
-                    Toast.makeText(baseContext, "Your account has been created successfully!", Toast.LENGTH_LONG)
+                    Toast.makeText(requireContext(), "Your account has been created successfully!", Toast.LENGTH_LONG)
                         .show()
                     _binding.signUpProgressBar.visibility = VISIBLE
 
-                    val intent = Intent(this, MainActivity::class.java)
+                    val intent = Intent(context, MainActivity::class.java)
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
-                    finish()
                 } else {
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    Toast.makeText(baseContext, "Failed to create account. Please try again!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Failed to create account. Please try again!", Toast.LENGTH_LONG).show()
                     FirebaseAuth.getInstance().signOut()
                     //Progress bar disappears
                     _binding.signUpProgressBar.visibility = GONE

@@ -18,7 +18,7 @@
             android:name=".ui.profile.AccountSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.profile.SignUpActivity"
+            android:name=".ui.profile.SignUpFragment"
             android:exported="false" />
 <!--        <activity-->
 <!--            android:name=".ui.profile.SignInActivity"-->

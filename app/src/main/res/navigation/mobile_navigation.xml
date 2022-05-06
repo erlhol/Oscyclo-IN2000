@@ -29,19 +29,14 @@
         android:name="com.example.sykkelapp.ui.profile.AccountSettingsActivity"
         android:label="activity_account_settings"
         tools:layout="@layout/activity_account_settings" />
-    <fragment
-        android:id="@+id/signInFragment"
-        android:name="com.example.sykkelapp.ui.profile.SignInFragment"
-        android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" />
     <activity
         android:id="@+id/editAccountActivity"
         android:name="com.example.sykkelapp.ui.profile.EditAccountActivity"
         android:label="activity_edit_account"
         tools:layout="@layout/activity_edit_account" />
-    <activity
-        android:id="@+id/signUpActivity"
-        android:name="com.example.sykkelapp.ui.profile.SignUpActivity"
-        android:label="activity_sign_up"
-        tools:layout="@layout/activity_sign_up" />
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.example.sykkelapp.ui.profile.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" />
 </navigation>
