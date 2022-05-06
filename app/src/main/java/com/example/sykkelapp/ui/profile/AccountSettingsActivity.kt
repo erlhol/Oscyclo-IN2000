@@ -11,9 +11,8 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 
 class AccountSettingsActivity : AppCompatActivity() {
-    private lateinit var _binding: ActivityAccountSettingsBinding
 
-    private lateinit var user: FirebaseUser
+    private lateinit var _binding: ActivityAccountSettingsBinding
     private lateinit var reference: DatabaseReference
     private lateinit var userID: String
 
@@ -22,10 +21,12 @@ class AccountSettingsActivity : AppCompatActivity() {
         _binding = ActivityAccountSettingsBinding.inflate(layoutInflater)
         setContentView(_binding.root)
 
+        // Navigate to Edit account settings
         _binding.settingsEditButton.setOnClickListener{
             startActivity(Intent(this, EditAccountActivity::class.java))
         }
 
+        // Log out user and return to main
         _binding.settingsLogoutButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 
@@ -34,6 +35,7 @@ class AccountSettingsActivity : AppCompatActivity() {
             finish()
         }
 
+        // Display user information in Account settings
         if (FirebaseAuth.getInstance().currentUser != null) {
             userInformation()
         }
@@ -43,9 +45,9 @@ class AccountSettingsActivity : AppCompatActivity() {
     }
 
     private fun userInformation() {
-        user = FirebaseAuth.getInstance().currentUser!!
+        val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
         reference = FirebaseDatabase.getInstance().getReference("Users")
-        userID = user.uid
+        userID = firebaseUser.uid
 
         reference.child(userID).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -56,8 +58,6 @@ class AccountSettingsActivity : AppCompatActivity() {
                     val firstName = "${dataSnapshot.child("firstname").value}"
                     val lastName = "${dataSnapshot.child("lastname").value}"
                     if (user != null) {
-                        Log.d("FirstName", firstName)
-                        Log.d("LastName", lastName)
                         _binding.settingsFirstName.text = firstName
                         _binding.settingsLastName.text = lastName
                         _binding.settingsEmail.text = email
@@ -66,7 +66,7 @@ class AccountSettingsActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("Datasnapshot", databaseError.getMessage())
+                Log.d("Datasnapshot", databaseError.message)
             }
         })
     }
