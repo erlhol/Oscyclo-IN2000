@@ -42,5 +42,6 @@
     <fragment
         android:id="@+id/directionsFragment"
         android:name="com.example.sykkelapp.ui.route.DirectionsFragment"
-        android:label="DirectionsFragment" />
+        android:label="DirectionsFragment">
+    </fragment>
 </navigation>

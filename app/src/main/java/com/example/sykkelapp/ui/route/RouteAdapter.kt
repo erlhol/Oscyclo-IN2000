@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.os.bundleOf
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
@@ -16,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.R
 import com.example.sykkelapp.data.Route
+import com.example.sykkelapp.ui.profile.ProfileFragment
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -26,7 +29,7 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.maps.android.PolyUtil
 
 
-class RouteAdapter(private val exampleList: List<Route>, private val routeFragment: Context?) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
+class RouteAdapter(private val exampleList: List<Route>, private val routeFragment: Fragment) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
@@ -177,14 +180,20 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
     }
 
     fun openMapFromCoordinates(position: Int) {
-        val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
-        (routeFragment as FragmentActivity).supportFragmentManager.beginTransaction()
-        .replace(R.id.nav_host_fragment_activity_main, DirectionsFragment(card, decodedPath)).addToBackStack(null)
-        .commit()
+        SelectedRoute.currentPolyline = exampleList[position].directions.overview_polyline.points
+        SelectedRoute.currentView = card
+        findNavController(routeFragment).navigate(R.id.directionsFragment)
+
     }
     // TODO: fix to get correct image on routes
 
     // TODO: add a new Livedata -list - containing favorites
 
+}
 
+class SelectedRoute {
+    companion object {
+        var currentPolyline : String = ""
+        var currentView : View? = null
+    }
 }

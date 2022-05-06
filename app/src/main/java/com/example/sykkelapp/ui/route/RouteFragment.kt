@@ -16,7 +16,6 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
     private lateinit var binding : FragmentRouteBinding
     private lateinit var routeViewModel : RouteViewModel
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,7 +41,7 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
         routeViewModel.routes.observe(viewLifecycleOwner) {
             routes ->
                 if (routes != null) {
-                    recyclerView.adapter = RouteAdapter(routes, context)
+                    recyclerView.adapter = RouteAdapter(routes, this)
                 }
         }
 
@@ -54,16 +53,16 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
         when (p2) {
             0 -> {
                 val routesSorted = routeViewModel.routes.value?.sortedBy {it.air_quality}
-                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it, context) }
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it, this) }
                 // update routes function in RouteAdapter
             }
             1 -> {
                 val routesSorted = routeViewModel.routes.value?.sortedBy {it.directions.legs[0].distance.value}
-                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it, context) }
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it, this) }
             }
             2 -> {
                 val routesSorted = routeViewModel.routes.value?.sortedBy {it.difficulty}
-                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it,context) }
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it,this) }
             }
         }
     }

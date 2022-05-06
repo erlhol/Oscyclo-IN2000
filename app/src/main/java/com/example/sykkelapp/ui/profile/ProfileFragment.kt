@@ -66,7 +66,7 @@ class ProfileFragment : Fragment() {
         routeViewModel.routes.observe(viewLifecycleOwner) {
                 routes ->
             if (routes != null) {
-                recyclerView.adapter = RouteAdapter(routes, context) // filter by bookmarks
+                recyclerView.adapter = RouteAdapter(routes, this) // filter by bookmarks
             }
         }
 
