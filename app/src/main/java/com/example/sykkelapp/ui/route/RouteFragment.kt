@@ -7,8 +7,6 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.Toast
-import androidx.core.view.size
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
@@ -44,7 +42,7 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
         routeViewModel.routes.observe(viewLifecycleOwner) {
             routes ->
                 if (routes != null) {
-                    recyclerView.adapter = RouteAdapter(routes)
+                    recyclerView.adapter = RouteAdapter(routes, context)
                 }
         }
 
@@ -56,16 +54,16 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
         when (p2) {
             0 -> {
                 val routesSorted = routeViewModel.routes.value?.sortedBy {it.air_quality}
-                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it) }
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it, context) }
                 // update routes function in RouteAdapter
             }
             1 -> {
                 val routesSorted = routeViewModel.routes.value?.sortedBy {it.directions.legs[0].distance.value}
-                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it) }
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it, context) }
             }
             2 -> {
                 val routesSorted = routeViewModel.routes.value?.sortedBy {it.difficulty}
-                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it) }
+                binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it,context) }
             }
         }
     }

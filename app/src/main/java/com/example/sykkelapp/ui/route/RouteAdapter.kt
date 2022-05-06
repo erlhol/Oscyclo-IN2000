@@ -1,5 +1,6 @@
 package com.example.sykkelapp.ui.route
 
+import android.content.Context
 import android.graphics.Color.rgb
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.R
@@ -23,12 +24,14 @@ import com.google.android.libraries.places.api.net.FetchPlaceResponse
 import com.google.maps.android.PolyUtil
 
 
-class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
+class RouteAdapter(private val exampleList: List<Route>, private val routeFragment: Context?) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
 
     /**
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
+    lateinit var card : View
+
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
         val title : TextView
@@ -50,6 +53,8 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
             view.setOnClickListener{
                 openMapFromCoordinates(bindingAdapterPosition)
             }
+            card = view
+
         }
     }
 
@@ -148,6 +153,7 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
                     .addOnSuccessListener { fetchPhotoResponse: FetchPhotoResponse ->
                         val bitmap = fetchPhotoResponse.bitmap
                         imageView.setImageBitmap(bitmap)
+                        imageView.tag = bitmap
                     }.addOnFailureListener { exception: Exception ->
                         if (exception is ApiException) {
                             Log.e("TAG", "Place not found: " + exception.message)
@@ -170,6 +176,11 @@ class RouteAdapter(private val exampleList: List<Route>) : RecyclerView.Adapter<
 
     fun openMapFromCoordinates(position: Int) {
         val decodedPath = PolyUtil.decode(exampleList[position].directions.overview_polyline.points)
+
+        (routeFragment as FragmentActivity).supportFragmentManager.beginTransaction()
+        .replace(R.id.nav_host_fragment_activity_main, DirectionsFragment(card, decodedPath)).addToBackStack(null)
+        .commit()
+
     }
 
 
