@@ -26,8 +26,7 @@ import com.google.firebase.database.*
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-
-    private lateinit var reference: DatabaseReference
+    private lateinit var databaseReference: DatabaseReference
     private lateinit var userID: String
 
     // This property is only valid between onCreateView and
@@ -81,12 +80,16 @@ class ProfileFragment : Fragment() {
         return root
     }
 
+    //Code inspired from Firebase documentation at
+    //https://firebase.google.com/docs/database/android/read-and-write#java_4,
+    //https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot
+    //and CodeWithMazn https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn
     private fun setUserInformation() {
         val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
-        reference = FirebaseDatabase.getInstance().getReference("Users")
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users")
         userID = firebaseUser.uid
 
-        reference.child(userID).addValueEventListener(object : ValueEventListener {
+        databaseReference.child(userID).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.d("Datasnapshot",dataSnapshot.exists().toString())
                 if (dataSnapshot.exists()) {
@@ -114,9 +117,7 @@ class ProfileFragment : Fragment() {
         when{
             TextUtils.isEmpty(email) -> _binding?.signInEmail?.error = "Email is required"
             TextUtils.isEmpty(email) -> _binding?.signInEmail?.requestFocus()
-
             !Patterns.EMAIL_ADDRESS.matcher(email).matches()-> _binding?.signInEmail?.error  = "Please provide a valid email address"
-
             TextUtils.isEmpty(password) -> _binding?.signInPassword?.error = "Password is required"
             TextUtils.isEmpty(password) -> _binding?.signInPassword?.requestFocus()
 

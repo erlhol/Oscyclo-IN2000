@@ -13,7 +13,7 @@ import com.google.firebase.database.*
 class AccountSettingsActivity : AppCompatActivity() {
 
     private lateinit var _binding: ActivityAccountSettingsBinding
-    private lateinit var reference: DatabaseReference
+    private lateinit var databaseReference: DatabaseReference
     private lateinit var userID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,12 +44,15 @@ class AccountSettingsActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
+    //Code inspired from Firebase documentation at https://firebase.google.com/docs/database/android/read-and-write,
+    //https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot
+    //and CodeWithMazn https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn
     private fun userInformation() {
         val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
-        reference = FirebaseDatabase.getInstance().getReference("Users")
+        databaseReference = FirebaseDatabase.getInstance().getReference("Users")
         userID = firebaseUser.uid
 
-        reference.child(userID).addValueEventListener(object : ValueEventListener {
+        databaseReference.child(userID).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 Log.d("Datasnapshot",dataSnapshot.exists().toString())
                 if (dataSnapshot.exists()) {
