@@ -50,7 +50,7 @@ class ProfileFragment : Fragment() {
             startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
 
-        // Navigate to Sign up button
+        // Navigate to Sign up fragment
         _binding!!.signInSignUpButton.setOnClickListener{
             findNavController().navigate(R.id.signUpFragment)
         }
@@ -78,6 +78,50 @@ class ProfileFragment : Fragment() {
         }
         isLoggedIn()
         return root
+    }
+
+    //https://firebase.google.com/docs/auth/android/start?authuser=0#sign_in_existing_users
+    private fun signInUser() {
+        val email = _binding?.signInEmail?.text.toString()
+        val password = _binding?.signInPassword?.text.toString()
+
+        when{
+            TextUtils.isEmpty(email) -> _binding?.signInEmail?.error = "Email is required"
+            TextUtils.isEmpty(email) -> _binding?.signInEmail?.requestFocus()
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches()-> _binding?.signInEmail?.error  = "Please provide a valid email address"
+            TextUtils.isEmpty(password) -> _binding?.signInPassword?.error = "Password is required"
+            TextUtils.isEmpty(password) -> _binding?.signInPassword?.requestFocus()
+
+            else -> {
+                _binding?.signInProgressBar?.visibility  = View.VISIBLE
+
+                val firebaseAuth = FirebaseAuth.getInstance()
+                firebaseAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener { task ->
+                        if(task.isSuccessful){
+                            startActivity(Intent(context, MainActivity::class.java)
+                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
+                            activity?.finish()
+                            Log.d(ContentValues.TAG, "signInWithEmail:success")
+                            Toast.makeText(this.requireActivity(), "Signed in successfully",
+                                Toast.LENGTH_LONG).show()
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
+                            Toast.makeText(this.requireActivity(), "Failed to sign in. Please try again!",
+                                Toast.LENGTH_LONG).show()
+                            FirebaseAuth.getInstance().signOut()
+                            //Progress bar disappears
+                            _binding?.signInProgressBar?.visibility = View.GONE
+                        }
+                    }
+            }
+        }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     //Code inspired from Firebase documentation at
@@ -108,50 +152,6 @@ class ProfileFragment : Fragment() {
                 Log.d("Datasnapshot", databaseError.message)
             }
         })
-    }
-
-    private fun signInUser() {
-        val email = _binding?.signInEmail?.text.toString()
-        val password = _binding?.signInPassword?.text.toString()
-
-        when{
-            TextUtils.isEmpty(email) -> _binding?.signInEmail?.error = "Email is required"
-            TextUtils.isEmpty(email) -> _binding?.signInEmail?.requestFocus()
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches()-> _binding?.signInEmail?.error  = "Please provide a valid email address"
-            TextUtils.isEmpty(password) -> _binding?.signInPassword?.error = "Password is required"
-            TextUtils.isEmpty(password) -> _binding?.signInPassword?.requestFocus()
-
-            else -> {
-                _binding?.signInProgressBar?.visibility  = View.VISIBLE
-
-                //https://firebase.google.com/docs/auth/android/start?authuser=0#kotlin+ktx_3
-                val firebaseAuth = FirebaseAuth.getInstance()
-                firebaseAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener { task ->
-                        if(task.isSuccessful){
-                            startActivity(Intent(context, MainActivity::class.java)
-                                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK))
-                            activity?.finish()
-                            Log.d(ContentValues.TAG, "signInWithEmail:success")
-                            Toast.makeText(this.requireActivity(), "Signed in successfully",
-                                Toast.LENGTH_LONG).show()
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(ContentValues.TAG, "signInWithEmail:failure", task.exception)
-                            Toast.makeText(this.requireActivity(), "Failed to sign in. Please try again!",
-                                Toast.LENGTH_LONG).show()
-                            FirebaseAuth.getInstance().signOut()
-                            //Progress bar disappears
-                            _binding?.signInProgressBar?.visibility = View.GONE
-                        }
-                    }
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun isLoggedIn() {
