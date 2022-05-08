@@ -79,7 +79,7 @@ class SignUpFragment : Fragment() {
             else -> {
                 _binding.signUpProgressBar.visibility = VISIBLE
 
-                //https://firebase.google.com/docs/auth/android/start?authuser=0#kotlin+ktx_4
+                ////https://firebase.google.com/docs/auth/android/start?authuser=0#sign_up_new_users
                 val firebaseAuth = FirebaseAuth.getInstance()
 
                 firebaseAuth.createUserWithEmailAndPassword(email, password)
@@ -109,8 +109,9 @@ class SignUpFragment : Fragment() {
         userHashMap["firstname"] = firstName
         userHashMap["lastname"] = lastName
         userHashMap["email"] = email
-        userHashMap["image"] = "https://firebasestorage.googleapis.com/v0/b/sykkel-app-fc597.appspot.com/o/Default%20Images%2Fprofile.png?alt=media&token=76031157-decd-4fa0-b0d2-6ef8d2bf1d30"
-        //https://firebase.google.com/docs/auth/android/start?authuser=0#kotlin+ktx_4
+        userHashMap["image"] = "https://firebasestorage.googleapis.com/v0/b/sykkel-app-fc597.appspot.com/o/Default%20Images%2Fprofile.png?alt=media&token=2c9e98b1-d7c8-49bb-9959-0ba46705e712"
+
+        //https://firebase.google.com/docs/auth/android/start?authuser=0#sign_up_new_users
         usersReference.child(currentUserID).setValue(userHashMap)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {

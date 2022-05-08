@@ -14,6 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.sykkelapp.MainActivity
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentProfileBinding
@@ -126,8 +127,9 @@ class ProfileFragment : Fragment() {
 
     //Code inspired from Firebase documentation at
     //https://firebase.google.com/docs/database/android/read-and-write#java_4,
-    //https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot
-    //and CodeWithMazn https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn
+    //https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot,
+    //CodeWithMazn https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn and
+    //https://www.youtube.com/watch?v=_J7q_qHC0YY&t=1380s&ab_channel=AtifPervaiz
     private fun setUserInformation() {
         val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
         databaseReference = FirebaseDatabase.getInstance().getReference("Users")
@@ -135,16 +137,24 @@ class ProfileFragment : Fragment() {
 
         databaseReference.child(userID).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.d("Datasnapshot",dataSnapshot.exists().toString())
                 if (dataSnapshot.exists()) {
-                    val firstName = "${dataSnapshot.child("firstname").value}"
-                    val lastName = "${dataSnapshot.child("lastname").value}"
-                    val email = "${dataSnapshot.child("email").value}"
-                    val user = User(firstName,lastName,email)
-                    val level = "Level: Beginner"
+                    val user = dataSnapshot.value as HashMap<*, *>
 
-                    _binding?.profileFullName?.text = user.getFullName()
-                    _binding?.profileUserLevel?.text = level
+                    if (user.size > 0) {
+                        val profilePicture = user["image"].toString()
+                        val firstName = user["firstname"].toString()
+                        val lastName = user["lastname"].toString()
+                        val level = "Level: Beginner"
+
+                        _binding?.profileFullName?.text = "$firstName $lastName"
+                        _binding?.profileUserLevel?.text = level
+//                        _binding?.profileImageMain?.let {
+//                            Glide.with(this@ProfileFragment)
+//                                .load(profilePicture)
+//                                .placeholder(R.drawable.profile)
+//                                .into(it)
+//                        }
+                    }
                 }
             }
 
