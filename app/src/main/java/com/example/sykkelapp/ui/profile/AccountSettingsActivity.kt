@@ -4,7 +4,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.sykkelapp.MainActivity
+import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.ActivityAccountSettingsBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -44,9 +46,11 @@ class AccountSettingsActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    //Code inspired from Firebase documentation at https://firebase.google.com/docs/database/android/read-and-write,
-    //https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot
-    //and CodeWithMazn https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn
+    //Code inspired from Firebase documentation at
+    //https://firebase.google.com/docs/database/android/read-and-write#java_4,
+    //https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot,
+    //CodeWithMazn https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn and
+    //https://www.youtube.com/watch?v=_J7q_qHC0YY&t=1380s&ab_channel=AtifPervaiz
     private fun userInformation() {
         val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
         databaseReference = FirebaseDatabase.getInstance().getReference("Users")
@@ -54,16 +58,24 @@ class AccountSettingsActivity : AppCompatActivity() {
 
         databaseReference.child(userID).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                Log.d("Datasnapshot",dataSnapshot.exists().toString())
                 if (dataSnapshot.exists()) {
-                    val user = dataSnapshot.getValue(User::class.java)
-                    val email = "${dataSnapshot.child("email").value}"
-                    val firstName = "${dataSnapshot.child("firstname").value}"
-                    val lastName = "${dataSnapshot.child("lastname").value}"
-                    if (user != null) {
+                    val user = dataSnapshot.value as HashMap<*, *>
+
+                    if (user.size > 0) {
+                        val profilePicture = user["image"].toString()
+                        val email = user["email"].toString()
+                        val firstName = user["firstname"].toString()
+                        val lastName = user["lastname"].toString()
+
                         _binding.settingsFirstName.text = firstName
                         _binding.settingsLastName.text = lastName
                         _binding.settingsEmail.text = email
+//                        _binding.settingsProfileImage.let {
+//                            Glide.with(this@AccountSettingsActivity)
+//                                .load(profilePicture)
+//                                .placeholder(R.drawable.profile)
+//                                .into(it)
+//                        }
                     }
                 }
             }

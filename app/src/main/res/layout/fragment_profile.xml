@@ -78,7 +78,7 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/profile_total_points_label"
+                    android:id="@+id/profile_total_km_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
@@ -89,7 +89,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/profile_weekly_points_label"
+                    android:id="@+id/profile_weekly_km_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/label_weekly_kilometers"
@@ -228,7 +228,7 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/sign_in_app_logo"
-            android:layout_width="160dp"
+            android:layout_width="360dp"
             android:layout_height="160dp"
             android:layout_marginTop="132dp"
             android:contentDescription="@string/app_logo"
