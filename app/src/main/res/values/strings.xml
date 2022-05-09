@@ -57,4 +57,20 @@
         <item>Length</item>
         <item>Difficulty</item>
     </string-array>
+
+    <string name="next">NEXT</string>
+    <string name="finish">FINISH</string>
+    <string name="skip">SKIP</string>
+    <string name="walking">WALKING</string>
+    <string name="walking_desc">Go for a walk</string>
+    <string name="cycling">Cycling</string>
+    <string name="cycling_desc">if ypu cant run, cant walk</string>
+    <string name="fit">Become FIT</string>
+    <string name="fit_desc">Do either</string>
+    <string name="swimming">Swimming</string>
+    <string name="swimming_desc">Explore the world under water</string>
+    <string name="running">Running</string>
+    <string name="running_desc">Daily running</string>
+
+
 </resources>
