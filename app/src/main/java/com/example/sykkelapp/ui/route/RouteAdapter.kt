@@ -85,8 +85,7 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
         viewHolder.distance.text = exampleList[position].directions.legs[0].distance.text
         viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
         setImage(viewHolder.imageView, exampleList[position])
-        viewHolder.difficulty.text = exampleList[position].difficulty
-        displayDifficulty(viewHolder.difficulty.text as String, viewHolder.difficulty)
+        displayDifficulty(exampleList[position].difficulty,viewHolder.difficulty)
 
         // https://github.com/googlemaps/android-maps-utils/blob/main/demo/src/v3/java/com/google/maps/android/utils/demo/PolyDecodeDemoActivity.java
 
@@ -104,16 +103,19 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
     // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = exampleList.size
 
-    private fun displayDifficulty(diff: String, view: TextView){
-        when (diff) {
-            "Easy" -> {
-                view.setBackgroundResource(R.drawable.easy)
+    private fun displayDifficulty(avgSpeed: Double, view: TextView){
+        when {
+            avgSpeed < 4.16 -> {
+                view.text = "Hard"
+                view.setBackgroundResource(R.drawable.hard)
             }
-            "Medium" -> {
+            avgSpeed in 4.16 .. 5.5 -> {
+                view.text = "Medium"
                 view.setBackgroundResource(R.drawable.medium)
             }
-            "Hard" -> {
-                view.setBackgroundResource(R.drawable.hard)
+            avgSpeed > 5.5 -> {
+                view.text = "Easy"
+                view.setBackgroundResource(R.drawable.easy)
             }
         }
     }

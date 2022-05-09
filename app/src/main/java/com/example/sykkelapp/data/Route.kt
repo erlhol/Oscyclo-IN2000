@@ -19,6 +19,6 @@ data class Route(
     val directions: Route,
     val popularity: Int,
     val elevation: Double,
-    val difficulty: String,
+    val difficulty: Double,
     var bookmarked : Boolean
 )
