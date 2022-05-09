@@ -61,7 +61,7 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
                 binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it, this) }
             }
             2 -> {
-                val routesSorted = routeViewModel.routes.value?.sortedBy {it.difficulty}
+                val routesSorted = routeViewModel.routes.value?.sortedByDescending {it.difficulty}
                 binding.recyclerView.adapter = routesSorted?.let { RouteAdapter(it,this) }
             }
         }

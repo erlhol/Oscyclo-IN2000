@@ -157,25 +157,10 @@ class Repository (private val datasource: Datasource) {
         return (start + end)/2
     }
 
-    private fun setDifficulty(leg : Leg) : String {
+    private fun setDifficulty(leg: Leg): Double {
         val second = leg.duration.value.toDouble()
         val meters = leg.distance.value.toDouble()
-        val avgSpeed = meters/second
-
-        return when {
-            avgSpeed < 4.16 -> {
-                "Hard"
-            }
-            avgSpeed in 4.16 .. 5.5 -> {
-                "Medium"
-            }
-            avgSpeed > 5.5 -> {
-                "Easy"
-            }
-            else -> {
-                "FAILED"
-            }
-        }
+        return meters / second
     }
 }
 
