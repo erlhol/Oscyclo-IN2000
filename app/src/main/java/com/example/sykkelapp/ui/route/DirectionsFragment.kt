@@ -11,12 +11,12 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentDirectionsBinding
+import com.example.sykkelapp.ui.map.BitmapHelper
 import com.google.android.gms.maps.*
+import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
@@ -53,8 +53,15 @@ class DirectionsFragment() : Fragment() {
             mMap = map
             val start = decodedPath[0]
             val end = decodedPath[decodedPath.size-1]
-            mMap.addMarker(MarkerOptions().position(start).title("Start"))?.showInfoWindow()
-            mMap.addMarker(MarkerOptions().position(end).title("End"))?.showInfoWindow()
+
+            val startIcon = BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_directions_bike_24, Color.rgb(205, 18, 18))
+            val startMark = MarkerOptions().position(start).icon(startIcon)
+            mMap.addMarker(startMark)
+
+            val endIcon = BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_flag_24, Color.rgb(205, 18, 18))
+            val endMark = MarkerOptions().position(end).icon(endIcon)
+            mMap.addMarker(endMark)
+
             mMap.addPolyline(PolylineOptions().addAll(decodedPath))
             val point_lat = decodedPath[decodedPath.size/2].latitude
             val point_long = decodedPath[decodedPath.size/2].longitude
