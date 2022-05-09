@@ -35,6 +35,7 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
+    lateinit var card : View
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
@@ -55,8 +56,9 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
             difficulty = view.findViewById(R.id.difficulty)
             bookmark = view.findViewById(R.id.bookmark)
             view.setOnClickListener{
-                openMapFromCoordinates(bindingAdapterPosition,view)
+                openMapFromCoordinates(bindingAdapterPosition)
             }
+            card = view
 
         }
     }
@@ -179,11 +181,14 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
         }
     }
 
-    fun openMapFromCoordinates(position: Int, card : View) {
+    fun openMapFromCoordinates(position: Int) {
         SelectedRoute.currentPolyline = exampleList[position].directions.overview_polyline.points
         SelectedRoute.currentView = card
         findNavController(routeFragment).navigate(R.id.directionsFragment)
+
     }
+    // TODO: fix to get correct image on routes
+
     // TODO: add a new Livedata -list - containing favorites
 
 }
