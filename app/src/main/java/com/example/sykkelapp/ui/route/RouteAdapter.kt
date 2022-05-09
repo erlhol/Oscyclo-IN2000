@@ -56,8 +56,10 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
             difficulty = view.findViewById(R.id.difficulty)
             bookmark = view.findViewById(R.id.bookmark)
             view.setOnClickListener{
-                openMapFromCoordinates(bindingAdapterPosition,view)
+                openMapFromCoordinates(bindingAdapterPosition)
             }
+            card = view
+
         }
     }
 
@@ -177,7 +179,7 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
         }
     }
 
-    fun openMapFromCoordinates(position: Int, card: View) {
+    fun openMapFromCoordinates(position: Int) {
         SelectedRoute.currentPolyline = exampleList[position].directions.overview_polyline.points
         SelectedRoute.currentView = card
         findNavController(routeFragment).navigate(R.id.directionsFragment)
