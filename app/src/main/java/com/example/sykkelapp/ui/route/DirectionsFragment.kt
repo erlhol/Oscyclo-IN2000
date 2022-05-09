@@ -1,14 +1,18 @@
 package com.example.sykkelapp.ui.route
 
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.Color.rgb
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentDirectionsBinding
@@ -66,7 +70,19 @@ class DirectionsFragment() : Fragment() {
         }
         binding.cardView.findViewById<TextView>(R.id.routeName).text = card?.findViewById<TextView>(R.id.title)?.text
 
+
+        val button: Button = binding.complete
+
+        button.setOnClickListener{
+            button.text = "+" + card?.findViewById<TextView>(R.id.length)?.text
+            button.setBackgroundColor(rgb(34, 139, 34))
+            button.setOnClickListener{popBack()}
+        }
         return root
+    }
+
+    private fun popBack(){
+        findNavController().popBackStack()
     }
 
 
