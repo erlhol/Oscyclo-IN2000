@@ -2,30 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_screen_one"
+    android:background="@color/bg_screen"
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="40dp"
-        android:src="@drawable/cloudy"
+        android:src="@drawable/ic_baseline_route_24"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:text="Bike rides"
+        android:layout_marginTop="20dp"
+        android:textSize="30sp"
+        android:text="Routes"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="350dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
-        android:text="Filter by the factors air quality, length og difficulty"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:text="@string/routesIntro"
+
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
     />
 

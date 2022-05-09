@@ -51,6 +51,22 @@
 
     <string name="complete">Complete</string>
 
+    <string name="routesIntro">
+        Filter popular routes other people have biked by the factors air quality, length and difficulty\n \n
+        You can also get information the routes average airborne dust levels, distance and estimated duration\n \n
+        Try out some routes and get up your total KM, don\'t forget to bookmark a route you enjoyed
+    </string>
+
+    <string name="mapIntro">
+        Get an overview of all the signposted cycle paths in Oslo and the weatherforecast on your location\n \n
+        You can also use the map to navigate to a Bysykkel station to borrow a bike\n \n
+        Lastly, you can see data about airborne dust from environmental stations located in the city
+    </string>
+
+    <string name="profileIntro">
+        Finally in the profile you can keep track of your progress and find your bookmarked routes
+    </string>
+
 
     <string-array name="sortBy">
         <item>Air quality</item>

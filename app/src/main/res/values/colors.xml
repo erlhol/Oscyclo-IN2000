@@ -14,9 +14,8 @@
     <color name="colorAccent">#FF4081</color>
 
     <!--Screens background color -->
-    <color name="bg_screen_one">#90a4ae</color>
-    <color name="bg_screen_two">#a1887f</color>
-    <color name="bg_screen_three">#ff8a65</color>
+    <color name="bg_screen">#DEEEE5</color>
+
 
 
     <!--dots inactive color-->
