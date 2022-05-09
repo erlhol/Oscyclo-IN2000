@@ -14,6 +14,7 @@ import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentDirectionsBinding
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
 import com.google.maps.android.PolyUtil
 
@@ -46,6 +47,10 @@ class DirectionsFragment() : Fragment() {
 
         mapView.getMapAsync { map ->
             mMap = map
+            val start = decodedPath[0]
+            val end = decodedPath[decodedPath.size-1]
+            mMap.addMarker(MarkerOptions().position(start).title("Start"))?.showInfoWindow()
+            mMap.addMarker(MarkerOptions().position(end).title("End"))?.showInfoWindow()
             mMap.addPolyline(PolylineOptions().addAll(decodedPath))
             val point_lat = decodedPath[decodedPath.size/2].latitude
             val point_long = decodedPath[decodedPath.size/2].longitude

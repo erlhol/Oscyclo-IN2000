@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -150,7 +151,6 @@ class MapFragment : Fragment() {
         val tempView = binding.temperature
         val windView = binding.windSpeed
         val uvView = binding.uvIcon
-        val uvTextView = binding.uvText
         val windRotation = binding.windDirection
         viewModel.weatherforecast.observe(viewLifecycleOwner) {
             if (it != null) {
@@ -162,10 +162,8 @@ class MapFragment : Fragment() {
                 imageView.setImageResource(id)
                 tempView.text = it.instant.details.air_temperature.toString() + "°"
                 windView.text = it.instant.details.wind_speed.toString()
-                DrawableCompat.setTint(
-                    uvView.drawable,
-                    uvColor(it.instant.details.ultraviolet_index_clear_sky, uvTextView)
-                )
+                uvColor(it.instant.details.ultraviolet_index_clear_sky, uvView)
+
                 windRotation.animate().rotationBy((-prevWindRotation))
                     .start()
                 prevWindRotation = it.instant.details.wind_from_direction.toFloat()
@@ -219,22 +217,22 @@ class MapFragment : Fragment() {
         }
     }
 
-    private fun uvColor(uvIndex : Double, view: TextView) : Int {
+    private fun uvColor(uvIndex : Double, view: ImageView){
         if (uvIndex < 3) {
-            view.text = "Low"
-            return Color.rgb(79, 121, 66)
+            view.setImageResource(R.drawable.uv_low)
+            view.setColorFilter(Color.rgb(79, 121, 66))
         } else if (uvIndex >= 3 && uvIndex < 6) {
-            view.text = "Moderate"
-            return Color.rgb(253, 218, 13)
+            view.setImageResource(R.drawable.uv_mediumlow)
+            view.setColorFilter(Color.rgb(253, 218, 13))
         } else if (uvIndex >= 6 && uvIndex < 8) {
-            view.text = "High"
-            return Color.rgb(255, 128, 0)
+            view.setImageResource(R.drawable.uv_medium)
+            view.setColorFilter(Color.rgb(255, 128, 0))
         } else if (uvIndex >= 8 && uvIndex < 11) {
-            view.text = "Very high"
-            return Color.rgb(196, 30, 58)
+            view.setImageResource(R.drawable.uv_mediumhigh)
+            view.setColorFilter(Color.rgb(196, 30, 58))
         } else {
-            view.text = "Extreme"
-            return Color.rgb(199, 21, 133)
+            view.setImageResource(R.drawable.uv_high)
+            view.setColorFilter(Color.rgb(199, 21, 133))
         }
 
     }
