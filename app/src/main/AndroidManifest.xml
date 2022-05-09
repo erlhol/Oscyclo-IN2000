@@ -15,14 +15,23 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SykkelApp">
         <activity
+            android:name=".IntroActivity"
+            android:exported="true" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER"/>
+
+        </intent-filter>
+        </activity>
+        <activity
             android:name=".ui.profile.AccountSettingsActivity"
             android:exported="false" />
         <activity
             android:name=".ui.profile.SignUpFragment"
-            android:exported="false" />
-<!--        <activity-->
-<!--            android:name=".ui.profile.SignInActivity"-->
-<!--            android:exported="false" />-->
+            android:exported="false" /> <!-- <activity -->
+        <!-- android:name=".ui.profile.SignInActivity" -->
+        <!-- android:exported="false" /> -->
         <activity
             android:name=".ui.profile.EditAccountActivity"
             android:exported="false" />
@@ -36,8 +45,8 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
 
