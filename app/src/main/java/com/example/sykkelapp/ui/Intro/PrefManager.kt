@@ -1,4 +1,4 @@
-package com.example.sykkelapp
+package com.example.sykkelapp.ui.Intro
 
 import android.content.Context
 import android.content.SharedPreferences

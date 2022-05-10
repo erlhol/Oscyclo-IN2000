@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SykkelApp">
         <activity
-            android:name=".IntroActivity"
+            android:name=".ui.Intro.IntroActivity"
             android:exported="true" >
         <intent-filter>
             <action android:name="android.intent.action.MAIN" />

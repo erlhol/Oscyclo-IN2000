@@ -1,10 +1,11 @@
-package com.example.sykkelapp
+package com.example.sykkelapp.ui.Intro
 
 import android.content.Context
 import androidx.viewpager.widget.PagerAdapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.example.sykkelapp.R
 
 class IntroAdapter(var context: Context) : PagerAdapter() {
     var layoutInflater: LayoutInflater? = null
