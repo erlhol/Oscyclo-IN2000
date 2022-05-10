@@ -13,6 +13,7 @@ import android.graphics.Color
 import android.util.Log
 import android.view.WindowManager
 import android.view.View
+import android.view.Window
 import android.widget.Button
 import androidx.core.app.ActivityCompat
 import androidx.viewpager.widget.ViewPager.OnPageChangeListener
@@ -33,6 +34,10 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
+        this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        supportActionBar?.hide()
 
         prefManager = PrefManager(this)
         if (!prefManager!!.isFirstLaunch) {
