@@ -47,10 +47,10 @@ class DirectionsFragment() : Fragment() {
 
         mapView.getMapAsync { map ->
             mMap = map
-            val start = decodedPath[0]
-            val end = decodedPath[decodedPath.size-1]
-            mMap.addMarker(MarkerOptions().position(start).title("Start"))?.showInfoWindow()
+            val end = decodedPath[0]
+            val start = decodedPath[decodedPath.size-1]
             mMap.addMarker(MarkerOptions().position(end).title("End"))?.showInfoWindow()
+            mMap.addMarker(MarkerOptions().position(start).title("Start"))?.showInfoWindow()
             mMap.addPolyline(PolylineOptions().addAll(decodedPath))
             val point_lat = decodedPath[decodedPath.size/2].latitude
             val point_long = decodedPath[decodedPath.size/2].longitude
