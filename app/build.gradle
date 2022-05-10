@@ -10,6 +10,7 @@ android {
     compileSdk 32
 
     defaultConfig {
+        //Do not change applicationId
         applicationId "com.example.sykkelapp"
         minSdk 23
         targetSdk 32
