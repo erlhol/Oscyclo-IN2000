@@ -15,8 +15,6 @@ import com.google.firebase.database.*
 class AccountSettingsActivity : AppCompatActivity() {
 
     private lateinit var _binding: ActivityAccountSettingsBinding
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var userID: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,21 +40,21 @@ class AccountSettingsActivity : AppCompatActivity() {
             userInformation()
         }
 
-        //Hide action bar
+        // Hide action bar
         supportActionBar?.hide()
     }
 
-    //Code inspired from Firebase documentation at
-    //https://firebase.google.com/docs/database/android/read-and-write#java_4,
-    //https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot,
-    //CodeWithMazn https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn and
-    //https://www.youtube.com/watch?v=_J7q_qHC0YY&t=1380s&ab_channel=AtifPervaiz
+    //Code inspired from Firebase documentation:
+    //1. https://firebase.google.com/docs/database/android/read-and-write,
+    //2. https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot,
+    //3. https://firebase.google.com/docs/reference/android/com/google/firebase/database/Query#addValueEventListener(com.google.firebase.database.ValueEventListener),
+    //4. CodeWithMazn: https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn,
+    //5. Atif Pervaiz: https://www.youtube.com/watch?v=_J7q_qHC0YY&t=1380s&ab_channel=AtifPervaiz
     private fun userInformation() {
-        val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-        userID = firebaseUser.uid
+        val firebaseUser = FirebaseAuth.getInstance().currentUser!!.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Users")
 
-        databaseReference.child(userID).addValueEventListener(object : ValueEventListener {
+        databaseReference.child(firebaseUser).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     val user = dataSnapshot.value as HashMap<*, *>
@@ -70,12 +68,12 @@ class AccountSettingsActivity : AppCompatActivity() {
                         _binding.settingsFirstName.text = firstName
                         _binding.settingsLastName.text = lastName
                         _binding.settingsEmail.text = email
-//                        _binding.settingsProfileImage.let {
-//                            Glide.with(this@AccountSettingsActivity)
-//                                .load(profilePicture)
-//                                .placeholder(R.drawable.profile)
-//                                .into(it)
-//                        }
+                        _binding.settingsProfileImage.let {
+                            Glide.with(this@AccountSettingsActivity)
+                                .load(profilePicture)
+                                .placeholder(R.drawable.profile)
+                                .into(it)
+                        }
                     }
                 }
             }
@@ -85,6 +83,4 @@ class AccountSettingsActivity : AppCompatActivity() {
             }
         })
     }
-
-
 }
