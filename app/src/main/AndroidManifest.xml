@@ -16,13 +16,7 @@
         android:theme="@style/Theme.SykkelApp">
         <activity
             android:name=".ui.Intro.IntroActivity"
-            android:exported="true" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER"/>
-
-        </intent-filter>
+            android:exported="false" >
         </activity>
         <activity
             android:name=".ui.profile.AccountSettingsActivity"
@@ -39,8 +33,7 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.HOME" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <service

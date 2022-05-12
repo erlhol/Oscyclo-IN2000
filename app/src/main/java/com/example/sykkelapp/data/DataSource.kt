@@ -1,6 +1,5 @@
 package com.example.sykkelapp.data
 
-import android.util.Log
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.data.airquality.AirQuality
 import com.example.sykkelapp.data.airquality.AirQualityItem

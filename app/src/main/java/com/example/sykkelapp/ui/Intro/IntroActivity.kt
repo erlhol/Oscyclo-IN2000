@@ -39,12 +39,6 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         supportActionBar?.hide()
 
-        prefManager = PrefManager(this)
-        if (!prefManager!!.isFirstLaunch) {
-            MainActivity()
-            //startActivity(Intent(this@IntroActivity, MainActivity::class.java))
-            //finish()
-        }
         setContentView(R.layout.activity_intro_screen)
         transparentStatusBar() //make status bar transparent
         findViews() // find xml views
@@ -104,7 +98,6 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
         )
 
     private fun launchMainScreen() {
-        prefManager!!.isFirstLaunch
         startActivity(Intent(this@IntroActivity, MainActivity::class.java))
         finish()
     }

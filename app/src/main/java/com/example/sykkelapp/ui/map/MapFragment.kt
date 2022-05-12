@@ -123,8 +123,6 @@ class MapFragment : Fragment() {
                 uvColor(it.instant.details.ultraviolet_index_clear_sky, uvView)
 
                 // TODO: fix rotation
-                windRotation.animate().rotationBy((-prevWindRotation))
-                    .start()
                 prevWindRotation = it.instant.details.wind_from_direction.toFloat()
                 windRotation.animate().rotationBy(prevWindRotation)
                     .start()
