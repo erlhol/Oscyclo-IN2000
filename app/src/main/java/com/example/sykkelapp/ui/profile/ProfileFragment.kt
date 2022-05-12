@@ -21,6 +21,7 @@ import com.example.sykkelapp.ui.route.RouteAdapter
 import com.example.sykkelapp.ui.route.RouteViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.bumptech.glide.Glide
 
 class ProfileFragment : Fragment() {
 
