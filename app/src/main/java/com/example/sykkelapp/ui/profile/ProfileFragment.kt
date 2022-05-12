@@ -20,14 +20,11 @@ import com.example.sykkelapp.databinding.FragmentProfileBinding
 import com.example.sykkelapp.ui.route.RouteAdapter
 import com.example.sykkelapp.ui.route.RouteViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 
 class ProfileFragment : Fragment() {
 
     private var _binding: FragmentProfileBinding? = null
-    private lateinit var databaseReference: DatabaseReference
-    private lateinit var userID: String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -45,7 +42,7 @@ class ProfileFragment : Fragment() {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        //Navigate to Account settings
+        // Navigate to Account settings
         _binding!!.profileSettingsButton.setOnClickListener{
             startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
@@ -55,12 +52,12 @@ class ProfileFragment : Fragment() {
             findNavController().navigate(R.id.signUpFragment)
         }
 
-        //Signing in user
+        // Sign in user
         _binding!!.signInButtonMain.setOnClickListener {
             signInUser()
         }
 
-        //Underline text
+        // Underline text under sign up button
         val button = _binding!!.signInSignUpButton
         button.paintFlags = button.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
@@ -72,7 +69,7 @@ class ProfileFragment : Fragment() {
             }
         }
 
-        //Get current user session
+        // Get current user session
         if (FirebaseAuth.getInstance().currentUser != null) {
             setUserInformation()
         }
@@ -80,23 +77,25 @@ class ProfileFragment : Fragment() {
         return root
     }
 
-    //https://firebase.google.com/docs/auth/android/start?authuser=0#sign_in_existing_users
+    // Code inspired from
+    // 1. Firebase documentation: https://firebase.google.com/docs/auth/android/start?authuser=0
+    // 2. https://firebase.google.com/docs/auth/android/start?authuser=0#sign_in_existing_users
+    // 3. https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuth?authuser=0#signInWithEmailAndPassword(java.lang.String,%20java.lang.String)
+    // 4. CodeWithMazn: https://www.youtube.com/watch?v=KB2BIm_m1Os&ab_channel=CodeWithMazn
     private fun signInUser() {
         val email = _binding?.signInEmail?.text.toString()
         val password = _binding?.signInPassword?.text.toString()
 
         when{
             TextUtils.isEmpty(email) -> _binding?.signInEmail?.error = "Email is required"
-            TextUtils.isEmpty(email) -> _binding?.signInEmail?.requestFocus()
             !Patterns.EMAIL_ADDRESS.matcher(email).matches()-> _binding?.signInEmail?.error  = "Please provide a valid email address"
             TextUtils.isEmpty(password) -> _binding?.signInPassword?.error = "Password is required"
-            TextUtils.isEmpty(password) -> _binding?.signInPassword?.requestFocus()
+            _binding?.signInPassword?.length()!! < 6 -> _binding?.signInPassword?.error = "Password should be at least 6 characters"
 
             else -> {
                 _binding?.signInProgressBar?.visibility  = View.VISIBLE
 
-                val firebaseAuth = FirebaseAuth.getInstance()
-                firebaseAuth.signInWithEmailAndPassword(email, password)
+                FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
                         if(task.isSuccessful){
                             startActivity(Intent(context, MainActivity::class.java)
@@ -124,17 +123,17 @@ class ProfileFragment : Fragment() {
         _binding = null
     }
 
-    //Code inspired from Firebase documentation at
-    //https://firebase.google.com/docs/database/android/read-and-write#java_4,
-    //https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot,
-    //CodeWithMazn https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn and
-    //https://www.youtube.com/watch?v=_J7q_qHC0YY&t=1380s&ab_channel=AtifPervaiz
+    // Code inspired from
+    //1. Firebase documentation: https://firebase.google.com/docs/database/android/read-and-write,
+    //2. https://firebase.google.com/docs/reference/android/com/google/firebase/database/DataSnapshot,
+    //3. https://firebase.google.com/docs/reference/android/com/google/firebase/database/Query#addValueEventListener(com.google.firebase.database.ValueEventListener),
+    //4. CodeWithMazn: https://www.youtube.com/watch?v=-plgl1EQ21Q&t=47s&ab_channel=CodeWithMazn,
+    //5. AtifPervaiz: https://www.youtube.com/watch?v=_J7q_qHC0YY&t=1380s&ab_channel=AtifPervaiz
     private fun setUserInformation() {
-        val firebaseUser: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
-        databaseReference = FirebaseDatabase.getInstance().getReference("Users")
-        userID = firebaseUser.uid
+        val firebaseUser = FirebaseAuth.getInstance().currentUser!!.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Users")
 
-        databaseReference.child(userID).addValueEventListener(object : ValueEventListener {
+        databaseReference.child(firebaseUser).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 if (dataSnapshot.exists()) {
                     val user = dataSnapshot.value as HashMap<*, *>
@@ -147,12 +146,12 @@ class ProfileFragment : Fragment() {
 
                         _binding?.profileFullName?.text = "$firstName $lastName"
                         _binding?.profileUserLevel?.text = level
-//                        _binding?.profileImageMain?.let {
-//                            Glide.with(this@ProfileFragment)
-//                                .load(profilePicture)
-//                                .placeholder(R.drawable.profile)
-//                                .into(it)
-//                        }
+                        _binding?.profileImageMain?.let {
+                            Glide.with(this@ProfileFragment)
+                                .load(profilePicture)
+                                .placeholder(R.drawable.profile)
+                                .into(it)
+                        }
                     }
                 }
             }

@@ -28,14 +28,8 @@
             android:name=".ui.profile.AccountSettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.profile.SignUpFragment"
-            android:exported="false" /> <!-- <activity -->
-        <!-- android:name=".ui.profile.SignInActivity" -->
-        <!-- android:exported="false" /> -->
-        <activity
             android:name=".ui.profile.EditAccountActivity"
             android:exported="false" />
-
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
@@ -49,7 +43,6 @@
                 <category android:name="android.intent.category.HOME" />
             </intent-filter>
         </activity>
-
         <service
             android:name=".MainActivity"
             android:foregroundServiceType="location" />
