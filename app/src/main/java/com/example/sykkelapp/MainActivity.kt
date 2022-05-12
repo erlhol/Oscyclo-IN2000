@@ -25,18 +25,6 @@ class MainActivity : AppCompatActivity() {
         Log.d("MainActivity","On create")
         super.onCreate(savedInstanceState)
 
-        /*
-        val sharedpreferences =
-            getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
-        if (!sharedpreferences.getBoolean(prevStarted, false)) {
-            val editor = sharedpreferences.edit()
-            editor.putBoolean(prevStarted, true)
-            editor.apply()
-        } else {
-            moveToSecondary()
-        }
-         */
-
         //Fjerner top bar-en
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
@@ -59,23 +47,4 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
-    /*
-    override fun onResume() {
-        super.onResume()
-        val sharedpreferences =
-            getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
-        if (!sharedpreferences.getBoolean(prevStarted, false)) {
-            val editor = sharedpreferences.edit()
-            editor.putBoolean(prevStarted, true)
-            editor.apply()
-        } else {
-            moveToSecondary()
-        }
-    }
-    fun moveToSecondary() {
-        // use an intent to travel from one activity to another.
-        val intent = Intent(this, IntroActivity::class.java)
-        startActivity(intent)
-    }
-     */
 }

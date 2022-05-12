@@ -2,6 +2,7 @@ package com.example.sykkelapp.ui.Intro
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
 import android.widget.LinearLayout
@@ -29,8 +30,8 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
     private var btnSkip: Button? = null
     private var introAdapter: IntroAdapter? = null
     private lateinit var mDots: Array<TextView?>
-    private var prefManager: PrefManager? = null
     private var currentItem = 0
+    var prevStarted = "yes"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -98,8 +99,7 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
         )
 
     private fun launchMainScreen() {
-        startActivity(Intent(this@IntroActivity, MainActivity::class.java))
-        finish()
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     private fun transparentStatusBar() {
@@ -184,6 +184,24 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
             } else launchMainScreen() //launch main screen (MainActivity) on last page
             R.id.btn_skip -> launchMainScreen()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val sharedpreferences =
+            getSharedPreferences(getString(R.string.app_name), Context.MODE_PRIVATE)
+        if (!sharedpreferences.getBoolean(prevStarted, false)) {
+            val editor = sharedpreferences.edit()
+            editor.putBoolean(prevStarted, true)
+            editor.apply()
+        } else {
+            moveToSecondary()
+        }
+    }
+    fun moveToSecondary() {
+        // use an intent to travel from one activity to another.
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
     }
 }
 
