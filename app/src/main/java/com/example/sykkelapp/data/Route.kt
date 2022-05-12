@@ -18,7 +18,6 @@ data class Route(
     val airq_unit: String,
     val directions: Route,
     val popularity: Int,
-    val elevation: Double,
     val difficulty: Double,
     var bookmarked : Boolean
 )

@@ -86,10 +86,6 @@ class Repository (private val datasource: Datasource) {
                         it.start_station_latitude.toString() + "," + it.start_station_longitude,
                         it.end_station_latitude.toString() + "," + it.end_station_longitude
                     )
-                    val elevation = findElevationDiff(
-                        it.start_station_latitude.toString() + "," + it.start_station_longitude,
-                        it.end_station_latitude.toString() + "," + it.end_station_longitude
-                    )
                     routes.add(
                         Route(
                             it.end_station_description,
@@ -107,7 +103,6 @@ class Repository (private val datasource: Datasource) {
                             airq_unit.units,
                             directions,
                             it.popularity,
-                            elevation,
                             setDifficulty(directions.legs[0]),
                             false
                         )
@@ -140,15 +135,6 @@ class Repository (private val datasource: Datasource) {
                 it1.popularity = it.second}
         }
         return popularRoutes
-    }
-
-    private suspend fun findElevationDiff(destlatlon: String, originlatlon: String): Double {
-        val res = datasource.getElevation(destlatlon, originlatlon)
-        val destlatlonElevation = res[0].elevation
-        val originlatlonElevation = res[1].elevation
-        // if elevation is positive - it means that you are cycling downwards
-        // else - cycling upwards
-        return originlatlonElevation - destlatlonElevation
     }
 
     private suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
