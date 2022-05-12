@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.bumptech.glide.Glide
 import com.example.sykkelapp.MainActivity
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentProfileBinding

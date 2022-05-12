@@ -22,6 +22,8 @@ import com.example.sykkelapp.data.bysykkel.StationRenderer
 import com.example.sykkelapp.data.parking.Feature
 import com.example.sykkelapp.data.parking.FeatureRenderer
 import com.example.sykkelapp.databinding.FragmentMapBinding
+import com.example.sykkelapp.ui.Intro.GPSEnabled
+import com.example.sykkelapp.ui.Intro.IntroActivity
 import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -40,7 +42,6 @@ class MapFragment : Fragment() {
     private lateinit var mapView : MapView
     private var _binding: FragmentMapBinding? = null
     private lateinit var homeViewModel : MapViewModel
-    private var isGPSEnabled = false
 
     private var airQualityLayerActive = false
     private var airQualityList = mutableListOf<Marker>()
@@ -66,6 +67,7 @@ class MapFragment : Fragment() {
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
 
+        startLocationUpdate()
         mapView.getMapAsync { map ->
             mMap = map
             initWeatherForecast(homeViewModel)
@@ -78,20 +80,13 @@ class MapFragment : Fragment() {
             onOptionClick()
         }
 
-        GpsUtils(requireContext()).turnGPSOn(object : GpsUtils.OnGpsListener {
-
-            override fun gpsStatus(isGPSEnable: Boolean) {
-                isGPSEnabled = isGPSEnable
-            }
-        })
-
         return root
     }
 
     @SuppressLint("MissingPermission")
     private fun startLocationUpdate() {
         homeViewModel.locationData.observe(viewLifecycleOwner) {
-            if (isGPSEnabled) {
+            if (GPSEnabled.isGPSEnabled) {
                 mMap.isMyLocationEnabled = true
                 mMap.uiSettings.isMyLocationButtonEnabled = true
             }
@@ -103,43 +98,6 @@ class MapFragment : Fragment() {
             Log.d("Main activity", it.longitude.toString() + " "+ it.latitude.toString())
         }
     }
-
-    private fun invokeLocationAction() {
-        when {
-            !isGPSEnabled ->  Log.d("Map fragment",getString(R.string.enable_gps))
-
-            isPermissionsGranted() -> startLocationUpdate()
-
-            shouldShowRequestPermissionRationale() -> Log.d("Map fragment",getString(R.string.permission_request))
-
-            else -> ActivityCompat.requestPermissions(
-                    requireActivity(),
-                    arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION),
-                    LOCATION_REQUEST)
-        }
-    }
-
-
-    private fun isPermissionsGranted() =
-        ActivityCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-
-
-    private fun shouldShowRequestPermissionRationale() =
-        ActivityCompat.shouldShowRequestPermissionRationale(
-            requireActivity(),
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) && ActivityCompat.shouldShowRequestPermissionRationale(
-            requireActivity(),
-            Manifest.permission.ACCESS_COARSE_LOCATION
-        )
-
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -164,6 +122,7 @@ class MapFragment : Fragment() {
                 windView.text = it.instant.details.wind_speed.toString()
                 uvColor(it.instant.details.ultraviolet_index_clear_sky, uvView)
 
+                // TODO: fix rotation
                 windRotation.animate().rotationBy((-prevWindRotation))
                     .start()
                 prevWindRotation = it.instant.details.wind_from_direction.toFloat()

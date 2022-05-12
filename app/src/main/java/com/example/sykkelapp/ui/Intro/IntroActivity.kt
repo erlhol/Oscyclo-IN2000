@@ -57,7 +57,13 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
                 GPSEnabled.isGPSEnabled = isGPSEnable
             }
         })
-        invokeLocationAction()
+
+        // TODO: fikse location-button
+        val locationButton = findViewById<Button>(R.id.location_button)
+        locationButton.setOnClickListener {
+            invokeLocationAction()
+            it.visibility = View.GONE
+        }
 
     }
 

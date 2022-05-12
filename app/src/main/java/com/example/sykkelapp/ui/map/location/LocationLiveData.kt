@@ -36,7 +36,6 @@ class LocationLiveData (context: Context) : LiveData<LocationModel>() {
         override fun onLocationResult(p0: LocationResult) {
             p0.locations.forEach {
                 setLocationData(it)
-
             }
         }
     }
