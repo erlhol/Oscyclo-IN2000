@@ -6,14 +6,11 @@ import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
 import com.example.sykkelapp.data.directions.Route
 import com.example.sykkelapp.data.locationForecast.Data
-import com.example.sykkelapp.data.parking.Feature
 
 interface DataSourceInterface {
     suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data
 
     suspend fun loadOsloRoutes() : String
-
-    suspend fun loadParking() : List<Feature>
 
     suspend fun loadNILUAirQ() : List<AirQualityItem>
 

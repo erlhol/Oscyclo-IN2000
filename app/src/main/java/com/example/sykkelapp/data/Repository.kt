@@ -6,7 +6,6 @@ import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkelroutes.BysykkelItem
 import com.example.sykkelapp.data.directions.Leg
 import com.example.sykkelapp.data.locationForecast.Data
-import com.example.sykkelapp.data.parking.Feature
 import kotlinx.coroutines.*
 
 class Repository (private val datasource: Datasource) {
@@ -21,14 +20,6 @@ class Repository (private val datasource: Datasource) {
     suspend fun loadOsloRoutes() : String? {
         return try {
             datasource.loadOsloRoutes()
-        } catch (exception: Exception) {
-            null
-        }
-    }
-
-    suspend fun loadParking() : List<Feature>? {
-        return try {
-            datasource.loadParking()
         } catch (exception: Exception) {
             null
         }

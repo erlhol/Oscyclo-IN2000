@@ -1,7 +1,5 @@
 package com.example.sykkelapp
 
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Window
@@ -12,7 +10,6 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.sykkelapp.databinding.ActivityMainBinding
-import com.example.sykkelapp.ui.Intro.IntroActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

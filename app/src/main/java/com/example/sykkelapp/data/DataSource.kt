@@ -12,8 +12,6 @@ import com.example.sykkelapp.data.directions.Directions
 import com.example.sykkelapp.data.directions.Route
 import com.example.sykkelapp.data.locationForecast.Data
 import com.example.sykkelapp.data.locationForecast.LocationForecast
-import com.example.sykkelapp.data.parking.Feature
-import com.example.sykkelapp.data.parking.Parking
 import com.example.sykkelapp.data.placeid.PlaceName
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -40,12 +38,6 @@ class Datasource : DataSourceInterface {
         val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326&CQL_FILTER=rute+IS+NOT+Null")
         val data = response.readText()
         return data
-    }
-
-    override suspend fun loadParking() : List<Feature> {
-        val path = "https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Asykkelparkering&outputFormat=application/json&srsName=EPSG:4326"
-        val response : Parking = client.get(path)
-        return response.features.filter {it.geometry.coordinates.size == 2 && it.properties.antall_parkeringsplasser > 20}
     }
 
     override suspend fun loadNILUAirQ() : List<AirQualityItem> {

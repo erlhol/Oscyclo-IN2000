@@ -1,8 +1,6 @@
 package com.example.sykkelapp.ui.map
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -10,21 +8,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.graphics.drawable.DrawableCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkel.StationRenderer
-import com.example.sykkelapp.data.parking.Feature
-import com.example.sykkelapp.data.parking.FeatureRenderer
 import com.example.sykkelapp.databinding.FragmentMapBinding
 import com.example.sykkelapp.ui.Intro.GPSEnabled
-import com.example.sykkelapp.ui.Intro.IntroActivity
-import com.example.sykkelapp.ui.map.location.GpsUtils
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.MapView
@@ -209,29 +200,6 @@ class MapFragment : Fragment() {
 
         // Add the places to the ClusterManager.
         viewModel.bysykkel_station.observe(viewLifecycleOwner) {
-            if (it != null) {
-                clusterManager.addItems(it)
-                clusterManager.cluster()
-            }
-        }
-        return clusterManager
-    }
-
-    private fun addParkingClusteredMarkers(mMap: GoogleMap, viewModel: MapViewModel) : ClusterManager<Feature> {
-        // Create the ClusterManager class and set the custom renderer.
-        val clusterManager = ClusterManager<Feature>(context, mMap)
-        clusterManager.renderer =
-            FeatureRenderer(
-                context,
-                mMap,
-                clusterManager
-            )
-
-        // Set custom info window adapter
-        //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
-
-        // Add the places to the ClusterManager.
-        viewModel.parking.observe(viewLifecycleOwner) {
             if (it != null) {
                 clusterManager.addItems(it)
                 clusterManager.cluster()
