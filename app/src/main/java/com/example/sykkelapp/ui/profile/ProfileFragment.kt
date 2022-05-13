@@ -1,5 +1,6 @@
 package com.example.sykkelapp.ui.profile
 
+import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Paint
@@ -10,10 +11,12 @@ import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import com.example.sykkelapp.MainActivity
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentProfileBinding
@@ -21,7 +24,8 @@ import com.example.sykkelapp.ui.route.RouteAdapter
 import com.example.sykkelapp.ui.route.RouteViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.bumptech.glide.Glide
+import java.math.BigDecimal
+import java.math.RoundingMode
 
 class ProfileFragment : Fragment() {
 
@@ -72,6 +76,7 @@ class ProfileFragment : Fragment() {
 
         // Get current user session
         if (FirebaseAuth.getInstance().currentUser != null) {
+            setUserDistance()
             setUserInformation()
         }
         isLoggedIn()
@@ -158,7 +163,47 @@ class ProfileFragment : Fragment() {
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
-                Log.d("Datasnapshot", databaseError.message)
+                Log.d("Could not download information for user: $firebaseUser ", databaseError.message)
+            }
+        })
+    }
+
+
+    private fun setUserDistance() {
+        val firebaseUser = FirebaseAuth.getInstance().currentUser!!.uid
+        val databaseReference = FirebaseDatabase.getInstance().getReference("Distance")
+
+        databaseReference.child(firebaseUser).addValueEventListener(object : ValueEventListener {
+            @SuppressLint("SetTextI18n")
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    val kmValue = BigDecimal(dataSnapshot.value.toString().toDouble())
+                        .setScale(2, RoundingMode.HALF_EVEN)
+                        .toDouble()
+                    _binding?.profileTotalKm?.text = kmValue.toString()
+                    val image: ImageView = _binding?.profileTrophy as ImageView
+                    var level = ""
+
+                    // Small number of kilometers for testing purposes
+                    when {
+                        (kmValue in 0.0..10.0) -> {
+                            level = "Level: Beginner"
+                            image.setImageResource(R.drawable.bronze_trophy)
+                        }
+                        (kmValue in 10.1..20.0) -> {
+                            level = "Level: Intermediate"
+                            image.setImageResource(R.drawable.silver_trophy)
+                        }
+                        (kmValue in 20.1..99999999.0) -> {
+                            level = "Level: Advanced"
+                            image.setImageResource(R.drawable.gold_trophy)
+                        }
+                    }
+                    _binding?.profileUserLevel?.text = level
+                }
+            }
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.d("Could not get distance for user: $firebaseUser ", databaseError.message)
             }
         })
     }
@@ -174,6 +219,4 @@ class ProfileFragment : Fragment() {
             binding.signInLayout.visibility = View.GONE
         }
     }
-
-
 }
