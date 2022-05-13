@@ -20,8 +20,8 @@
     <string name="settings">Settings</string>
     <string name="label_total_kilometers">Total Km:</string>
     <string name="label_weekly_kilometers">Weekly Km:</string>
-    <string name="total_points">0</string>
-    <string name="weekly_points">0</string>
+    <string name="total_km">0</string>
+    <string name="weekly_km">0</string>
     <string name="level">Level:</string>
     <string name="my_favourite_routes">My favourite routes</string>
     <string name="my_history">My history</string>
