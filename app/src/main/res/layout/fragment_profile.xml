@@ -72,7 +72,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayout2"
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:orientation="vertical">
@@ -101,7 +101,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayout3"
-                android:layout_width="69dp"
+                android:layout_width="110dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:orientation="vertical"
@@ -109,8 +109,8 @@
                 android:paddingEnd="10dp">
 
                 <TextView
-                    android:id="@+id/profile_total_points"
-                    android:layout_width="23dp"
+                    android:id="@+id/profile_total_km"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:maxLines="1"
@@ -120,8 +120,8 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/profile_weekly_points"
-                    android:layout_width="25dp"
+                    android:id="@+id/profile_weekly_km"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/weekly_points"
                     android:textColor="@android:color/black"
@@ -248,6 +248,8 @@
             android:layout_marginTop="28dp"
             android:layout_marginEnd="14dp"
             android:hint="@string/email"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/quantum_grey"
             android:inputType="textEmailAddress"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -265,6 +267,8 @@
             android:layout_marginEnd="14dp"
             android:autofillHints=""
             android:hint="@string/password"
+            android:textColor="@android:color/black"
+            android:textColorHint="@color/quantum_grey"
             android:inputType="textPassword"
             android:padding="10dp"
             app:layout_constraintEnd_toEndOf="parent"
