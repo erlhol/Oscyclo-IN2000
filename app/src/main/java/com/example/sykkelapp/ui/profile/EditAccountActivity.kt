@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -22,18 +23,12 @@ import java.util.*
 class EditAccountActivity : AppCompatActivity() {
 
     private lateinit var _binding: ActivityEditAccountBinding
-//    private lateinit var firebaseAuth: FirebaseAuth
-//    private lateinit var firebaseDatabase: FirebaseDatabase
-//    private lateinit var storage: FirebaseStorage
+    private var profileUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityEditAccountBinding.inflate(layoutInflater)
         setContentView(_binding.root)
-
-//        firebaseAuth = FirebaseAuth.getInstance()
-//        firebaseDatabase = FirebaseDatabase.getInstance()
-//        storage = FirebaseStorage.getInstance()
 
         //Code inspired from
         //1. Firebase documentation: https://firebase.google.com/docs/database/android/read-and-write,
@@ -58,7 +53,7 @@ class EditAccountActivity : AppCompatActivity() {
                     }
 
                     override fun onCancelled(databaseError: DatabaseError) {
-
+                        Log.d("Datasnapshot", databaseError.message)
                     }
                 })
         }
@@ -92,32 +87,12 @@ class EditAccountActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (data != null) {
-            val profileUri: Uri? = data.data
+            profileUri = data.data
             _binding.editProfileImage.setImageURI(profileUri)
-
-            val storageReference: StorageReference? =
-                FirebaseAuth.getInstance().uid?.let {
-                    FirebaseStorage.getInstance().reference.child("Profile picture").child(it)
-                }
-
-
-            if (storageReference != null) {
-                if (profileUri != null) {
-                    storageReference.putFile(profileUri).addOnSuccessListener {
-                        Toast.makeText(this, "Image uploaded", Toast.LENGTH_LONG).show()
-
-                        storageReference.downloadUrl.addOnSuccessListener { uri ->
-                            FirebaseDatabase.getInstance().reference.child("Users").child(FirebaseAuth.getInstance().uid!!)
-                                .child("image").setValue(uri.toString())
-                            Toast.makeText(this, "Profile picture uploaded", Toast.LENGTH_LONG).show()
-                        }
-                    }
-                }
-            }
         }
     }
 
-    //Code inspired from
+    // Code inspired from
     //1. Firebase Documentation: https://firebase.google.com/docs/database/android/read-and-write#updating_or_deleting_data
     private fun updateUserInformation() {
         val firebaseUser = FirebaseAuth.getInstance().currentUser!!.uid
@@ -126,15 +101,30 @@ class EditAccountActivity : AppCompatActivity() {
 
         val firstName = _binding.editFirstName.text.toString()
         val lastName = _binding.editLastName.text.toString()
-//        val image = _binding.editProfileImage.toString()
+
+        val storageReference: StorageReference? =
+            FirebaseAuth.getInstance().uid?.let {
+                FirebaseStorage.getInstance().reference.child("Profile picture").child(it)
+            }
+
+        if (storageReference != null) {
+            if (profileUri != null) {
+                storageReference.putFile(profileUri!!).addOnSuccessListener {
+                    storageReference.downloadUrl.addOnSuccessListener { uri ->
+                        FirebaseDatabase.getInstance().reference.child("Users")
+                            .child(FirebaseAuth.getInstance().uid!!)
+                            .child("image").setValue(uri.toString())
+                    }
+                }
+            }
+        }
 
         when{
-            TextUtils.isEmpty(firstName) and TextUtils.isEmpty(lastName) -> {
+            TextUtils.isEmpty(firstName) and TextUtils.isEmpty(lastName) && profileUri == null -> {
                 Toast.makeText(this, "No changes made!", Toast.LENGTH_LONG).show()
             }
             TextUtils.isEmpty(firstName).not() -> userHashMap ["firstname"] = _binding.editFirstName.text.toString()
             TextUtils.isEmpty(lastName).not() -> userHashMap ["lastname"]  = _binding.editLastName.text.toString()
-//            TextUtils.isEmpty(image).not() -> userHashMap ["image"] = _binding.editProfileImage.toString()
         }
         databaseReference.child(firebaseUser).updateChildren(userHashMap)
         Toast.makeText(this, "Your account information has been updated successfully!", Toast.LENGTH_LONG).show()
