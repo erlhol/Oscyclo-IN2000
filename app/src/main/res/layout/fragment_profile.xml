@@ -63,8 +63,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:orientation="horizontal"
-            android:paddingLeft="30dp"
-            android:paddingRight="30dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -114,7 +114,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="15dp"
                     android:maxLines="1"
-                    android:text="@string/total_points"
+                    android:text="@string/total_km"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -123,7 +123,7 @@
                     android:id="@+id/profile_weekly_km"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/weekly_points"
+                    android:text="@string/weekly_km"
                     android:textColor="@android:color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -132,7 +132,7 @@
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -151,7 +151,7 @@
                     android:maxLines="1"
                     android:text="@string/level"
                     android:textColor="@android:color/black"
-                    android:textSize="18sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -162,7 +162,7 @@
             android:id="@+id/profile_my_favourite_routes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
+            android:layout_marginStart="20dp"
             android:layout_marginTop="8dp"
             android:text="@string/my_favourite_routes"
             android:textColor="@android:color/black"
