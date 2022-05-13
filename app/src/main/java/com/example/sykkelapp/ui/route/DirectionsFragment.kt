@@ -4,6 +4,7 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.Color.rgb
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,17 @@ import androidx.navigation.fragment.findNavController
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.FragmentDirectionsBinding
 import com.example.sykkelapp.ui.map.BitmapHelper
-import com.google.android.gms.maps.*
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.maps.model.PolylineOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.maps.android.PolyUtil
 
 
@@ -83,6 +91,28 @@ class DirectionsFragment() : Fragment() {
             button.text = "+" + card?.findViewById<TextView>(R.id.length)?.text
             button.setBackgroundColor(rgb(34, 139, 34))
             button.setOnClickListener{popBack()}
+
+            val firebaseUser = FirebaseAuth.getInstance().currentUser!!.uid
+            val databaseReference = FirebaseDatabase.getInstance().getReference("Distance")
+
+            databaseReference.addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val distance = snapshot.value as HashMap<*, *>
+                        val numbersOnly = button.text.toString().substring(1).dropLast(3).toDouble()
+                        if (distance[firebaseUser] == null) {
+                            databaseReference.child(firebaseUser).setValue(numbersOnly)
+                        } else {
+                            val previousValue = distance[firebaseUser] as Number
+                            databaseReference.child(firebaseUser).setValue(numbersOnly.plus(previousValue.toDouble()))
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d("Error: unable to upload distance", error.message)
+                }
+            })
         }
         return root
     }
@@ -90,7 +120,4 @@ class DirectionsFragment() : Fragment() {
     private fun popBack(){
         findNavController().popBackStack()
     }
-
-
-
 }
