@@ -29,11 +29,11 @@ import java.math.RoundingMode
 
 class ProfileFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
+    private lateinit var _binding: FragmentProfileBinding
 
     // This property is only valid between onCreateView and
     // onDestroyView.
-    private val binding get() = _binding!!
+    private val binding get() = _binding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,22 +48,22 @@ class ProfileFragment : Fragment() {
         val root: View = binding.root
 
         // Navigate to Account settings
-        _binding!!.profileSettingsButton.setOnClickListener{
+        _binding.profileSettingsButton.setOnClickListener{
             startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
 
         // Navigate to Sign up fragment
-        _binding!!.signInSignUpButton.setOnClickListener{
+        _binding.signInSignUpButton.setOnClickListener{
             findNavController().navigate(R.id.signUpFragment)
         }
 
         // Sign in user
-        _binding!!.signInButtonMain.setOnClickListener {
+        _binding.signInButtonMain.setOnClickListener {
             signInUser()
         }
 
         // Underline text under sign up button
-        val button = _binding!!.signInSignUpButton
+        val button = _binding.signInSignUpButton
         button.paintFlags = button.paintFlags or Paint.UNDERLINE_TEXT_FLAG
 
         val recyclerView = binding.recyclerView
@@ -89,17 +89,17 @@ class ProfileFragment : Fragment() {
     // 3. https://firebase.google.com/docs/reference/android/com/google/firebase/auth/FirebaseAuth?authuser=0#signInWithEmailAndPassword(java.lang.String,%20java.lang.String)
     // 4. CodeWithMazn: https://www.youtube.com/watch?v=KB2BIm_m1Os&ab_channel=CodeWithMazn
     private fun signInUser() {
-        val email = _binding?.signInEmail?.text.toString()
-        val password = _binding?.signInPassword?.text.toString()
+        val email = _binding.signInEmail.text.toString()
+        val password = _binding.signInPassword.text.toString()
 
         when{
-            TextUtils.isEmpty(email) -> _binding?.signInEmail?.error = "Email is required"
-            !Patterns.EMAIL_ADDRESS.matcher(email).matches()-> _binding?.signInEmail?.error  = "Please provide a valid email address"
-            TextUtils.isEmpty(password) -> _binding?.signInPassword?.error = "Password is required"
-            _binding?.signInPassword?.length()!! < 6 -> _binding?.signInPassword?.error = "Password should be at least 6 characters"
+            TextUtils.isEmpty(email) -> _binding.signInEmail.error = "Email is required"
+            !Patterns.EMAIL_ADDRESS.matcher(email).matches()-> _binding.signInEmail.error  = "Please provide a valid email address"
+            TextUtils.isEmpty(password) -> _binding.signInPassword.error = "Password is required"
+            _binding.signInPassword.length() < 6 -> _binding.signInPassword.error = "Password should be at least 6 characters"
 
             else -> {
-                _binding?.signInProgressBar?.visibility  = View.VISIBLE
+                _binding.signInProgressBar.visibility  = View.VISIBLE
 
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener { task ->
@@ -117,17 +117,17 @@ class ProfileFragment : Fragment() {
                                 Toast.LENGTH_LONG).show()
                             FirebaseAuth.getInstance().signOut()
                             //Progress bar disappears
-                            _binding?.signInProgressBar?.visibility = View.GONE
+                            _binding.signInProgressBar.visibility = View.GONE
                         }
                     }
             }
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+//    override fun onDestroyView() {
+//        super.onDestroyView()
+//        _binding = null
+//    }
 
     // Code inspired from
     //1. Firebase documentation: https://firebase.google.com/docs/database/android/read-and-write,
@@ -150,9 +150,9 @@ class ProfileFragment : Fragment() {
                         val lastName = user["lastname"].toString()
                         val level = "Level: Beginner"
 
-                        _binding?.profileFullName?.text = "$firstName $lastName"
-                        _binding?.profileUserLevel?.text = level
-                        _binding?.profileImageMain?.let {
+                        _binding.profileFullName.text = "$firstName $lastName"
+                        _binding.profileUserLevel.text = level
+                        _binding.profileImageMain.let {
                             Glide.with(this@ProfileFragment)
                                 .load(profilePicture)
                                 .placeholder(R.drawable.profile)
@@ -180,8 +180,8 @@ class ProfileFragment : Fragment() {
                     val kmValue = BigDecimal(dataSnapshot.value.toString().toDouble())
                         .setScale(2, RoundingMode.HALF_EVEN)
                         .toDouble()
-                    _binding?.profileTotalKm?.text = kmValue.toString()
-                    val image: ImageView = _binding?.profileTrophy as ImageView
+                    _binding.profileTotalKm.text = kmValue.toString()
+                    val image: ImageView = _binding.profileTrophy as ImageView
                     var level = ""
 
                     // Small number of kilometers for testing purposes
@@ -199,7 +199,7 @@ class ProfileFragment : Fragment() {
                             image.setImageResource(R.drawable.gold_trophy)
                         }
                     }
-                    _binding?.profileUserLevel?.text = level
+                    _binding.profileUserLevel.text = level
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {
