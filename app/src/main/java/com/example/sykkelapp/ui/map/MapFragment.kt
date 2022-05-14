@@ -37,8 +37,6 @@ class MapFragment : Fragment() {
     private var airQualityLayerActive = false
     private var airQualityList = mutableListOf<Marker>()
 
-    private var prevWindRotation : Float = 0.0F
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
@@ -112,11 +110,7 @@ class MapFragment : Fragment() {
                 tempView.text = it.instant.details.air_temperature.toString() + "°"
                 windView.text = it.instant.details.wind_speed.toString()
                 uvColor(it.instant.details.ultraviolet_index_clear_sky, uvView)
-
-                // TODO: fix rotation
-                prevWindRotation = it.instant.details.wind_from_direction.toFloat()
-                windRotation.animate().rotationBy(prevWindRotation)
-                    .start()
+                windRotation.rotation = it.instant.details.wind_from_direction.toFloat()
             }
         }
     }
