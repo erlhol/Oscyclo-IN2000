@@ -63,13 +63,13 @@ class Repository (private val datasource: Datasource) {
                         it.start_station_name,
                         (it.start_station_latitude.toString() + "," + it.start_station_longitude)
                     )
-                    val air_quality = averageAirQuality(
+                    val airQuality = averageAirQuality(
                         it.start_station_latitude,
                         it.start_station_longitude,
                         it.end_station_latitude,
                         it.end_station_longitude
                     )
-                    val airq_unit = datasource.loadAirQualityForecast(
+                    val airqUnit = datasource.loadAirQualityForecast(
                         it.start_station_latitude.toString(),
                         it.start_station_longitude.toString()
                     )
@@ -90,8 +90,8 @@ class Repository (private val datasource: Datasource) {
                             it.start_station_longitude,
                             it.start_station_name,
                             placeid,
-                            air_quality,
-                            airq_unit.units,
+                            airQuality,
+                            airqUnit.units,
                             directions,
                             it.popularity,
                             setDifficulty(directions.legs[0]),

@@ -1,6 +1,5 @@
 package com.example.sykkelapp.ui.route
 
-import android.content.Context
 import android.graphics.Color.rgb
 import android.util.Log
 import android.view.LayoutInflater
@@ -9,17 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.cardview.widget.CardView
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment.Companion.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sykkelapp.BuildConfig
 import com.example.sykkelapp.R
 import com.example.sykkelapp.data.Route
-import com.example.sykkelapp.ui.profile.ProfileFragment
 import com.google.android.gms.common.api.ApiException
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
@@ -27,7 +21,6 @@ import com.google.android.libraries.places.api.net.FetchPhotoRequest
 import com.google.android.libraries.places.api.net.FetchPhotoResponse
 import com.google.android.libraries.places.api.net.FetchPlaceRequest
 import com.google.android.libraries.places.api.net.FetchPlaceResponse
-import com.google.maps.android.PolyUtil
 
 
 class RouteAdapter(private val exampleList: List<Route>, private val routeFragment: Fragment) : RecyclerView.Adapter<RouteAdapter.ViewHolder>() {
@@ -36,7 +29,6 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
      * Provide a reference to the type of views that you are using
      * (custom ViewHolder).
      */
-
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val imageView: ImageView
@@ -59,7 +51,6 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
             view.setOnClickListener{
                 openMapFromCoordinates(bindingAdapterPosition, view)
             }
-
         }
     }
 
@@ -74,20 +65,16 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
 
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
-
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
 
-        // viewHolder.imageView = exampleList[position].
-        viewHolder.title.text = exampleList[position].start_station_name + " to " + exampleList[position].end_station_name
+        viewHolder.title.text = viewHolder.title.context.getString(R.string.route_title,exampleList[position].start_station_name,exampleList[position].end_station_name)
         viewHolder.duration.text = exampleList[position].directions.legs[0].duration.text
         viewHolder.imageView.setImageDrawable(null)
         viewHolder.distance.text = exampleList[position].directions.legs[0].distance.text
-        viewHolder.airQ.text = String.format("%.2f",exampleList[position].air_quality) + exampleList[position].airq_unit
+        viewHolder.airQ.text = viewHolder.airQ.context.getString(R.string.air_quality,String.format("%.2f",exampleList[position].air_quality),exampleList[position].airq_unit)
         setImage(viewHolder.imageView, exampleList[position])
         displayDifficulty(exampleList[position].difficulty,viewHolder.difficulty)
-
-        // https://github.com/googlemaps/android-maps-utils/blob/main/demo/src/v3/java/com/google/maps/android/utils/demo/PolyDecodeDemoActivity.java
 
         if(exampleList[position].bookmarked){
             viewHolder.bookmark.setBackgroundResource(R.drawable.ic_baseline_bookmark_24)
@@ -106,15 +93,15 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
     private fun displayDifficulty(avgSpeed: Double, view: TextView){
         when {
             avgSpeed < 4.16 -> {
-                view.text = "Hard"
+                view.text = view.context.getString(R.string.hard)
                 view.setBackgroundResource(R.drawable.hard)
             }
             avgSpeed in 4.16 .. 5.5 -> {
-                view.text = "Medium"
+                view.text = view.context.getString(R.string.medium)
                 view.setBackgroundResource(R.drawable.medium)
             }
             avgSpeed > 5.5 -> {
-                view.text = "Easy"
+                view.text = view.context.getString(R.string.easy)
                 view.setBackgroundResource(R.drawable.easy)
             }
         }
@@ -147,9 +134,6 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
                     return@addOnSuccessListener
                 }
                 val photoMetadata = metada.first()
-
-                // Get the attribution text.
-                val attributions = photoMetadata?.attributions
 
                 // Create a FetchPhotoRequest.
                 val photoRequest = FetchPhotoRequest.builder(photoMetadata)
@@ -187,9 +171,6 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
         findNavController(routeFragment).navigate(R.id.directionsFragment)
 
     }
-    // TODO: fix to get correct image on routes
-
-    // TODO: add a new Livedata -list - containing favorites
 
 }
 

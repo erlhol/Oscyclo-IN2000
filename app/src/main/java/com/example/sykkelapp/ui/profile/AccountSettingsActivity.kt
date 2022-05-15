@@ -9,7 +9,6 @@ import com.example.sykkelapp.MainActivity
 import com.example.sykkelapp.R
 import com.example.sykkelapp.databinding.ActivityAccountSettingsBinding
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.*
 
 class AccountSettingsActivity : AppCompatActivity() {

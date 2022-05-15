@@ -19,7 +19,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
     private val _weatherforecast = MutableLiveData<Data>()
     private val _airq = MutableLiveData<List<AirQualityItem>>()
     private val _airqualityforecast = MutableLiveData<Pm10Concentration>()
-    private val _bysykkel_station = MutableLiveData<List<Station>>()
+    private val _bysykkelStation = MutableLiveData<List<Station>>()
     private val source = Repository(Datasource())
 
     private val _locationData = LocationLiveData(application)
@@ -32,8 +32,8 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
         get() = _airq
     val airqualityforecast : LiveData<Pm10Concentration>
         get() = _airqualityforecast
-    val bysykkel_station : LiveData<List<Station>>
-        get() = _bysykkel_station
+    val bysykkelStation : LiveData<List<Station>>
+        get() = _bysykkelStation
     val locationData : LiveData<LocationModel>
         get() = _locationData
 
@@ -43,7 +43,7 @@ class MapViewModel(application: Application) : AndroidViewModel(application) {
             _airq.postValue(source.loadNILUAirQ())
             _weatherforecast.postValue(source.loadWeather("59.94410", "10.7185", "complete?"))
             _airqualityforecast.postValue(source.loadAirQualityForecast("59.94410", "10.7185"))
-            _bysykkel_station.postValue(source.loadBySykkel())
+            _bysykkelStation.postValue(source.loadBySykkel())
 
         }
     }

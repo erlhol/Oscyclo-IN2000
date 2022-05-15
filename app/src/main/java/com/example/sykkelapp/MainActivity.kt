@@ -14,7 +14,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
-    var prevStarted = "yes"
 
     private lateinit var binding: ActivityMainBinding
 

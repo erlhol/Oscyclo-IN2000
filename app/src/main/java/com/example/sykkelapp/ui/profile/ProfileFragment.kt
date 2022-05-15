@@ -150,7 +150,7 @@ class ProfileFragment : Fragment() {
                         val lastName = user["lastname"].toString()
                         val level = "Level: Beginner"
 
-                        _binding.profileFullName.text = "$firstName $lastName"
+                        _binding.profileFullName.text = context?.getString(R.string.full_name_text,firstName,lastName)
                         _binding.profileUserLevel.text = level
                         _binding.profileImageMain.let {
                             Glide.with(this@ProfileFragment)
@@ -181,7 +181,7 @@ class ProfileFragment : Fragment() {
                         .setScale(2, RoundingMode.HALF_EVEN)
                         .toDouble()
                     _binding.profileTotalKm.text = kmValue.toString()
-                    val image: ImageView = _binding.profileTrophy as ImageView
+                    val image: ImageView = _binding.profileTrophy
                     var level = ""
 
                     // Small number of kilometers for testing purposes

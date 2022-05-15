@@ -27,23 +27,21 @@ class Datasource : DataSourceInterface {
     }
 
     override suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data {
-        // Just a sample URL. Has to be changed later
         val coordinate = "lat=$lat&lon=$lon"
         val path = "https://in2000-apiproxy.ifi.uio.no/weatherapi/locationforecast/2.0/$verbose$coordinate"
         val response : LocationForecast = client.get(path)
-        return response.properties.timeseries[0].data // currently only getting the first timeseries
+        return response.properties.timeseries[0].data
     }
 
-    override suspend fun loadOsloRoutes() : String {
-        val response : HttpResponse = client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326&CQL_FILTER=rute+IS+NOT+Null")
-        val data = response.readText()
-        return data
+    override suspend fun loadOsloRoutes(): String {
+        val response: HttpResponse =
+            client.request("https://geoserver.data.oslo.systems/geoserver/bym/ows?service=WFS&version=1.0.0&request=GetFeature&typeName=bym%3Abyruter&outputFormat=application/json&srsName=EPSG:4326&CQL_FILTER=rute+IS+NOT+Null")
+        return response.readText()
     }
 
-    override suspend fun loadNILUAirQ() : List<AirQualityItem> {
+    override suspend fun loadNILUAirQ(): List<AirQualityItem> {
         val path = "https://api.nilu.no/aq/utd?areas=oslo&components=pm10"
-        val response : AirQuality = client.get(path)
-        return response
+        return client.get<AirQuality>(path)
     }
 
     override suspend fun loadAirQualityForecast(lat: String, lon: String) : Pm10Concentration {
@@ -75,8 +73,7 @@ class Datasource : DataSourceInterface {
         }
         return "ChIJOfBn8mFuQUYRmh4j019gkn4"
     }
-
-    // haandtere exceptions!
+    
     override suspend fun getDirection(destlatlon : String, originlatlon: String) : Route  {
         val path = "https://maps.googleapis.com/maps/api/directions/json?avoid=highways&destination=$destlatlon&mode=bicycling&origin=$originlatlon&key=${BuildConfig.MAPS_API_KEY}"
         val response : Directions = client.get(path)

@@ -107,7 +107,7 @@ class MapFragment : Fragment() {
                     context?.packageName
                 )
                 imageView.setImageResource(id)
-                tempView.text = it.instant.details.air_temperature.toString() + "°"
+                tempView.text = context?.getString(R.string.air_temperature,it.instant.details.air_temperature.toString())
                 windView.text = it.instant.details.wind_speed.toString()
                 uvColor(it.instant.details.ultraviolet_index_clear_sky, uvView)
                 windRotation.rotation = it.instant.details.wind_from_direction.toFloat()
@@ -127,7 +127,7 @@ class MapFragment : Fragment() {
                     MarkerOptions()
                         .position(point)
                         .title(it.station)
-                        .snippet("Svevestøvnivå: " + it.value + it.unit)
+                        .snippet("Airquality: " + String.format("%.2f",it.value)+ it.unit)
                         .icon(airqualityIcon)
                         .visible(false)
                 )!!
@@ -149,8 +149,8 @@ class MapFragment : Fragment() {
         viewModel.osloroutes.observe(viewLifecycleOwner) { geo ->
             if (geo != null) {
                 layer = GeoJsonLayer(mMap, JSONObject(geo))
-                val layer_style = layer.defaultLineStringStyle
-                layer_style.isClickable = true
+                val layerStyle = layer.defaultLineStringStyle
+                layerStyle.isClickable = true
                 layer.setOnFeatureClickListener {
                     Toast.makeText(context, it.getProperty("rute"), Toast.LENGTH_SHORT).show()
                 }
@@ -193,7 +193,7 @@ class MapFragment : Fragment() {
         //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
 
         // Add the places to the ClusterManager.
-        viewModel.bysykkel_station.observe(viewLifecycleOwner) {
+        viewModel.bysykkelStation.observe(viewLifecycleOwner) {
             if (it != null) {
                 clusterManager.addItems(it)
                 clusterManager.cluster()

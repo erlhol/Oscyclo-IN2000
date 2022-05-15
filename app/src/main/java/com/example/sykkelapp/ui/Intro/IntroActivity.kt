@@ -1,7 +1,6 @@
 package com.example.sykkelapp.ui.Intro
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
@@ -9,7 +8,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.os.Bundle
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Color
 import android.util.Log
 import android.view.WindowManager
@@ -77,17 +75,6 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
             )
         }
     }
-
-    fun isPermissionsGranted() =
-        ActivityCompat.checkSelfPermission(
-            this,
-            Manifest.permission.ACCESS_FINE_LOCATION
-        ) == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                ) == PackageManager.PERMISSION_GRANTED
-
 
     fun shouldShowRequestPermissionRationale() =
         ActivityCompat.shouldShowRequestPermissionRationale(

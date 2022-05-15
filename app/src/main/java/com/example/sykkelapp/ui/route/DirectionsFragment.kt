@@ -1,7 +1,6 @@
 package com.example.sykkelapp.ui.route
 
 import android.graphics.Bitmap
-import android.graphics.Color
 import android.graphics.Color.rgb
 import android.os.Bundle
 import android.util.Log
@@ -35,7 +34,6 @@ class DirectionsFragment() : Fragment() {
     private lateinit var mMap: GoogleMap
     private lateinit var mapView : MapView
     private var _binding: FragmentDirectionsBinding? = null
-    private lateinit var routeViewModel : RouteViewModel
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -61,21 +59,21 @@ class DirectionsFragment() : Fragment() {
             val end = decodedPath[0]
             val start = decodedPath[decodedPath.size-1]
 
-            val startIcon = BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_directions_bike_24, Color.rgb(205, 18, 18))
+            val startIcon = BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_directions_bike_24, rgb(205, 18, 18))
             val startMark = MarkerOptions().position(start).icon(startIcon)
             mMap.addMarker(startMark)
 
-            val endIcon = BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_flag_24, Color.rgb(205, 18, 18))
+            val endIcon = BitmapHelper.vectorToBitmap(context, R.drawable.ic_baseline_flag_24, rgb(205, 18, 18))
             val endMark = MarkerOptions().position(end).icon(endIcon)
             mMap.addMarker(endMark)
 
             mMap.addPolyline(PolylineOptions().addAll(decodedPath))
-            val point_lat = decodedPath[decodedPath.size/2].latitude
-            val point_long = decodedPath[decodedPath.size/2].longitude
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(point_lat,point_long),13f))
+            val pointLat = decodedPath[decodedPath.size/2].latitude
+            val pointLong = decodedPath[decodedPath.size/2].longitude
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(pointLat,pointLong),13f))
         }
 
-        //Jeg henter imageviewet fra cardviewet jeg sender inn og prøver å ende det mini cardviewet
+        //Get imageview and set minicardview
         val resource = card?.findViewById<ImageView>(R.id.picture)?.tag
         if (resource is Bitmap){
             binding.cardView.findViewById<ImageView>(R.id.image).setImageBitmap(resource)
@@ -88,31 +86,37 @@ class DirectionsFragment() : Fragment() {
         val button: Button = binding.complete
 
         button.setOnClickListener{
-            button.text = "+" + card?.findViewById<TextView>(R.id.length)?.text
+            button.text = context?.getString(R.string.add_kilometers,card?.findViewById<TextView>(R.id.length)?.text)
             button.setBackgroundColor(rgb(34, 139, 34))
             button.setOnClickListener{popBack()}
 
-            val firebaseUser = FirebaseAuth.getInstance().currentUser!!.uid
+            val firebaseUser = FirebaseAuth.getInstance().currentUser?.uid
             val databaseReference = FirebaseDatabase.getInstance().getReference("Distance")
 
-            databaseReference.addListenerForSingleValueEvent(object: ValueEventListener{
-                override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        val distance = snapshot.value as HashMap<*, *>
-                        val numbersOnly = button.text.toString().substring(1).dropLast(3).toDouble()
-                        if (distance[firebaseUser] == null) {
-                            databaseReference.child(firebaseUser).setValue(numbersOnly)
-                        } else {
-                            val previousValue = distance[firebaseUser] as Number
-                            databaseReference.child(firebaseUser).setValue(numbersOnly.plus(previousValue.toDouble()))
+            if (firebaseUser != null) {
+                databaseReference.addListenerForSingleValueEvent(object: ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val distance = snapshot.value as HashMap<*, *>
+                            val numbersOnly = button.text.toString().substring(1).dropLast(3).toDouble()
+                            if (distance[firebaseUser] == null) {
+                                databaseReference.child(firebaseUser).setValue(numbersOnly)
+                            } else {
+                                val previousValue = distance[firebaseUser] as Number
+                                databaseReference.child(firebaseUser).setValue(numbersOnly.plus(previousValue.toDouble()))
+                            }
                         }
                     }
-                }
 
-                override fun onCancelled(error: DatabaseError) {
-                    Log.d("Error: unable to upload distance", error.message)
-                }
-            })
+                    override fun onCancelled(error: DatabaseError) {
+                        Log.d("Error: unable to upload distance", error.message)
+                    }
+                })
+            }
+            else {
+                Log.d("DircetionsFragment","Not logged in")
+            }
+
         }
         return root
     }

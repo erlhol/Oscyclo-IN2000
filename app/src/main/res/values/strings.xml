@@ -8,6 +8,15 @@
     <string name="uv_icon">uv_icon</string>
     <string name="wind_direction">wind_direction</string>
 
+    <string name="air_temperature">%1$s°</string>
+
+    <string name="route_title">%1$s to %2$s</string>
+    <string name="air_quality">%1$s %2$s</string>
+
+    <string name="easy">Easy</string>
+    <string name="medium">Medium</string>
+    <string name="hard">Hard</string>
+
     <string name="latLong">Longitude: %.3f, Latitude: %.3f</string>
     <string name="enable_gps">Please enable your gps</string>
     <string name="permission_request">App requires location permission</string>
@@ -25,6 +34,9 @@
     <string name="level">Level:</string>
     <string name="my_favourite_routes">My favourite routes</string>
     <string name="my_history">My history</string>
+
+    <string name="full_name_text">%1$s %2$s</string>
+    <string name="add_kilometers">+%1$s</string>
 
     <string name="edit_profile">Edit profile</string>
     <string name="logout">Logout</string>
@@ -80,7 +92,7 @@
     <string name="walking">WALKING</string>
     <string name="walking_desc">Go for a walk</string>
     <string name="cycling">Cycling</string>
-    <string name="cycling_desc">if ypu cant run, cant walk</string>
+    <string name="cycling_desc">if you can\'t run, can\'t walk</string>
     <string name="fit">Become FIT</string>
     <string name="fit_desc">Do either</string>
     <string name="swimming">Swimming</string>
