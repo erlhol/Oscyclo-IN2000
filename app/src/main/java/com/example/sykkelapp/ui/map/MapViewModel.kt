@@ -2,8 +2,10 @@ package com.example.sykkelapp.ui.map
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.sykkelapp.data.DataSourceInterface
 import com.example.sykkelapp.data.Datasource
 import com.example.sykkelapp.data.Repository
+import com.example.sykkelapp.data.RepositoryInterface
 import com.example.sykkelapp.data.airquality.AirQualityItem
 import com.example.sykkelapp.data.airqualityforecast.Pm10Concentration
 import com.example.sykkelapp.data.bysykkel.Station
@@ -13,14 +15,22 @@ import com.example.sykkelapp.ui.map.location.LocationModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MapViewModel(application: Application) : AndroidViewModel(application) {
+@Suppress("UNCHECKED_CAST")
+class MapViewModelFactory (
+    private val repository: RepositoryInterface, private val application: Application
+) : ViewModelProvider.NewInstanceFactory() {
+    override fun <T : ViewModel> create(modelClass: Class<T>) =
+        (MapViewModel(application,repository) as T)
+}
+
+class MapViewModel(application: Application, repository: RepositoryInterface) : AndroidViewModel(application) {
 
     private val _osloroutes = MutableLiveData<String>()
     private val _weatherforecast = MutableLiveData<Data>()
     private val _airq = MutableLiveData<List<AirQualityItem>>()
     private val _airqualityforecast = MutableLiveData<Pm10Concentration>()
     private val _bysykkelStation = MutableLiveData<List<Station>>()
-    private val source = Repository(Datasource())
+    private val source = repository
 
     private val _locationData = LocationLiveData(application)
 

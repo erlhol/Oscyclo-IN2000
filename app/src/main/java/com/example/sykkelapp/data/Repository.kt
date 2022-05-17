@@ -8,8 +8,8 @@ import com.example.sykkelapp.data.directions.Leg
 import com.example.sykkelapp.data.locationForecast.Data
 import kotlinx.coroutines.*
 
-class Repository (private val datasource: Datasource) {
-    suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data? {
+class Repository (private val datasource: DataSourceInterface) : RepositoryInterface {
+    override suspend fun loadWeather(lat : String, lon : String, verbose: String) : Data? {
         return try {
             datasource.loadWeather(lat, lon, verbose)
         } catch (exception: Exception) {
@@ -17,7 +17,7 @@ class Repository (private val datasource: Datasource) {
         }
     }
 
-    suspend fun loadOsloRoutes() : String? {
+    override suspend fun loadOsloRoutes() : String? {
         return try {
             datasource.loadOsloRoutes()
         } catch (exception: Exception) {
@@ -25,7 +25,7 @@ class Repository (private val datasource: Datasource) {
         }
     }
 
-    suspend fun loadNILUAirQ() : List<AirQualityItem>? {
+    override suspend fun loadNILUAirQ() : List<AirQualityItem>? {
         return try {
             datasource.loadNILUAirQ()
         } catch (exception: Exception) {
@@ -33,7 +33,7 @@ class Repository (private val datasource: Datasource) {
         }
     }
 
-    suspend fun loadAirQualityForecast(lat: String, lon: String) : Pm10Concentration? {
+    override suspend fun loadAirQualityForecast(lat: String, lon: String) : Pm10Concentration? {
         return try {
             datasource.loadAirQualityForecast(lat, lon)
         } catch (exception: Exception) {
@@ -41,7 +41,7 @@ class Repository (private val datasource: Datasource) {
         }
     }
 
-    suspend fun loadBySykkel() : List<Station>? {
+    override suspend fun loadBySykkel() : List<Station>? {
         return try {
             return datasource.loadBySykkel()
         } catch (exception: Exception) {
@@ -49,7 +49,7 @@ class Repository (private val datasource: Datasource) {
         }
     }
 
-    suspend fun loadBySykkelRoutes() : List<Route>? {
+    override suspend fun loadBySykkelRoutes() : List<Route>? {
         try {
             val res = datasource.loadBySykkelRoutes()
             // create map of routes: Key = start,end. Value = BysykkelItem
@@ -103,7 +103,6 @@ class Repository (private val datasource: Datasource) {
                 jobsList.add(job)
             }
             jobsList.awaitAll()
-
             return routes.sortedBy { it.air_quality } // way to sort recyclerview
         }
         catch (exception: Exception) {
@@ -121,16 +120,19 @@ class Repository (private val datasource: Datasource) {
 
         // add the most popular routes in a list. Just the 20 most popular
         val popularRoutes = mutableListOf<BysykkelItem>()
-        eachCountMap.toList().sortedByDescending { it.second }.take(20).forEach {
+        eachCountMap.toList().sortedByDescending { it.second }.take(15).forEach {
             startEndMap[it.first]?.let { it1 -> popularRoutes.add(it1)
                 it1.popularity = it.second}
         }
         return popularRoutes
     }
 
-    private suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
+    override suspend fun averageAirQuality(latStart: Double, lonStart: Double, latEnd: Double, longEnd: Double): Double {
         val start  = loadAirQualityForecast(latStart.toString(), lonStart.toString())?.value ?: -1.0
         val end = loadAirQualityForecast(latEnd.toString(), longEnd.toString())?.value ?: -1.0
+        if (start == -1.0 || end == -1.0) {
+            return -1.0
+        }
         return (start + end)/2
     }
 

@@ -189,6 +189,7 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
         // use an intent to travel from one activity to another.
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
+        finish()
     }
 }
 

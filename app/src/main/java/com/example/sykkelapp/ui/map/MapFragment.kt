@@ -10,8 +10,11 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.sykkelapp.R
+import com.example.sykkelapp.data.Datasource
+import com.example.sykkelapp.data.Repository
 import com.example.sykkelapp.data.bysykkel.Station
 import com.example.sykkelapp.data.bysykkel.StationRenderer
 import com.example.sykkelapp.databinding.FragmentMapBinding
@@ -32,7 +35,6 @@ class MapFragment : Fragment() {
     private lateinit var mMap: GoogleMap
     private lateinit var mapView : MapView
     private var _binding: FragmentMapBinding? = null
-    private lateinit var homeViewModel : MapViewModel
 
     private var airQualityLayerActive = false
     private var airQualityList = mutableListOf<Marker>()
@@ -41,17 +43,21 @@ class MapFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
+    private val homeViewModel by viewModels<MapViewModel> {
+        MapViewModelFactory(Repository(Datasource()),requireActivity().application)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        homeViewModel =
-            ViewModelProvider(this)[MapViewModel::class.java]
 
         _binding = FragmentMapBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        onOptionClick()
+        initWeatherForecast(homeViewModel)
         mapView = binding.mapView
         mapView.onCreate(savedInstanceState)
         mapView.onResume()
@@ -59,14 +65,12 @@ class MapFragment : Fragment() {
         startLocationUpdate()
         mapView.getMapAsync { map ->
             mMap = map
-            initWeatherForecast(homeViewModel)
             initMap(map,homeViewModel)
             initAirQuality(map,homeViewModel)
             val bySykkelC = addBysykkelClusteredMarkers(map, homeViewModel)
             map.setOnCameraIdleListener {
                 bySykkelC.onCameraIdle()
             }
-            onOptionClick()
         }
 
         return root
@@ -188,10 +192,6 @@ class MapFragment : Fragment() {
                 mMap,
                 clusterManager
             )
-
-        // Set custom info window adapter
-        //clusterManager.markerCollection.setInfoWindowAdapter(MarkerInfoWindowAdapter(this))
-
         // Add the places to the ClusterManager.
         viewModel.bysykkelStation.observe(viewLifecycleOwner) {
             if (it != null) {

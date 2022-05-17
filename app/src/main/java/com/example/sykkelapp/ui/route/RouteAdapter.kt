@@ -169,7 +169,6 @@ class RouteAdapter(private val exampleList: List<Route>, private val routeFragme
         SelectedRoute.currentPolyline = exampleList[position].directions.overview_polyline.points
         SelectedRoute.currentView = card
         findNavController(routeFragment).navigate(R.id.directionsFragment)
-
     }
 
 }
