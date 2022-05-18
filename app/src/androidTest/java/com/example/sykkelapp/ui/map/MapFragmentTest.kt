@@ -36,7 +36,7 @@ class MapFragmentTest {
 
     @Test
     fun on_AirQualityButtonPressed() {
-        onView(withId(R.id.air_quality_button)).perform(click()).check(matches(isDisplayed()))
+        onView(withId(R.id.air_quality_button)).perform(click()).check(matches(isSelected()))
     }
 
 }

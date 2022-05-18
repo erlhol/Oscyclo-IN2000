@@ -49,7 +49,8 @@ class ProfileFragment : Fragment() {
 
         // Navigate to Account settings
         _binding.profileSettingsButton.setOnClickListener{
-            startActivity(Intent(context, AccountSettingsActivity::class.java))
+            findNavController().navigate(R.id.accountSettingsActivity)
+            //startActivity(Intent(context, AccountSettingsActivity::class.java))
         }
 
         // Navigate to Sign up fragment
