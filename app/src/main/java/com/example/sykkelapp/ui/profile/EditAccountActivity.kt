@@ -74,6 +74,7 @@ class EditAccountActivity : AppCompatActivity() {
 
     //Code inspired from
     //1. Short Time Coding: https://www.youtube.com/watch?v=TX6K1-v7Qpc&ab_channel=ShortTimeCoding
+    @Suppress("DEPRECATION")
     private fun selectImage() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
@@ -83,6 +84,8 @@ class EditAccountActivity : AppCompatActivity() {
 
     //Code inspired from
     //1. Short Time Coding: https://www.youtube.com/watch?v=TX6K1-v7Qpc&ab_channel=ShortTimeCoding
+    @Deprecated("Deprecated in Java")
+    @Suppress("DEPRECATION")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

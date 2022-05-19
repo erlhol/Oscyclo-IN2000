@@ -37,11 +37,12 @@ class RouteFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
 
         val recyclerView = binding.recyclerView
-
+        binding.routesProgressBar.visibility = View.VISIBLE
         routeViewModel.routes.observe(viewLifecycleOwner) {
             routes ->
                 if (routes != null) {
                     recyclerView.adapter = RouteAdapter(routes, this)
+                    binding.routesProgressBar.visibility = View.GONE
                 }
         }
 

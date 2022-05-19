@@ -1,3 +1,5 @@
+@file:Suppress("DEPRECATION")
+
 package com.example.sykkelapp.ui.Intro
 
 import android.Manifest
@@ -31,10 +33,12 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
     private var currentItem = 0
     var prevStarted = "yes"
 
+    @Suppress("DEPRECATION")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         requestWindowFeature(Window.FEATURE_NO_TITLE)
+        @Suppress("DEPRECATION")
         this.window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         supportActionBar?.hide()
 
@@ -98,8 +102,8 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setupViewPager() {
         introAdapter = IntroAdapter(this)
-        viewPager!!.adapter = introAdapter
-        viewPager!!.addOnPageChangeListener(pageChangeListener)
+        viewPager?.adapter = introAdapter
+        viewPager?.addOnPageChangeListener(pageChangeListener)
     }
 
     private fun findViews() {
@@ -129,7 +133,7 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
             mDots[i]!!.setTextColor(resources.getColor(R.color.dot_inactive_color))
             dotsLayout!!.addView(mDots[i])
         }
-        if (mDots.size > 0) {
+        if (mDots.isNotEmpty()) {
             //change color of the current selected dot
             mDots[position]!!.setTextColor(resources.getColor(R.color.dot_active_color))
         }
