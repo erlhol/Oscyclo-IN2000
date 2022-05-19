@@ -59,7 +59,7 @@
             android:id="@+id/wind_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="m/s"
+            android:text="@string/m_s"
             android:textColor="@color/black"
             android:textSize="15sp"
             android:layout_marginBottom="16dp"
@@ -91,9 +91,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
-
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageButton
@@ -101,12 +98,13 @@
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginTop="90dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:background="@drawable/circlebutton"
         android:elevation="6dp"
         android:src="@drawable/ic_baseline_eco_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/cardview_dark_background" />
+        app:tint="@color/cardview_dark_background"
+        android:contentDescription="@string/air_quality_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

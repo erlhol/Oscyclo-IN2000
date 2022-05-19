@@ -12,14 +12,14 @@
         android:layout_height="150dp"
         android:layout_marginTop="40dp"
         android:src="@drawable/ic_baseline_map_24"
-        />
+        android:contentDescription="@string/map_icon" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:textSize="30sp"
-        android:text="Map"
+        android:text="@string/map"
         android:textAppearance="@style/TextAppearance.AppCompat.Headline"
         />
 

@@ -142,7 +142,8 @@
                     android:layout_height="39dp"
                     android:src="@drawable/trophy"
                     app:civ_border_color="#FF000000"
-                    app:civ_border_width="2dp" />
+                    app:civ_border_width="2dp"
+                    android:contentDescription="@string/trophy_icon" />
 
                 <TextView
                     android:id="@+id/profile_user_level"
@@ -255,7 +256,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/sign_in_app_logo" />
+            app:layout_constraintTop_toBottomOf="@+id/sign_in_app_logo"
+            android:autofillHints="emailAddress" />
 
         <EditText
             android:id="@+id/sign_in_password"

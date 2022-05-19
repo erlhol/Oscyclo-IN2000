@@ -99,6 +99,17 @@
     <string name="swimming_desc">Explore the world under water</string>
     <string name="running">Running</string>
     <string name="running_desc">Daily running</string>
+    <string name="image_of_route">Image of route</string>
+    <string name="bookmark_icon">Bookmark icon</string>
+    <string name="m_s">m/s</string>
+    <string name="air_quality_button">Air Quality button</string>
+    <string name="trophy_icon">Trophy icon</string>
+    <string name="route_icon">Route icon</string>
+    <string name="routes">Routes</string>
+    <string name="profile_icon">Profile icon</string>
+    <string name="profile">Profile</string>
+    <string name="map_icon">Map icon</string>
+    <string name="map">Map</string>
 
 
 </resources>
