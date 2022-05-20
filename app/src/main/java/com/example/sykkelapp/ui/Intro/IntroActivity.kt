@@ -49,13 +49,13 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
         setupViewPager() //setup the viewpager, set adapter and page listener
         addDotsIndicator(0) //called for the first launch, after this handled in page listener
 
+        // GpsUtils from https://proandroiddev.com/android-tutorial-on-location-update-with-livedata-774f8fcc9f15
         GpsUtils(this).turnGPSOn(object : GpsUtils.OnGpsListener {
             override fun gpsStatus(isGPSEnable: Boolean) {
                 GPSEnabled.isGPSEnabled = isGPSEnable
             }
         })
 
-        // TODO: fikse location-button
         val locationButton = findViewById<Button>(R.id.location_button)
         locationButton.setOnClickListener {
             invokeLocationAction()
@@ -64,11 +64,10 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
+    // Function from https://proandroiddev.com/android-tutorial-on-location-update-with-livedata-774f8fcc9f15
     private fun invokeLocationAction() {
         when {
             !GPSEnabled.isGPSEnabled ->  Log.d("Map fragment",getString(R.string.enable_gps))
-
-            //isPermissionsGranted() -> startLocationUpdate()
 
             shouldShowRequestPermissionRationale() -> Log.d("Map fragment",getString(R.string.permission_request))
 
@@ -80,6 +79,7 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    // Function from https://proandroiddev.com/android-tutorial-on-location-update-with-livedata-774f8fcc9f15
     fun shouldShowRequestPermissionRationale() =
         ActivityCompat.shouldShowRequestPermissionRationale(
             this,
@@ -114,8 +114,8 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setClickListener() {
-        btnSkip!!.setOnClickListener(this)
-        btnNext!!.setOnClickListener(this)
+        btnSkip?.setOnClickListener(this)
+        btnNext?.setOnClickListener(this)
     }
 
     private fun addDotsIndicator(position: Int) {
@@ -123,19 +123,19 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
         mDots = arrayOfNulls(introAdapter!!.count)
         /*Remove previous views when called next time
          if not called then views will keep on adding*/
-        dotsLayout!!.removeAllViews()
+        dotsLayout?.removeAllViews()
 
         //Set | in each dot-textView
         for (i in mDots.indices) {
             mDots[i] = TextView(this)
-            mDots[i]!!.text = "|"
-            mDots[i]!!.textSize = 35f
-            mDots[i]!!.setTextColor(resources.getColor(R.color.dot_inactive_color))
-            dotsLayout!!.addView(mDots[i])
+            mDots[i]?.text = "|"
+            mDots[i]?.textSize = 35f
+            mDots[i]?.setTextColor(resources.getColor(R.color.dot_inactive_color))
+            dotsLayout?.addView(mDots[i])
         }
         if (mDots.isNotEmpty()) {
             //change color of the current selected dot
-            mDots[position]!!.setTextColor(resources.getColor(R.color.dot_active_color))
+            mDots[position]?.setTextColor(resources.getColor(R.color.dot_active_color))
         }
     }
 
@@ -148,12 +148,12 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
             //change the next button text to "finish"
             if (position == introAdapter!!.count - 1) {
                 //last page, make it "finish" and make the skip  button invisible
-                btnNext!!.text = getString(R.string.finish)
-                btnSkip!!.visibility = View.INVISIBLE
+                btnNext?.text = getString(R.string.finish)
+                btnSkip?.visibility = View.INVISIBLE
             } else {
                 //set "next" text and make skip button visible
-                btnNext!!.text = getString(R.string.next)
-                btnSkip!!.visibility = View.VISIBLE
+                btnNext?.text = getString(R.string.next)
+                btnSkip?.visibility = View.VISIBLE
             }
         }
 
@@ -171,7 +171,7 @@ class IntroActivity : AppCompatActivity(), View.OnClickListener {
         when (v.id) {
             R.id.btn_next -> if (currentItem < introAdapter!!.count - 1) {
                 ++currentItem
-                viewPager!!.currentItem = currentItem
+                viewPager?.currentItem = currentItem
             } else launchMainScreen() //launch main screen (MainActivity) on last page
             R.id.btn_skip -> launchMainScreen()
         }

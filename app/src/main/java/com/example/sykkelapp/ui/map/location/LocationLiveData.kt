@@ -7,12 +7,11 @@ import android.os.Looper
 import androidx.lifecycle.LiveData
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
-import com.google.android.gms.location.LocationRequest.PRIORITY_HIGH_ACCURACY
-import com.google.android.gms.location.LocationRequest.create
+import com.google.android.gms.location.LocationRequest.*
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
 
-// https://github.com/mayowa-egbewunmi/LocationUpdateWithLiveData
+// Class from https://proandroiddev.com/android-tutorial-on-location-update-with-livedata-774f8fcc9f15
 class LocationLiveData (context: Context) : LiveData<LocationModel>() {
 
     private var fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(context)
@@ -26,8 +25,8 @@ class LocationLiveData (context: Context) : LiveData<LocationModel>() {
 
     companion object {
         val locationRequest : LocationRequest = create().apply {
-            interval = 10000
-            fastestInterval = 5000
+            interval = 60000
+            fastestInterval = 50000
             priority = PRIORITY_HIGH_ACCURACY
         }
     }
